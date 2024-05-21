@@ -16,6 +16,8 @@ const store = configureStore({
     getDefaultMiddleware().concat(contactItemApi.middleware),
 });
 
+store.dispatch(contactItemApi.endpoints.getContactItem.initiate())
+
 setupListeners(store.dispatch)
 
 export default store;

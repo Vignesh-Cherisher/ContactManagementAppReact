@@ -68,6 +68,11 @@ Button {
   height: 100vh;
 }
 
+.root-layout {
+  display: flex;
+  overflow-y: hidden;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -136,7 +141,6 @@ Button {
   width: 30%;
   padding: 0.5rem;
   background-color: whitesmoke;
-  height: 100%;
   overflow-y: auto;
   min-width: 300px;
 }
@@ -163,4 +167,5 @@ Button {
 
 .contact-list-item:hover {
   background-color: rgba(121, 121, 121, 0.199);
+  cursor: pointer;
 }

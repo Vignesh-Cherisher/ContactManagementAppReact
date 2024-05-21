@@ -8,24 +8,26 @@ import {
   InputLabel,
 } from "@mui/material";
 import ContactListItem from "./contactListItem";
-import { useGetContactItemQuery } from "../../services/contactItem.service";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { contactItemActions } from "../../store/contactItem.slice";
+import { useState } from "react";
 
 const ContactListPanel: React.FC = () => {
-  const { data } = useGetContactItemQuery();
+  const [searchText, setSearchText] = useState('')
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (data) {
-      dispatch(contactItemActions.contactItemSetAll(data));
-    }
-  }, [data, dispatch]);
-
-  const sortListHandler = () => {
-    dispatch(contactItemActions.sortListHandler())
+  const sortContactListHandler = () => {
+    dispatch(contactItemActions.sortContactList())
   };
+
+  const searchContactHandler = (searchTextValue: string) => {
+    setSearchText(searchTextValue)
+    dispatch(contactItemActions.searchContactHandler(searchTextValue))
+  }
+
+  const filterContactListHandler = () => {
+    dispatch(contactItemActions.filterContactList())
+  }
 
   return (
     <>
@@ -39,6 +41,8 @@ const ContactListPanel: React.FC = () => {
               <Input
                 id="standard-adornment-password"
                 type="text"
+                value={searchText}
+                onChange={(event) => searchContactHandler(event.target.value)}
                 endAdornment={
                   <InputAdornment position="end">
                     <Icon aria-label="toggle password visibility">search</Icon>
@@ -48,13 +52,13 @@ const ContactListPanel: React.FC = () => {
             </FormControl>
           </div>
           <Box className="contact-list-controller-container">
-            <Button variant="contained" startIcon={<Icon>filter_alt</Icon>}>
+            <Button variant="contained" startIcon={<Icon>filter_alt</Icon>} onClick={filterContactListHandler}>
               Filter
             </Button>
             <Button
               variant="contained"
               startIcon={<Icon>swap_vert</Icon>}
-              onClick={sortListHandler}
+              onClick={sortContactListHandler}
             >
               Sort
             </Button>
@@ -63,7 +67,7 @@ const ContactListPanel: React.FC = () => {
             </Button>
           </Box>
         </div>
-        <ContactListItem />
+        <ContactListItem/>
       </div>
     </>
   );

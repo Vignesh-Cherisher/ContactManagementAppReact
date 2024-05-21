@@ -1,15 +1,25 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css'
-import ContactListPanel from './components/ContactList/contactListPanel'
-import NavBar from './components/Navbar/navbar'
+import ContactView from './components/ContactView/contactView';
+import RootLayout from './components/rootLayout';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      {
+        index: true,
+        element: <ContactView/>
+      }
+    ],
+  },
+]);
 
 function App() {
 
   return (
-    <>
-      <NavBar/>
-      <ContactListPanel/>
-      
-    </>
+    <RouterProvider router={router}></RouterProvider>
   )
 }
 
