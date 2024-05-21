@@ -17,14 +17,8 @@ const ContactListItem: React.FC = () => {
     state.contactItem.transformedContacts
   );
 
-  // const isSortedDesc = useSelector(
-  //   (state: RootState) => state.contactItem.isSortedDesc
-  // );
-
-  // console.log(contactItemList);
-
   return (
-    <List sx={{ overflowY: "scroll" }}>
+    <List sx={{ overflowY: "scroll", height: "100%" }}>
       {contactItemList !== undefined &&
         contactItemList.map((item: ContactItem) => (
           <Box key={item.id} component="li" className="contact-list-item">

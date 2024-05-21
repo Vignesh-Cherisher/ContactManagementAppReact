@@ -70,7 +70,8 @@ Button {
 
 .root-layout {
   display: flex;
-  overflow-y: hidden;
+  overflow: hidden;
+  height: 100%;
 }
 
 .navbar {
@@ -168,4 +169,8 @@ Button {
 .contact-list-item:hover {
   background-color: rgba(121, 121, 121, 0.199);
   cursor: pointer;
+}
+
+.contact-title {
+  color: rgb(225, 161, 0);
 }

@@ -7,7 +7,7 @@ import {
   InputAdornment,
   InputLabel,
 } from "@mui/material";
-import ContactListItem from "./contactListItem";
+import ContactListItem from "./contactList";
 import { useDispatch } from "react-redux";
 import { contactItemActions } from "../../store/contactItem.slice";
 import { useState } from "react";
