@@ -119,7 +119,7 @@ Button {
   gap: 0.5rem;
 }
 
-.profile-img { 
+.profile-img {
   height: 3rem;
   border-radius: 50%;
   aspect-ratio: 1/1;
@@ -173,4 +173,22 @@ Button {
 
 .contact-title {
   color: rgb(225, 161, 0);
+}
+
+.form-submit-button-container {
+  padding: 0 2rem;
+  display: flex;
+  justify-content: end;
+}
+
+.profile-picture-upload {
+  cursor: pointer;
+}
+
+.favorite-contact-button {
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  height: fit-content;
+  padding: 0;
 }

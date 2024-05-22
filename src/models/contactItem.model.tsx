@@ -2,7 +2,7 @@ export type ContactItem = {
   id: number;
   fName: string;
   lName: string;
-  Address: string;
+  address: string;
   url: string;
   dob: string;
   phone: string;

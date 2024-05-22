@@ -27,7 +27,7 @@ const sortContactListByName = (contactList: ContactItem[], isSortedDesc: boolean
 }
 
 const contactItemSlice = createSlice({
-  name: "cartItems",
+  name: "contactItems",
   initialState: contactItemAdapter.getInitialState({
     isSortedDesc: false,
     isFavoritesFiltered: false,

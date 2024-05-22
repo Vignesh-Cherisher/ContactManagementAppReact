@@ -11,10 +11,12 @@ import ContactListItem from "./contactList";
 import { useDispatch } from "react-redux";
 import { contactItemActions } from "../../store/contactItem.slice";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ContactListPanel: React.FC = () => {
   const [searchText, setSearchText] = useState('')
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const sortContactListHandler = () => {
     dispatch(contactItemActions.sortContactList())
@@ -62,7 +64,7 @@ const ContactListPanel: React.FC = () => {
             >
               Sort
             </Button>
-            <Button variant="contained" startIcon={<Icon>add</Icon>}>
+            <Button variant="contained" startIcon={<Icon>add</Icon>} onClick={() => navigate('/add')}>
               Add
             </Button>
           </Box>

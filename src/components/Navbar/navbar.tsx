@@ -1,10 +1,13 @@
 import { Avatar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const NavBar: React.FC = () => {
+  const navigate = useNavigate()
+
   return (
     <>
       <div className="navbar">
-        <Avatar className="logo" src="/Logo.jpeg" />
+        <Avatar className="logo" src="/Logo.jpeg" sx={{cursor: "pointer"}} onClick = {() => {navigate("/")}} />
         <div className="brand-container">
           <div className="brand-name">Tring</div>
           <div className="brand-slogan">Stay Connected! Stay Organized!</div>

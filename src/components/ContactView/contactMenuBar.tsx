@@ -8,7 +8,12 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { contactItemActions } from "../../store/contactItem.slice";
+import { useDeleteContactItemMutation } from "../../services/contactItem.service";
+import DeleteModal from "../../UI/Modal";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: "flex-start",
@@ -20,17 +25,42 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 
 const ContactMenuBar: React.FC = () => {
+  const [openModal, setOpenModal] = useState(false);
+  
+  const navigate = useNavigate()
+  const {id} = useParams()
+  const dispatch = useDispatch()
+  const [deleteContactItem] = useDeleteContactItemMutation()
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  const handleOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleClose = () => {
+    handleCloseUserMenu()
+    setOpenModal(false);
+  };
+
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
+  const handleDeleteContact = () => {
+    deleteContactItem(id!)
+    dispatch(contactItemActions.contactItemRemove(parseInt(id!)))
+    handleCloseUserMenu()
+    navigate("/")
+  }
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   return (
     <AppBar position="static">
       <StyledToolbar>
@@ -38,9 +68,9 @@ const ContactMenuBar: React.FC = () => {
           variant="h5"
           noWrap
           component="div"
-          sx={{ flexGrow: 1, mt: "0.3rem" }}
+          sx={{ flexGrow: 1, mt: "0.3rem", fontFamily: "poppins" }}
         >
-          Alfred
+          Contact Details
         </Typography>
         <IconButton
           size="large"
@@ -70,11 +100,12 @@ const ContactMenuBar: React.FC = () => {
           <MenuItem key="editContact" onClick={handleCloseUserMenu}>
             <Typography textAlign="center">Edit</Typography>
           </MenuItem>
-          <MenuItem key="deleteContact" onClick={handleCloseUserMenu}>
+          <MenuItem key="deleteContact" onClick={handleOpen}>
             <Typography textAlign="center">Delete</Typography>
           </MenuItem>
         </Menu>
       </StyledToolbar>
+      <DeleteModal open={openModal} handleClose={handleClose} triggerDelete={handleDeleteContact}></DeleteModal>
     </AppBar>
   );
 };
