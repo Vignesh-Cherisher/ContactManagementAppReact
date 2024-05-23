@@ -1,14 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ContactItemList } from "../models/contactItem.model";
+import { ContactGroupType } from "../components/ContactForm/contactFormView";
 
 export const contactItemApi = createApi({
   reducerPath: "contactItemApi",
-  tagTypes: ['contactItem'],
+  tagTypes: ["contactItem"],
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/" }),
   endpoints: (builder) => ({
     getContactItem: builder.query<ContactItemList, void>({
       query: () => ({ url: "get-contact-items" }),
-      providesTags: () => [{type:'contactItem'}]
+      providesTags: () => [{ type: "contactItem" }],
+    }),
+    postContactItem: builder.mutation<string, ContactGroupType>({
+      query: (body) => ({
+        url: "post-contact-item",
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: () => [{ type: "contactItem" }],
     }),
     deleteContactItem: builder.mutation<string, string>({
       query(id) {
@@ -16,14 +25,16 @@ export const contactItemApi = createApi({
         return {
           url: "delete-contact-item",
           method: "POST",
-          
           body,
         };
       },
-      invalidatesTags: () => [{ type: 'contactItem'}],
+      invalidatesTags: () => [{ type: "contactItem" }],
     }),
   }),
 });
 
-export const { useGetContactItemQuery, useDeleteContactItemMutation } =
-  contactItemApi;
+export const {
+  useGetContactItemQuery,
+  useDeleteContactItemMutation,
+  usePostContactItemMutation,
+} = contactItemApi;

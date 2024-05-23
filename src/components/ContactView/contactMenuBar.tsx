@@ -13,7 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { contactItemActions } from "../../store/contactItem.slice";
 import { useDeleteContactItemMutation } from "../../services/contactItem.service";
-import DeleteModal from "../../UI/Modal";
+import DeleteModal from "../../UI/DeleteModal";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: "flex-start",
@@ -49,6 +49,10 @@ const ContactMenuBar: React.FC = () => {
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
+
+  const handleEditContact = () => {
+    navigate(`/${id}/edit`)
+  }
 
   const handleDeleteContact = () => {
     deleteContactItem(id!)

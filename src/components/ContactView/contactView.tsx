@@ -4,8 +4,6 @@ import ContactDetails from "./contactDetails";
 import ContactEmailTable from "./ContactDetailTable/contactEmailTable";
 import ContactPhoneTable from "./ContactDetailTable/contactPhoneTable";
 
-
-
 const ContactView: React.FC = () => {
   return (
     <Box sx={{ flexGrow: 1, overflowY: "auto"}}>

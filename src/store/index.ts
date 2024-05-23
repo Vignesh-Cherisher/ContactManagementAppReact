@@ -26,6 +26,8 @@ const store = configureStore({
 
 store.dispatch(contactItemApi.endpoints.getContactItem.initiate())
 
+export type AppDispatch = typeof store.dispatch;
+
 setupListeners(store.dispatch)
 
 export default store;

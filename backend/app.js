@@ -34,6 +34,7 @@ router.get("/api/get-contact-items", (req, res) => {
 });
 
 router.get("/api/get-phone-number-list", (req, res) => {
+  console.log("initiated");
   const data = readFileSync(defaultPath, { encoding: "utf8", flag: "r" });
   let parsedData = {};
   try {
@@ -107,6 +108,34 @@ app.post("/api/delete-contact-item", (req, res) => {
   res.json("success");
 });
 
+app.post("/api/post-contact-item", (req, res) => {
+  const postData = req.body;
+  const data = readFileSync(defaultPath, { encoding: "utf-8", flag: "r" });
+  let parsedData = {};
+  try {
+    parsedData = JSON.parse(data);
+    parsedData.contacts.byId[postData.newContact.id] = postData.newContact;
+    parsedData.contacts.allIds.push(postData.newContact.id)
+    parsedData.phones.byId[postData.newPhoneGroup.id] = postData.newPhoneGroup;
+    parsedData.phones.allIds.push(postData.newPhoneGroup.id)
+    parsedData.emails.byId[postData.newEmailGroup.id] = postData.newEmailGroup;
+    parsedData.emails.allIds.push(postData.newEmailGroup.id)
+  } catch (err) {
+    console.log(err);
+    parsedData = {};
+  } finally {
+    writeFile(defaultPath, JSON.stringify(parsedData, null, 2), (error) => {
+      if (error) {
+        console.log(error);
+        return;
+      } else {
+        console.log("Contact Added Successfully");
+      }
+    });
+  }
+  res.json("success");
+});
+
 app.post("/api/update-active-order", (req, res) => {
   const postData = req.body.orderNo;
   const data = readFileSync("./orders.json", { encoding: "utf-8", flag: "r" });
@@ -122,7 +151,7 @@ app.post("/api/update-active-order", (req, res) => {
         console.log(error);
         return;
       } else {
-        console.log("Order updated successfully");
+        console.log("Contact Added Successfully");
       }
     });
   }

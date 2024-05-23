@@ -20,6 +20,7 @@ const phoneNumberListSlice = createSlice({
 });
 
 export const {
+  selectAll: selectAllPhoneNumber,
   selectById: selectPhoneNumberGroupById,
   selectIds: selectPhoneNumberIds,
 } = phoneNumberListAdapter.getSelectors((state: RootState) => state.phoneNumberList);

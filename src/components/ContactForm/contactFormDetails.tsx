@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { Img } from "../../util/ImgElement";
 
-const ContactFormDetails: React.FC<{handleFavContact: () => void, favContactState: boolean}> = ({handleFavContact, favContactState}) => {
+const ContactFormDetails: React.FC<{handleFavContact: () => void, favContactState: boolean, dobErrorState:boolean}> = ({handleFavContact, favContactState, dobErrorState}) => {
   return (
     <>
       <Box sx={{ flexGrow: 1, width: "100%" }}>
@@ -35,7 +35,7 @@ const ContactFormDetails: React.FC<{handleFavContact: () => void, favContactStat
               >
                 First Name:
               </InputLabel>
-              <TextField label="First Name" name="fName" id="fName-input"></TextField>
+              <TextField required label="First Name" name="fName" id="fName-input"></TextField>
             </Box>
             <Box sx={{ display:"flex", alignItems: "center", gap:"1rem",mb: "0.5rem"}}>
               <InputLabel
@@ -65,7 +65,7 @@ const ContactFormDetails: React.FC<{handleFavContact: () => void, favContactStat
               >
                 DOB: 
               </InputLabel>
-              <TextField type="date" id="dob-input" name="dob"></TextField>
+              <TextField error={dobErrorState} helperText={dobErrorState ? 'Enter a valid date' : ''} type="date" id="dob-input" name="dob"></TextField>
             </Box>
           </Grid>
           <Grid
@@ -78,8 +78,11 @@ const ContactFormDetails: React.FC<{handleFavContact: () => void, favContactStat
             sx={{ mb: "1rem" }}
             textAlign="right"
           >
+            <Box>
+            <TextField label="Image Url" id="address-input" name="url" sx={{m:"0 0 1rem 0"}}></TextField>
             <Img alt="Profile Picture" src="/public/OIP.jpg" className="profile-picture-upload"/>
-            <button onClick={() => handleFavContact()} className="favorite-contact-button">
+            </Box>
+            <button onClick={() => handleFavContact()} className="favorite-contact-button" type="button">
               <Icon sx={{...(favContactState ? {color: "red"} : {color: "gray"})}}>favorite</Icon>
             </button>
           </Grid>

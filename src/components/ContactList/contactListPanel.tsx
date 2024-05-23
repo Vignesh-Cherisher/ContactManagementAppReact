@@ -18,17 +18,13 @@ const ContactListPanel: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  const sortContactListHandler = () => {
-    dispatch(contactItemActions.sortContactList())
-  };
-
   const searchContactHandler = (searchTextValue: string) => {
     setSearchText(searchTextValue)
     dispatch(contactItemActions.searchContactHandler(searchTextValue))
   }
 
-  const filterContactListHandler = () => {
-    dispatch(contactItemActions.filterContactList())
+  const handleContactListOperations = (operation: string) => {
+    dispatch(contactItemActions.contactListOperationsHandler(operation))
   }
 
   return (
@@ -54,13 +50,13 @@ const ContactListPanel: React.FC = () => {
             </FormControl>
           </div>
           <Box className="contact-list-controller-container">
-            <Button variant="contained" startIcon={<Icon>filter_alt</Icon>} onClick={filterContactListHandler}>
+            <Button variant="contained" startIcon={<Icon>filter_alt</Icon>} onClick={() => handleContactListOperations('filter')}>
               Filter
             </Button>
             <Button
               variant="contained"
               startIcon={<Icon>swap_vert</Icon>}
-              onClick={sortContactListHandler}
+              onClick={() => handleContactListOperations('sort')}
             >
               Sort
             </Button>
