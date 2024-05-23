@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { ContactItem } from "../models/contactItem.model";
 import { RootState } from ".";
 import { contactItemApi } from "../services/contactItem.service";
@@ -54,7 +54,10 @@ const contactItemSlice = createSlice({
   }),
   reducers: {
     contactItemAddOne: contactItemAdapter.addOne,
-    contactItemSetAll: contactItemAdapter.setAll,
+    contactItemSetAll(state) {
+      contactItemAdapter.setAll
+      state.isLoading = false
+    },
     contactItemUpdate: contactItemAdapter.updateOne,
     contactItemRemove: contactItemAdapter.removeOne,
     contactItemRemoveAll: contactItemAdapter.removeAll,
@@ -88,11 +91,17 @@ const contactItemSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addMatcher(
+
+    builder
+      .addMatcher(contactItemApi.endpoints.getContactItem.matchPending, (state) => {
+        state.isLoading = true;
+      })
+      .addMatcher(
       contactItemApi.endpoints.getContactItem.matchFulfilled,
       (state, { payload }) => {
         contactItemAdapter.setAll(state, payload);
         state.transformedContacts = Object.values(payload);
+        state.isLoading = false
       }
     );
   },

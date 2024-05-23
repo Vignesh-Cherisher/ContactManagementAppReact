@@ -34,7 +34,6 @@ router.get("/api/get-contact-items", (req, res) => {
 });
 
 router.get("/api/get-phone-number-list", (req, res) => {
-  console.log("initiated");
   const data = readFileSync(defaultPath, { encoding: "utf8", flag: "r" });
   let parsedData = {};
   try {

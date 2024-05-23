@@ -2,25 +2,37 @@ import { Typography, Box, Grid, Icon } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../store";
-import {  selectContactById } from "../../store/contactItem.slice";
+import {
+  selectContactById,
+} from "../../store/contactItem.slice";
 import { Img } from "../../util/ImgElement";
+import { useEffect, useState } from "react";
 
 const ContactDetails: React.FC = () => {
-  const navigate = useNavigate()
-  const isLoading = useSelector((state:RootState) => state.contactItem.isLoading)
+  const navigate = useNavigate();
+  const isLoading = useSelector(
+    (state: RootState) => state.contactItem.isLoading
+  );
   const { id } = useParams();
   const contactData = useSelector((state: RootState) =>
-     selectContactById(state, parseInt(id!))
-);
+    selectContactById(state, parseInt(id!))
+  );
+  const [localLoading, setLocalLoading] = useState(true)
 
-  // useEffect(() => {
-  //   if (!contactData) {
-  //     console.log("here");
-  //   }
-  // }, [contactData, navigate])
+  useEffect(() => {
+    if (!isLoading) {
+      setLocalLoading(false)
+    }
+    if (!isLoading && contactData === undefined) {
+      navigate("/notFound")
+    }
+  }, [isLoading, navigate, contactData])
 
   return (
     <>
+      {localLoading && <Box>
+        Loading...
+      </Box>}
       {contactData && (
         <>
           <Box sx={{ flexGrow: 1, width: "100%" }}>
@@ -115,12 +127,17 @@ const ContactDetails: React.FC = () => {
                 sx={{ mb: "1rem" }}
                 textAlign="right"
               >
-                <Img
-                  alt={contactData.fName}
-                  src={contactData.url}
-                />
-                <Icon sx={{...(contactData.isFav ? {color: "red"} : {filter: "invert(1)"})}}>favorite</Icon>
-              </Grid>              
+                <Img alt={contactData.fName} src={contactData.url} />
+                <Icon
+                  sx={{
+                    ...(contactData.isFav
+                      ? { color: "red" }
+                      : { filter: "invert(1)" }),
+                  }}
+                >
+                  favorite
+                </Icon>
+              </Grid>
             </Grid>
           </Box>
         </>

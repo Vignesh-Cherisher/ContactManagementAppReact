@@ -27,12 +27,12 @@ const router = createBrowserRouter([
         path: "/:id/edit",
         element: <ContactFormView />,
       },
-      {
-        path: "/error",
-        element: <NotFoundPage/>
-      }
     ],
-    errorElement: <NotFoundPage/>
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/notFound",
+    element: <NotFoundPage />,
   },
 ]);
 
