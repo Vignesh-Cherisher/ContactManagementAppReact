@@ -13,6 +13,7 @@ const emailAddressListSlice = createSlice({
   }),
   reducers: {
     emailAddressListAddOne: emailAddressListAdapter.addOne,
+    emailAddressListUpsertOne: emailAddressListAdapter.upsertOne,
     emailAddressListSetAll: emailAddressListAdapter.setAll,
     emailAddressListUpdate: emailAddressListAdapter.updateOne,
     emailAddressListRemove: emailAddressListAdapter.removeOne,

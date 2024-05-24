@@ -22,10 +22,11 @@ const ContactDetails: React.FC = () => {
   useEffect(() => {
     if (!isLoading) {
       setLocalLoading(false)
+      if (contactData === undefined) {
+        navigate("/notFound")
+      }
     }
-    if (!isLoading && contactData === undefined) {
-      navigate("/notFound")
-    }
+    
   }, [isLoading, navigate, contactData])
 
   return (

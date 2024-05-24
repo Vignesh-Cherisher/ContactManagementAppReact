@@ -7,6 +7,8 @@ import {
   styled,
   Toolbar,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -26,6 +28,9 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 const ContactMenuBar: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down("sm"))
   
   const navigate = useNavigate()
   const {id} = useParams()
@@ -72,7 +77,7 @@ const ContactMenuBar: React.FC = () => {
           variant="h5"
           noWrap
           component="div"
-          sx={{ flexGrow: 1, mt: "0.3rem", fontFamily: "poppins" }}
+          sx={{ ...(isLargeScreen ? null : isMobileScreen ? {ml: "32px"} : { ml: "24px"}),flexGrow: 1, mt: "0.3rem", fontFamily: "poppins"}}
         >
           Contact Details
         </Typography>
@@ -101,7 +106,7 @@ const ContactMenuBar: React.FC = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          <MenuItem key="editContact" onClick={handleCloseUserMenu}>
+          <MenuItem key="editContact" onClick={handleEditContact}>
             <Typography textAlign="center">Edit</Typography>
           </MenuItem>
           <MenuItem key="deleteContact" onClick={handleOpen}>

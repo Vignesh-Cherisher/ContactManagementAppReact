@@ -16,6 +16,7 @@ const phoneNumberListSlice = createSlice({
     phoneNumberListSetAll: phoneNumberListAdapter.setAll,
     phoneNumberListUpdate: phoneNumberListAdapter.updateOne,
     phoneNumberListRemove: phoneNumberListAdapter.removeOne,
+    phoneNumberListUpsertOne: phoneNumberListAdapter.upsertOne,
   }
 });
 

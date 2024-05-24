@@ -54,6 +54,7 @@ const contactItemSlice = createSlice({
   }),
   reducers: {
     contactItemAddOne: contactItemAdapter.addOne,
+    contactItemUpsertOne: contactItemAdapter.upsertOne,
     contactItemSetAll(state) {
       contactItemAdapter.setAll
       state.isLoading = false

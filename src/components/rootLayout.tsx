@@ -1,16 +1,16 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./Navbar/navbar";
 import ContactListPanel from "./ContactList/contactListPanel";
-import { Box } from "@mui/material";
+import { Stack } from "@mui/material";
 
 const RootLayout: React.FC = () => {
   return (
     <>
       <NavBar />
-      <Box className="root-layout">
+      <Stack direction={{md:"column", lg:"row"}} className="root-layout">
         <ContactListPanel />
         <Outlet />
-      </Box>
+      </Stack>
     </>
   );
 };

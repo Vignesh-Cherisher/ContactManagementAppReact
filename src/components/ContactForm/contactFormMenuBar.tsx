@@ -1,8 +1,12 @@
-import { AppBar, Typography } from "@mui/material";
+import { AppBar, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { StyledToolbar } from "../../util/styledToolbar";
 
 
-const ContactFormMenuBar: React.FC = () => {
+const ContactFormMenuBar: React.FC<{isEditing: boolean}> = ({isEditing}) => {
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down("sm"))
+  
   return (
     <AppBar position="static">
       <StyledToolbar>
@@ -10,9 +14,9 @@ const ContactFormMenuBar: React.FC = () => {
           variant="h5"
           noWrap
           component="div"
-          sx={{ flexGrow: 1, mt: "0.3rem", fontFamily: "poppins" }}
+          sx={{  ...(isLargeScreen ? null : isMobileScreen ? {ml: "32px"} : { ml: "24px"}), flexGrow: 1, mt: "0.3rem", fontFamily: "poppins" }}
         >
-          New Contact
+          {isEditing ? 'Edit Contact' : 'New Contact'}
         </Typography>
       </StyledToolbar>
     </AppBar>

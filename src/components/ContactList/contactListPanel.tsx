@@ -1,72 +1,36 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  Icon,
-  Input,
-  InputAdornment,
-  InputLabel,
-} from "@mui/material";
-import ContactListItem from "./contactList";
-import { useDispatch } from "react-redux";
-import { contactItemActions } from "../../store/contactItem.slice";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import ContactPanelContent from "./contactPanelContent";
+import { Box, Button, Drawer, Icon, useMediaQuery, useTheme } from "@mui/material";
 
 const ContactListPanel: React.FC = () => {
-  const [searchText, setSearchText] = useState('')
-  const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const searchContactHandler = (searchTextValue: string) => {
-    setSearchText(searchTextValue)
-    dispatch(contactItemActions.searchContactHandler(searchTextValue))
-  }
-
-  const handleContactListOperations = (operation: string) => {
-    dispatch(contactItemActions.contactListOperationsHandler(operation))
-  }
+  const toggleDrawer = (open: boolean) => () => {
+    setDrawerOpen(open);
+  };
 
   return (
     <>
-      <div className="contact-list-container">
-        <div className="contact-list-controller-wrapper">
-          <div className="contact-list-search-controller">
-            <FormControl sx={{ m: 1, width: "13rem" }} variant="standard">
-              <InputLabel htmlFor="standard-adornment-password">
-                Search
-              </InputLabel>
-              <Input
-                id="standard-adornment-password"
-                type="text"
-                value={searchText}
-                onChange={(event) => searchContactHandler(event.target.value)}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <Icon aria-label="toggle password visibility">search</Icon>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
+      {isLargeScreen ? (
+          <div className="contact-list-container">
+            <ContactPanelContent />
           </div>
-          <Box className="contact-list-controller-container">
-            <Button variant="contained" startIcon={<Icon>filter_alt</Icon>} onClick={() => handleContactListOperations('filter')}>
-              Filter
-            </Button>
-            <Button
-              variant="contained"
-              startIcon={<Icon>swap_vert</Icon>}
-              onClick={() => handleContactListOperations('sort')}
-            >
-              Sort
-            </Button>
-            <Button variant="contained" startIcon={<Icon>add</Icon>} onClick={() => navigate('/add')}>
-              Add
-            </Button>
+      ) : (
+        <>
+          <Box sx={{position: "relative"}}>
+          <Button sx={{position: "absolute", left:"0", mt:"0.6rem", fontSize:"1.5rem", zIndex:"10"}} onClick={toggleDrawer(true)}>
+            <Icon sx={{color:"white"}}>menu</Icon>
+          </Button>
           </Box>
-        </div>
-        <ContactListItem/>
-      </div>
+          <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+            <div className="contact-list-container">
+              <ContactPanelContent />
+            </div>
+          </Drawer>
+        </>
+      )}
     </>
   );
 };
