@@ -1,5 +1,13 @@
-import { Box, Grid, Icon, InputLabel, TextField } from "@mui/material";
-import { Img } from "../../util/ImgElement";
+import {
+  Box,
+  Button,
+  Grid,
+  Icon,
+  InputLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
+import ImageWithAlt from "../../theme/ImgElement.tsx";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -7,27 +15,42 @@ import { selectContactById } from "../../store/contactItem.slice.tsx";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ContactItem } from "../../models/contactItem.model.tsx";
 import { FocusEvent } from "react";
+import UIModal from "../../UI/Modal.tsx";
 
 const getDobValue = (dobValue: string) => {
-  const [dobDay, dobMonth, dobYear] = dobValue.split('-').map(Number);
+  const [dobDay, dobMonth, dobYear] = dobValue.split("-").map(Number);
 
   const dob = new Date(`${dobMonth}-${dobDay}-${dobYear}`);
-  
+
   const year = dob.getFullYear();
-  const month = (dob.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based, so we add 1
-  const day = dob.getDate().toString().padStart(2, '0');
+  const month = (dob.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based, so we add 1
+  const day = dob.getDate().toString().padStart(2, "0");
 
   const formattedDate = `${year}-${month}-${day}`;
-  return formattedDate
+  return formattedDate;
 };
 
-const ContactFormDetails: React.FC<{
+type ContactFormDetailsType = {
   handleFavContact: () => void;
   favContactState: boolean;
   dobErrorState: boolean;
-  dobInputState: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  dobInputState: (
+    event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   isEditing: boolean;
-}> = ({ handleFavContact, favContactState, dobErrorState, dobInputState, isEditing }) => {
+  handleImageUrl: (imgUrl: string) => void;
+};
+
+const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
+  handleFavContact,
+  favContactState,
+  dobErrorState,
+  dobInputState,
+  isEditing,
+  handleImageUrl,
+}) => {
+  const [imageUrlValue, setImageUrlValue] = useState("");
+
   const [formState, setFormState] = useState<ContactItem>({
     id: 0,
     fName: "",
@@ -39,6 +62,14 @@ const ContactFormDetails: React.FC<{
     address: "",
     url: "",
   });
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const handleModalControl = () => {
+    setIsOpen((prevState) => {
+      return !prevState;
+    });
+  };
+
   const { id } = useParams();
   const isLoading = useSelector(
     (state: RootState) => state.contactItem.isLoading
@@ -59,12 +90,22 @@ const ContactFormDetails: React.FC<{
     });
   };
 
+  const handleImageUrlInput = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setImageUrlValue(event.target.value.toString());
+    handleImageUrl(event.target.value);
+  };
+
   useEffect(() => {
     if (!isLoading && isEditing) {
-      if(contactDataById.isFav){
-        handleFavContact()
+      if (contactDataById.isFav) {
+        handleFavContact();
       }
-      setFormState({ ...contactDataById, dob: getDobValue(contactDataById.dob) });
+      setFormState({
+        ...contactDataById,
+        dob: getDobValue(contactDataById.dob),
+      });
     }
   }, [isLoading, isEditing, handleFavContact, contactDataById]);
 
@@ -77,15 +118,15 @@ const ContactFormDetails: React.FC<{
               container
               spacing={2}
               sx={{ p: "1rem 2rem 0 2rem" }}
-              alignItems="flex-start"
+              alignItems="center"
               justifyContent="space-around"
             >
               <Grid
                 item
                 xs={12}
-                sm={12}
+                sm={6}
                 md={6}
-                lg={6}
+                lg={4}
                 xl={3}
                 sx={{ m: "0 0 1rem 0" }}
               >
@@ -101,9 +142,11 @@ const ContactFormDetails: React.FC<{
                     htmlFor="fName-input"
                     sx={{
                       m: "0 0 0.5rem 0",
-                      width: "20%",
+                      width: "40%",
                       fontSize: "1rem",
                       fontWeight: "700",
+                      textOverflow: "clip",
+                      minWidth: "fit-content",
                     }}
                     className="contact-detail"
                   >
@@ -129,9 +172,11 @@ const ContactFormDetails: React.FC<{
                     htmlFor="lName-input"
                     sx={{
                       m: "0 0 0.5rem 0",
-                      width: "20%",
+                      width: "40%",
                       fontSize: "1rem",
                       fontWeight: "700",
+                      textOverflow: "clip",
+                      minWidth: "fit-content",
                     }}
                     className="contact-detail"
                   >
@@ -155,10 +200,12 @@ const ContactFormDetails: React.FC<{
                   <InputLabel
                     htmlFor="address-input"
                     sx={{
-                      m: "1rem 0 0.5rem 0",
-                      width: "20%",
+                      m: "0 0 0.5rem 0",
+                      width: "40%",
                       fontSize: "1rem",
                       fontWeight: "700",
+                      textOverflow: "clip",
+                      minWidth: "fit-content",
                     }}
                     className="contact-detail"
                   >
@@ -185,9 +232,10 @@ const ContactFormDetails: React.FC<{
                     htmlFor="dob-input"
                     sx={{
                       m: "0 0 0.5rem 0",
-                      width: "20%",
+                      width: "40%",
                       fontSize: "1rem",
                       fontWeight: "700",
+                      textOverflow: "clip",
                     }}
                     className="contact-detail"
                   >
@@ -200,34 +248,48 @@ const ContactFormDetails: React.FC<{
                     id="dob-input"
                     name="dob"
                     value={formState.dob}
-                    onBlur={(event)=> dobInputState(event)}
+                    onBlur={(event) => dobInputState(event)}
                     onChange={(event) => setFormInputState("dob", event)}
                   ></TextField>
                 </Box>
               </Grid>
               <Grid
                 item
-                xs={12}
-                sm={6}
+                xs={6}
+                sm={5}
                 md={4}
-                lg={3}
+                lg={4}
                 xl={3}
                 sx={{ mb: "1rem" }}
                 textAlign="right"
               >
-                <Box>
-                  <TextField
-                    value={formState.url}
-                    onChange={(event) => setFormInputState("url", event)}
-                    id="address-input"
-                    name="url"
-                    sx={{ m: "0 0 1rem 0" }}
-                  ></TextField>
-                  <Img
-                    alt="Profile Picture"
-                    src={formState.url}
-                    className="profile-picture-upload"
-                  />
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <Button
+                    sx={{ height: "fit-content" }}
+                    type="button"
+                    onClick={handleModalControl}
+                  >
+                    <ImageWithAlt
+                      width="75%"
+                      alt={formState.fName}
+                      src={formState.url}
+                    />
+                  </Button>
+                  <UIModal open={isOpen} handleClose={handleModalControl}>
+                    <>
+                      <Typography variant="body1">
+                        Please enter the Profile picture Url:
+                      </Typography>
+                      <TextField
+                        value={imageUrlValue}
+                        onChange={handleImageUrlInput}
+                        label="Image Url"
+                        name="url"
+                        id="url-input"
+                        sx={{ marginBlock: "0.7rem" }}
+                      ></TextField>
+                    </>
+                  </UIModal>
                 </Box>
                 <button
                   onClick={() => handleFavContact()}
@@ -262,9 +324,9 @@ const ContactFormDetails: React.FC<{
               <Grid
                 item
                 xs={12}
-                sm={12}
+                sm={6}
                 md={6}
-                lg={6}
+                lg={4}
                 xl={3}
                 sx={{ m: "0 0 1rem 0" }}
               >
@@ -280,9 +342,11 @@ const ContactFormDetails: React.FC<{
                     htmlFor="fName-input"
                     sx={{
                       m: "0 0 0.5rem 0",
-                      width: "20%",
+                      width: "40%",
                       fontSize: "1rem",
                       fontWeight: "700",
+                      textOverflow: "clip",
+                      minWidth: "fit-content",
                     }}
                     className="contact-detail"
                   >
@@ -307,9 +371,11 @@ const ContactFormDetails: React.FC<{
                     htmlFor="lName-input"
                     sx={{
                       m: "0 0 0.5rem 0",
-                      width: "20%",
+                      width: "40%",
                       fontSize: "1rem",
                       fontWeight: "700",
+                      textOverflow: "clip",
+                      minWidth: "fit-content",
                     }}
                     className="contact-detail"
                   >
@@ -333,9 +399,11 @@ const ContactFormDetails: React.FC<{
                     htmlFor="address-input"
                     sx={{
                       m: "1rem 0 0.5rem 0",
-                      width: "20%",
+                      width: "40%",
                       fontSize: "1rem",
                       fontWeight: "700",
+                      textOverflow: "clip",
+                      minWidth: "fit-content",
                     }}
                     className="contact-detail"
                   >
@@ -361,9 +429,10 @@ const ContactFormDetails: React.FC<{
                     htmlFor="dob-input"
                     sx={{
                       m: "0 0 0.5rem 0",
-                      width: "20%",
+                      width: "40%",
                       fontSize: "1rem",
                       fontWeight: "700",
+                      textOverflow: "clip",
                     }}
                     className="contact-detail"
                   >
@@ -372,7 +441,7 @@ const ContactFormDetails: React.FC<{
                   <TextField
                     error={dobErrorState}
                     helperText={dobErrorState ? "Enter a valid date" : ""}
-                    onBlur={(event)=> dobInputState(event)}
+                    onBlur={(event) => dobInputState(event)}
                     type="date"
                     id="dob-input"
                     name="dob"
@@ -381,26 +450,41 @@ const ContactFormDetails: React.FC<{
               </Grid>
               <Grid
                 item
-                xs={12}
-                sm={6}
+                xs={6}
+                sm={5}
                 md={4}
-                lg={3}
+                lg={4}
                 xl={3}
                 sx={{ mb: "1rem" }}
                 textAlign="right"
               >
-                <Box>
-                  <TextField
-                    label="Image Url"
-                    id="address-input"
-                    name="url"
-                    sx={{ m: "0 0 1rem 0" }}
-                  ></TextField>
-                  <Img
-                    alt="Profile Picture"
-                    src="/public/OIP.jpg"
-                    className="profile-picture-upload"
-                  />
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <Button
+                    sx={{ height: "fit-content" }}
+                    type="button"
+                    onClick={handleModalControl}
+                  >
+                    <ImageWithAlt
+                      width="75%"
+                      alt="Profile Picture"
+                      src="/public/OIP.jpg"
+                    />
+                  </Button>
+                  <UIModal open={isOpen} handleClose={handleModalControl}>
+                    <>
+                      <Typography variant="body1">
+                        Please enter the Profile picture Url:
+                      </Typography>
+                      <TextField
+                        value={imageUrlValue}
+                        onChange={handleImageUrlInput}
+                        label="Image Url"
+                        name="url"
+                        id="url-input"
+                        sx={{ marginBlock: "0.7rem" }}
+                      ></TextField>
+                    </>
+                  </UIModal>
                 </Box>
                 <button
                   onClick={() => handleFavContact()}

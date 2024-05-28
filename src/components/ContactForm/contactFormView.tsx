@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import ContactFormMenuBar from "./contactFormMenuBar";
 import ContactFormDetails from "./contactFormDetails";
 import { FormEvent, useCallback, useState } from "react";
@@ -29,7 +29,6 @@ const convertDate = (dateObject: string): string => {
   const year = dob.getFullYear();
   const month = (dob.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based, so we add 1
   const day = dob.getDate().toString().padStart(2, '0');
-  console.log(dob);
   const formattedDate = `${day}-${month}-${year}`;
   return formattedDate
 }
@@ -70,7 +69,7 @@ const createContactGroup = (
     email: `email${randomInt}`,
     phone: `phone${randomInt}`,
     address: getFromForm(fd, "address"),
-    dob: convertDate(getFromForm(fd, "dob")),
+    dob: getFromForm(fd, "dob") ?? convertDate(getFromForm(fd, "dob")),
     isFav: isFavorite,
     url: getFromForm(fd, "url"),
   };
@@ -100,6 +99,7 @@ const ContactFormView: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [favContact, setFavContact] = useState(false);
+  const [imageUrlValue, setImageUrlValue] = useState('');
   const [dobInputError, setDobInputError] = useState(false);
   const [phoneInputError, setPhoneInputError] = useState({
     home: false,
@@ -134,9 +134,14 @@ const ContactFormView: React.FC = () => {
     setDobInputError(dateComparer(dobInputValue));
   };
 
+  const onImageUrlChange = useCallback((imgUrl: string) => {
+    setImageUrlValue(imgUrl)
+  },[])
+
   const submitFormHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const fd = new FormData(event.currentTarget);
+    fd.append('url', imageUrlValue)
     if (!dobInputError && !checkPhoneInputError(phoneInputError)) {
       const { newContact, newPhoneGroup, newEmailGroup } = {
         ...createContactGroup(fd, favContact,editStatus, id!),
@@ -160,15 +165,16 @@ const ContactFormView: React.FC = () => {
           dobErrorState={dobInputError}
           dobInputState={handleDobInputState}
           isEditing={editStatus}
+          handleImageUrl={(imgUrl) => onImageUrlChange(imgUrl)}
         ></ContactFormDetails>
-        <Box display="flex" gap="5rem" p="1rem 3rem">
+        <Stack direction={{sm:"column", md:"row"}} gap="5rem" p="1rem 3rem">
           <ContactFormPhoneTable
             isEditing={editStatus}
             handlePhoneState={handlePhoneInputState}
             phoneNumberState={phoneInputError}
           ></ContactFormPhoneTable>
           <ContactFormEmailTable isEditing={editStatus}></ContactFormEmailTable>
-        </Box>
+        </Stack>
         <Box display="flex" gap="5rem" p="1rem 3rem"></Box>
         <div className="form-submit-button-container">
           <Button variant="contained" type="submit">

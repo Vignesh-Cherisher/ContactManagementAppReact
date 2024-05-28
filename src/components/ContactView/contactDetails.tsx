@@ -5,7 +5,7 @@ import { RootState } from "../../store";
 import {
   selectContactById,
 } from "../../store/contactItem.slice";
-import { Img } from "../../util/ImgElement";
+import ImageWithAlt from "../../theme/ImgElement";
 import { useEffect, useState } from "react";
 
 const ContactDetails: React.FC = () => {
@@ -41,14 +41,14 @@ const ContactDetails: React.FC = () => {
               container
               spacing={2}
               sx={{ p: "1rem 2rem 0 2rem" }}
-              alignItems="flex-start"
+              alignItems="center"
               justifyContent="space-around"
             >
               <Grid
                 item
                 xs={12}
                 sm={6}
-                md={4}
+                md={6}
                 lg={4}
                 xl={3}
                 sx={{ m: "0 0 1rem 0" }}
@@ -120,15 +120,16 @@ const ContactDetails: React.FC = () => {
               </Grid>
               <Grid
                 item
-                xs={12}
-                sm={6}
+                key={contactData.id}
+                xs={6}
+                sm={5}
                 md={4}
-                lg={3}
+                lg={4}
                 xl={3}
                 sx={{ mb: "1rem" }}
                 textAlign="right"
               >
-                <Img alt={contactData.fName} src={contactData.url} />
+                <ImageWithAlt alt={contactData.fName} src={contactData.url} width="75%"></ImageWithAlt>
                 <Icon
                   sx={{
                     ...(contactData.isFav

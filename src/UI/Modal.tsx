@@ -1,5 +1,13 @@
 import { Box, Button, Modal } from "@mui/material";
 import React from "react";
+import { ReactElement } from "react";
+
+interface fcProps extends React.PropsWithChildren {
+  open: boolean;
+  handleClose: () => void;
+  triggerAction?: () => void;
+  children: ReactElement;
+}
 
 const style = {
   position: "absolute" as const,
@@ -15,16 +23,11 @@ const style = {
   pb: 3,
 };
 
-type FcProps = {
-  open: boolean;
-  handleClose: () => void;
-  triggerDelete: () => void;
-};
-
-const DeleteModal: React.FC<FcProps> = ({
+const UIModal: React.FC<fcProps> = ({
   open,
   handleClose,
-  triggerDelete,
+  triggerAction,
+  children,
 }) => {
   return (
     <Modal
@@ -34,17 +37,14 @@ const DeleteModal: React.FC<FcProps> = ({
       aria-describedby="parent-modal-description"
     >
       <Box sx={{ ...style, width: 400 }}>
-        <h2 id="parent-modal-title">Delete Contact</h2>
-        <p id="parent-modal-description">
-          Do you really want to delete the contact item?
-        </p>
-        <Box sx={{ justifyContent: "flex-end", mt: "0.5rem", display: "flex" }}>
-          <Button onClick={triggerDelete}>Yes</Button>
-          <Button onClick={handleClose}>No</Button>
+        {children}
+        <Box sx={{ justifyContent: "flex-end", display: "flex" }}>
+          {triggerAction && <Button onClick={triggerAction}>Yes</Button>}
+          <Button onClick={handleClose} variant="contained">{triggerAction ? 'No' : 'OK'}</Button>
         </Box>
       </Box>
     </Modal>
   );
 };
 
-export default DeleteModal;
+export default UIModal;

@@ -5,6 +5,8 @@ import RootLayout from "./components/rootLayout";
 import ContactViewPlaceholder from "./components/ContactView/contactViewPlaceholder";
 import ContactFormView from "./components/ContactForm/contactFormView";
 import NotFoundPage from "./components/ErrorPage/notFoundPage";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme/customizedButtonTheme";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +39,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router}></RouterProvider>;
+  return <ThemeProvider theme={theme}><RouterProvider router={router}></RouterProvider></ThemeProvider>
 }
 
 export default App;

@@ -18,14 +18,16 @@ import { selectPhoneNumberGroupById } from "../../../store/phoneNumberList.slice
 
 export const phoneTypeList: string[] = ["home", "work", "main", "other"];
 
-const ContactFormPhoneTable: React.FC<{
+type ContactFormPhoneTableType = {
   phoneNumberState: phoneNumberStateType;
   handlePhoneState: (
     phoneType: string,
     event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   isEditing: boolean;
-}> = ({ phoneNumberState, handlePhoneState, isEditing }) => {
+}
+
+const ContactFormPhoneTable: React.FC<ContactFormPhoneTableType> = ({ phoneNumberState, handlePhoneState, isEditing }) => {
   const [formState, setFormState] = useState<PhoneNumberGroup>({
     id: "",
     home: "",

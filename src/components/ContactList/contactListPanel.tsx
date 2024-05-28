@@ -25,7 +25,7 @@ const ContactListPanel: React.FC = () => {
           </Button>
           </Box>
           <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-            <div className="contact-list-container">
+            <div className="contact-list-container fill-width">
               <ContactPanelContent />
             </div>
           </Drawer>

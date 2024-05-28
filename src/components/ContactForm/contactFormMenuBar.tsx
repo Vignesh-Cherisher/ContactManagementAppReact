@@ -1,5 +1,5 @@
 import { AppBar, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { StyledToolbar } from "../../util/styledToolbar";
+import { StyledToolbar } from "../../theme/styledToolbar";
 
 
 const ContactFormMenuBar: React.FC<{isEditing: boolean}> = ({isEditing}) => {

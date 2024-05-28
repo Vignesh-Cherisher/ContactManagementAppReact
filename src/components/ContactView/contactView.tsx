@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import ContactMenuBar from "./contactMenuBar";
 import ContactDetails from "./contactDetails";
 import ContactEmailTable from "./ContactDetailTable/contactEmailTable";
@@ -9,10 +9,10 @@ const ContactView: React.FC = () => {
     <Box sx={{ flexGrow: 1, overflowY: "auto"}}>
       <ContactMenuBar></ContactMenuBar>
       <ContactDetails></ContactDetails>
-      <Box display="flex" gap="5rem" p="1rem 3rem">
+      <Stack direction={{sm:"column", md:"row"}} gap="5rem" p="1rem 3rem">
         <ContactPhoneTable></ContactPhoneTable>
         <ContactEmailTable></ContactEmailTable>
-      </Box>
+      </Stack>
     </Box>
   );
 };
