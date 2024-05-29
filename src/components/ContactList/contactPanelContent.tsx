@@ -9,6 +9,7 @@ import {
   Input,
   InputAdornment,
   InputLabel,
+  Paper,
   Typography,
 } from "@mui/material";
 import ContactListItem from "./contactList";
@@ -28,6 +29,8 @@ const ContactPanelContent: React.FC = () => {
   const filterSliceState = useSelector(
     (state: RootState) => state.contactItem.isFavoritesFiltered
   );
+  const isSorted = useSelector((state:RootState) => state.contactItem.isSortedDesc)
+  const isFiltered = useSelector((state:RootState) => state.contactItem.isFavoritesFiltered)
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedFilters, setSelectedFilters] = useState<selectedFilterType>({
     isFavorite: false,
@@ -62,12 +65,11 @@ const ContactPanelContent: React.FC = () => {
     setSelectedFilters((prevState) => {
       return { ...prevState, [formattedFilter]: !prevState[formattedFilter] };
     });
-    console.log(selectedFilters);
   };
 
   return (
     <>
-      <div className="contact-list-controller-wrapper">
+      <Paper className="contact-list-controller-wrapper">
         <div className="contact-list-search-controller">
           <FormControl sx={{ m: 1, width: "13rem" }} variant="standard">
             <InputLabel htmlFor="standard-adornment-password">
@@ -91,6 +93,7 @@ const ContactPanelContent: React.FC = () => {
             variant="custom"
             startIcon={<Icon>filter_alt</Icon>}
             onClick={handleModalControl}
+            sx={{...(isFiltered ? {bgcolor:'greenyellow'} : '')}}
           >
             Filter
           </Button>
@@ -118,6 +121,7 @@ const ContactPanelContent: React.FC = () => {
             variant="custom"
             startIcon={<Icon>swap_vert</Icon>}
             onClick={() => handleContactListOperations("sort")}
+            sx={{...(isSorted ? {bgcolor:'goldenyellow'} : '')}}
           >
             Sort
           </Button>
@@ -129,7 +133,7 @@ const ContactPanelContent: React.FC = () => {
             Add
           </Button>
         </Box>
-      </div>
+      </Paper>
       <ContactListItem />
     </>
   );

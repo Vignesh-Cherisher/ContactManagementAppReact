@@ -5,8 +5,13 @@ import RootLayout from "./components/rootLayout";
 import ContactViewPlaceholder from "./components/ContactView/contactViewPlaceholder";
 import ContactFormView from "./components/ContactForm/contactFormView";
 import NotFoundPage from "./components/ErrorPage/notFoundPage";
-import { ThemeProvider } from "@mui/material";
-import theme from "./theme/customizedButtonTheme";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+
+import { useMemo } from "react";
+import { RootState } from "./store";
+import { useSelector } from "react-redux";
+import { deepmerge } from '@mui/utils';
+import customPalette from './theme/darkTheme';
 
 const router = createBrowserRouter([
   {
@@ -39,7 +44,24 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <ThemeProvider theme={theme}><RouterProvider router={router}></RouterProvider></ThemeProvider>
+  const mode = useSelector((state: RootState) => state.responsiveUi.isDarkMode)
+
+  const theme = useMemo(
+    () =>
+      deepmerge(customPalette,createTheme({
+        palette: {
+          mode,
+        },
+      })),
+    [mode],
+  );
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline enableColorScheme/>
+      <RouterProvider router={router}></RouterProvider>
+    </ThemeProvider>
+  );
 }
 
 export default App;

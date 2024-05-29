@@ -1,33 +1,32 @@
-import { useState } from "react";
 import ContactPanelContent from "./contactPanelContent";
-import { Box, Button, Drawer, Icon, useMediaQuery, useTheme } from "@mui/material";
+import { Drawer, Paper, useMediaQuery, useTheme } from "@mui/material";
+import { useDispatch, useSelector } from 'react-redux';
+import { responsiveUiActions, selectDrawerOpenState } from "../../store/responsiveUi.slice";
+import { RootState } from "../../store";
 
 const ContactListPanel: React.FC = () => {
+  const dispatch = useDispatch()
+
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const drawerOpen = useSelector((state: RootState) => selectDrawerOpenState(state))
 
-  const toggleDrawer = (open: boolean) => () => {
-    setDrawerOpen(open);
+  const toggleDrawer = (isOpen: boolean) => {
+    dispatch(responsiveUiActions.toggleDrawer(isOpen));
   };
 
   return (
     <>
       {isLargeScreen ? (
-          <div className="contact-list-container">
+          <Paper sx={{display:"flex", width:"30%", flexDirection:"column", p:"0.5rem", gap:"0.5rem", minWidth:"300px", overflowY:"auto", ...(theme.palette.mode === 'dark' ? {bgcolor:theme.palette.contactPanelBorderP.dark} : { bgcolor:theme.palette.contactPanelBorderP.main})}}>
             <ContactPanelContent />
-          </div>
+          </Paper>
       ) : (
         <>
-          <Box sx={{position: "relative"}}>
-          <Button sx={{position: "absolute", left:"0", mt:"0.6rem", fontSize:"1.5rem", zIndex:"10"}} onClick={toggleDrawer(true)}>
-            <Icon sx={{color:"white"}}>menu</Icon>
-          </Button>
-          </Box>
-          <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-            <div className="contact-list-container fill-width">
+          <Drawer anchor="left" open={drawerOpen} onClose={() => toggleDrawer(false)}>
+            <Paper sx={{display:"flex", width:"max-content", flexDirection:"column", p:"0.5rem", gap:"0.5rem", minWidth:"300px", overflowY:"auto", ...(theme.palette.mode === 'dark' ? {bgcolor:theme.palette.contactPanelBorderP.dark} : { bgcolor:theme.palette.contactPanelBorderP.main})}} className="fill-width">
               <ContactPanelContent />
-            </div>
+            </Paper>
           </Drawer>
         </>
       )}

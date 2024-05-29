@@ -7,7 +7,7 @@ const RootLayout: React.FC = () => {
   return (
     <>
       <NavBar />
-      <Stack direction={{md:"column", lg:"row"}} className="root-layout">
+      <Stack direction={{md:"column", lg:"row"}} sx={{display: "flex", overflow: "hidden", height:"100%"}}>
         <ContactListPanel />
         <Outlet />
       </Stack>

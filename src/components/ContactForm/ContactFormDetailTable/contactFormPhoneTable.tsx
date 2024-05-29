@@ -25,6 +25,7 @@ type ContactFormPhoneTableType = {
     event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   isEditing: boolean;
+  handleInputChange:(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }
 
 const ContactFormPhoneTable: React.FC<ContactFormPhoneTableType> = ({ phoneNumberState, handlePhoneState, isEditing }) => {

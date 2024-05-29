@@ -1,41 +1,33 @@
 import {
   AppBar,
+  Box,
+  Button,
   Icon,
   IconButton,
   Menu,
   MenuItem,
-  styled,
-  Toolbar,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { contactItemActions } from "../../store/contactItem.slice";
 import { useDeleteContactItemMutation } from "../../services/contactItem.service";
 import DeleteModal from "../../UI/DeleteModal";
-
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  alignItems: "flex-start",
-  paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(2),
-  "@media all": {
-    minHeight: 40,
-  },
-}));
+import { responsiveUiActions } from "../../store/responsiveUi.slice";
+import { StyledToolbar } from "../../theme/styledToolbar";
 
 const ContactMenuBar: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
-  const isMobileScreen = useMediaQuery(theme.breakpoints.down("sm"))
-  
-  const navigate = useNavigate()
-  const {id} = useParams()
-  const dispatch = useDispatch()
-  const [deleteContactItem] = useDeleteContactItemMutation()
+
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const [deleteContactItem] = useDeleteContactItemMutation();
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -46,41 +38,61 @@ const ContactMenuBar: React.FC = () => {
   };
 
   const handleClose = () => {
-    handleCloseUserMenu()
+    handleCloseUserMenu();
     setOpenModal(false);
   };
-
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
   const handleEditContact = () => {
-    navigate(`/${id}/edit`)
-  }
+    navigate(`/${id}/edit`);
+  };
 
   const handleDeleteContact = () => {
-    deleteContactItem(id!)
-    dispatch(contactItemActions.contactItemRemove(parseInt(id!)))
-    handleCloseUserMenu()
-    navigate("/")
-  }
+    deleteContactItem(id!);
+    dispatch(contactItemActions.contactItemRemove(parseInt(id!)));
+    handleCloseUserMenu();
+    navigate("/");
+  };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
+  const toggleDrawer = (isOpen: boolean) => {
+    dispatch(responsiveUiActions.toggleDrawer(isOpen));
+  };
+
   return (
     <AppBar position="static">
       <StyledToolbar>
-        <Typography
-          variant="h5"
-          noWrap
-          component="div"
-          sx={{ ...(isLargeScreen ? null : isMobileScreen ? {ml: "32px"} : { ml: "24px"}),flexGrow: 1, mt: "0.3rem", fontFamily: "poppins"}}
-        >
-          Contact Details
-        </Typography>
+        <Box sx={{ display: "flex" }}>
+          {isLargeScreen ? (
+            ""
+          ) : (
+            <Button
+              onClick={() => toggleDrawer(true)}
+              sx={{
+                width: "fit-content",
+                m: "0 0.5rem 0 0 ",
+                p: "0",
+                minWidth: "0",
+              }}
+            >
+              <Icon sx={{ color: "white" }}>menu</Icon>
+            </Button>
+          )}
+          <Typography
+            variant="h5"
+            noWrap
+            component="div"
+            sx={{ fontFamily: "poppins" }}
+          >
+            Contact Details
+          </Typography>
+        </Box>
         <IconButton
           size="large"
           aria-label="display more actions"
@@ -114,7 +126,11 @@ const ContactMenuBar: React.FC = () => {
           </MenuItem>
         </Menu>
       </StyledToolbar>
-      <DeleteModal open={openModal} handleClose={handleClose} triggerDelete={handleDeleteContact}></DeleteModal>
+      <DeleteModal
+        open={openModal}
+        handleClose={handleClose}
+        triggerDelete={handleDeleteContact}
+      ></DeleteModal>
     </AppBar>
   );
 };

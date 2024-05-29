@@ -6,6 +6,7 @@ import phoneNumberListSlice from "./phoneNumberList.slice";
 import { PhoneNumberApi } from "../services/phoneNumberList.service";
 import { EmailAddressListApi } from "../services/emailAddressList.service";
 import emailAddressListSlice from "./emailAddressList.slice";
+import responsiveUiSlice from "./responsiveUi.slice";
 
 const rootReducer = combineReducers({
   [contactItemApi.reducerPath]: contactItemApi.reducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   [PhoneNumberApi.reducerPath]: PhoneNumberApi.reducer,
   phoneNumberList: phoneNumberListSlice.reducer,
   [EmailAddressListApi.reducerPath]: EmailAddressListApi.reducer,
-  emailAddressList: emailAddressListSlice.reducer
+  emailAddressList: emailAddressListSlice.reducer,
+  responsiveUi: responsiveUiSlice.reducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

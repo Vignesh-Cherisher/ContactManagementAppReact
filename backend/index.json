@@ -9,7 +9,7 @@
         "phone": "phone101",
         "address": "10, Verizona Street, St.Willies, \n Arizona,\n US",
         "dob": "",
-        "isFav": false,
+        "isFav": true,
         "url": "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "102": {
@@ -82,19 +82,19 @@
         "id": 108,
         "fName": "Hannah",
         "lName": "Johnson",
-        "address": "12, Mountain Road, Aspen, \n Colorado,\n US",
-        "url": "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "12-2-1990",
-        "phone": "phone108",
         "email": "email108",
-        "isFav": true
+        "phone": "phone108",
+        "address": "12, Mountain Road, Aspen, \n Colorado,\n US",
+        "dob": "1990-02-12",
+        "isFav": false,
+        "url": "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "109": {
         "id": 109,
         "fName": "Isaac",
         "lName": "Williams",
         "address": "91, Seaside Boulevard, Beachwood, \n California,\n US",
-        "url": "https://images.pexels.com/photos/325682/pexels-photo-325682.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "url": "https://images.pexels.com/photos/1081685/pexels-photo-1081685.jpeg?auto=compress&cs=tinysrgb&w=600",
         "dob": "5-4-1983",
         "phone": "phone109",
         "email": "email109",
@@ -121,6 +121,17 @@
         "dob": "",
         "isFav": true,
         "url": "https://images.pexels.com/photos/8159657/pexels-photo-8159657.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=279.825&fit=crop&h=453.05"
+      },
+      "7243": {
+        "id": 7243,
+        "fName": "Louis",
+        "lName": "Sidler",
+        "email": "email7243",
+        "phone": "phone7243",
+        "address": "",
+        "dob": "",
+        "isFav": false,
+        "url": "https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=600"
       }
     },
     "allIds": [
@@ -149,7 +160,15 @@
       3937,
       101,
       101,
-      107
+      107,
+      7243,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      108
     ]
   },
   "phones": {
@@ -230,6 +249,13 @@
         "work": "979787966",
         "main": "9779766",
         "other": ""
+      },
+      "phone7243": {
+        "id": "phone7243",
+        "home": "426235",
+        "work": "45345745",
+        "main": "",
+        "other": "234235236236"
       }
     },
     "allIds": [
@@ -258,7 +284,15 @@
       "phone3937",
       "phone101",
       "phone101",
-      "phone107"
+      "phone107",
+      "phone7243",
+      "phone101",
+      "phone101",
+      "phone101",
+      "phone101",
+      "phone101",
+      "phone101",
+      "phone108"
     ]
   },
   "emails": {
@@ -300,8 +334,8 @@
       },
       "email108": {
         "id": "email108",
-        "work": "hjohnson@tmail.co",
-        "personal": "hanjoh@tmail.co"
+        "personal": "hanjoh@tmail.co",
+        "work": "hjohnson@tmail.co"
       },
       "email109": {
         "id": "email109",
@@ -317,6 +351,11 @@
         "id": "email845",
         "personal": "wejioju@iojio.o",
         "work": "asdf@123.wer"
+      },
+      "email7243": {
+        "id": "email7243",
+        "personal": "asdewr@asdf.df",
+        "work": "asdewr@asdf.df"
       }
     },
     "allIds": [
@@ -345,7 +384,15 @@
       "email3937",
       "email101",
       "email101",
-      "email107"
+      "email107",
+      "email7243",
+      "email101",
+      "email101",
+      "email101",
+      "email101",
+      "email101",
+      "email101",
+      "email108"
     ]
   }
 }

@@ -39,8 +39,8 @@ const UIModal: React.FC<fcProps> = ({
       <Box sx={{ ...style, width: 400 }}>
         {children}
         <Box sx={{ justifyContent: "flex-end", display: "flex" }}>
-          {triggerAction && <Button onClick={triggerAction}>Yes</Button>}
-          <Button onClick={handleClose} variant="contained">{triggerAction ? 'No' : 'OK'}</Button>
+          {triggerAction && <Button sx={{mr:"0.5rem"}} variant="contained" onClick={triggerAction}>Yes</Button>}
+          <Button onClick={handleClose} variant="custom">{triggerAction ? 'No' : 'OK'}</Button>
         </Box>
       </Box>
     </Modal>

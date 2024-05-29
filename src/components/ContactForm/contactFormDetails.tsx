@@ -16,19 +16,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { ContactItem } from "../../models/contactItem.model.tsx";
 import { FocusEvent } from "react";
 import UIModal from "../../UI/Modal.tsx";
-
-const getDobValue = (dobValue: string) => {
-  const [dobDay, dobMonth, dobYear] = dobValue.split("-").map(Number);
-
-  const dob = new Date(`${dobMonth}-${dobDay}-${dobYear}`);
-
-  const year = dob.getFullYear();
-  const month = (dob.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based, so we add 1
-  const day = dob.getDate().toString().padStart(2, "0");
-
-  const formattedDate = `${year}-${month}-${day}`;
-  return formattedDate;
-};
+import { getDobValue } from "../../utils/contactAndDateFormatters.tsx";
 
 type ContactFormDetailsType = {
   handleFavContact: () => void;
@@ -39,6 +27,8 @@ type ContactFormDetailsType = {
   ) => void;
   isEditing: boolean;
   handleImageUrl: (imgUrl: string) => void;
+  handleInputChange: (event: ChangeEvent< HTMLInputElement | HTMLTextAreaElement>) => void
+  contact: ContactItem
 };
 
 const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
@@ -48,20 +38,22 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
   dobInputState,
   isEditing,
   handleImageUrl,
+  handleInputChange,
+  contact
 }) => {
   const [imageUrlValue, setImageUrlValue] = useState("");
 
-  const [formState, setFormState] = useState<ContactItem>({
-    id: 0,
-    fName: "",
-    lName: "",
-    email: "",
-    phone: "",
-    dob: "",
-    isFav: false,
-    address: "",
-    url: "",
-  });
+  // const [formState, setFormState] = useState<ContactItem>({
+  //   id: 0,
+  //   fName: "",
+  //   lName: "",
+  //   email: "",
+  //   phone: "",
+  //   dob: "",
+  //   isFav: false,
+  //   address: "",
+  //   url: "",
+  // });
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleModalControl = () => {
@@ -82,6 +74,9 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
     value: string,
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    if(value === 'url') {
+      handleImageUrl(event.target.value);  
+    }
     setFormState((prevState) => {
       return {
         ...prevState,
@@ -108,6 +103,12 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
       });
     }
   }, [isLoading, isEditing, handleFavContact, contactDataById]);
+
+  useEffect(() => {
+    if(!isLoading && isEditing) {
+      handleImageUrl(formState.url)
+    }
+  })
 
   return (
     <>
@@ -156,8 +157,8 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     required
                     name="fName"
                     id="fName-input"
-                    value={formState.fName}
-                    onChange={(event) => setFormInputState("fName", event)}
+                    value={contact.fName}
+                    onChange={handleInputChange}
                   ></TextField>
                 </Box>
                 <Box
@@ -185,8 +186,8 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                   <TextField
                     name="lName"
                     id="lName-input"
-                    value={formState.lName}
-                    onChange={(event) => setFormInputState("lName", event)}
+                    value={contact.lName}
+                    onChange={handleInputChange}
                   ></TextField>
                 </Box>
                 <Box
@@ -212,8 +213,8 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     Address:
                   </InputLabel>
                   <TextField
-                    value={formState.address}
-                    onChange={(event) => setFormInputState("address", event)}
+                    value={contact.address}
+                    onChange={handleInputChange}
                     multiline
                     rows={3}
                     id="address-input"
@@ -247,9 +248,9 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     type="date"
                     id="dob-input"
                     name="dob"
-                    value={formState.dob}
+                    value={contact.dob}
                     onBlur={(event) => dobInputState(event)}
-                    onChange={(event) => setFormInputState("dob", event)}
+                    onChange={handleInputChange}
                   ></TextField>
                 </Box>
               </Grid>
@@ -265,14 +266,14 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
               >
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <Button
-                    sx={{ height: "fit-content" }}
+                    sx={{ height: "fit-content", borderWidth: "0" }}
                     type="button"
                     onClick={handleModalControl}
                   >
                     <ImageWithAlt
                       width="75%"
-                      alt={formState.fName}
-                      src={formState.url}
+                      alt={contact.fName}
+                      src={contact.url}
                     />
                   </Button>
                   <UIModal open={isOpen} handleClose={handleModalControl}>
@@ -281,8 +282,8 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                         Please enter the Profile picture Url:
                       </Typography>
                       <TextField
-                        value={imageUrlValue}
-                        onChange={handleImageUrlInput}
+                        value={contact.url}
+                        onChange={handleInputChange}
                         label="Image Url"
                         name="url"
                         id="url-input"
@@ -357,6 +358,8 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     label="First Name"
                     name="fName"
                     id="fName-input"
+                    value={contact.fName ?? ''}
+                    onChange={handleInputChange}
                   ></TextField>
                 </Box>
                 <Box
@@ -385,6 +388,8 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     label="Last Name"
                     name="lName"
                     id="lName-input"
+                    value={contact.lName ?? ''}
+                    onChange={handleInputChange}
                   ></TextField>
                 </Box>
                 <Box
@@ -415,6 +420,8 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     rows={3}
                     id="address-input"
                     name="address"
+                    value={contact.address ?? ''}
+                    onChange={handleInputChange}
                   ></TextField>
                 </Box>
                 <Box
@@ -441,7 +448,9 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                   <TextField
                     error={dobErrorState}
                     helperText={dobErrorState ? "Enter a valid date" : ""}
+                    value={contact.dob ?? ''}
                     onBlur={(event) => dobInputState(event)}
+                    onChange={handleInputChange}
                     type="date"
                     id="dob-input"
                     name="dob"
@@ -476,8 +485,8 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                         Please enter the Profile picture Url:
                       </Typography>
                       <TextField
-                        value={imageUrlValue}
-                        onChange={handleImageUrlInput}
+                        value={contact.url}
+                        onChange={handleInputChange}
                         label="Image Url"
                         name="url"
                         id="url-input"
