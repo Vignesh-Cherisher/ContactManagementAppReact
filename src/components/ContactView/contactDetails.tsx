@@ -115,7 +115,7 @@ const ContactDetails: React.FC = () => {
                   sx={{ m: "0 0 0.5rem 0" }}
                   className="contact-detail"
                 >
-                  {contactData.dob}
+                  {contactData.dob ?? ''}
                 </Typography>
               </Grid>
               <Grid

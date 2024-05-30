@@ -7,9 +7,9 @@
         "lName": "Noel",
         "email": "email101",
         "phone": "phone101",
-        "address": "10, Verizona Street, St.Willies, \n Arizona,\n US",
-        "dob": "",
+        "dob": "24-05-2024",
         "isFav": true,
+        "address": "10, Verizona Street, St.Willies, \n Arizona,\n US",
         "url": "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "102": {
@@ -82,19 +82,19 @@
         "id": 108,
         "fName": "Hannah",
         "lName": "Johnson",
-        "email": "email108",
-        "phone": "phone108",
         "address": "12, Mountain Road, Aspen, \n Colorado,\n US",
-        "dob": "1990-02-12",
-        "isFav": false,
-        "url": "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=600"
+        "url": "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "dob": "12-2-1990",
+        "phone": "phone108",
+        "email": "email108",
+        "isFav": true
       },
       "109": {
         "id": 109,
         "fName": "Isaac",
         "lName": "Williams",
         "address": "91, Seaside Boulevard, Beachwood, \n California,\n US",
-        "url": "https://images.pexels.com/photos/1081685/pexels-photo-1081685.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "url": "https://images.pexels.com/photos/325682/pexels-photo-325682.jpeg?auto=compress&cs=tinysrgb&w=600",
         "dob": "5-4-1983",
         "phone": "phone109",
         "email": "email109",
@@ -111,17 +111,6 @@
         "email": "email110",
         "isFav": true
       },
-      "845": {
-        "id": 845,
-        "fName": "Harry",
-        "lName": "Frost",
-        "email": "email845",
-        "phone": "phone845",
-        "address": "8, Gimbleton Avenue",
-        "dob": "",
-        "isFav": true,
-        "url": "https://images.pexels.com/photos/8159657/pexels-photo-8159657.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=279.825&fit=crop&h=453.05"
-      },
       "7243": {
         "id": 7243,
         "fName": "Louis",
@@ -131,7 +120,7 @@
         "address": "",
         "dob": "",
         "isFav": false,
-        "url": "https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=600"
+        "url": ""
       }
     },
     "allIds": [
@@ -145,30 +134,7 @@
       "108",
       "109",
       "110",
-      829,
-      102,
-      102,
-      102,
-      101,
-      101,
-      101,
-      101,
-      101,
-      101,
-      101,
-      102,
-      3937,
-      101,
-      101,
-      107,
-      7243,
-      101,
-      101,
-      101,
-      101,
-      101,
-      101,
-      108
+      "7243"
     ]
   },
   "phones": {
@@ -243,13 +209,6 @@
         "main": "8384789999",
         "other": "8475840000"
       },
-      "phone845": {
-        "id": "phone845",
-        "home": "97979877",
-        "work": "979787966",
-        "main": "9779766",
-        "other": ""
-      },
       "phone7243": {
         "id": "phone7243",
         "home": "426235",
@@ -269,30 +228,7 @@
       "phone108",
       "phone109",
       "phone110",
-      "phone845",
-      "phone102",
-      "phone102",
-      "phone102",
-      "phone101",
-      "phone101",
-      "phone101",
-      "phone101",
-      "phone101",
-      "phone101",
-      "phone101",
-      "phone102",
-      "phone3937",
-      "phone101",
-      "phone101",
-      "phone107",
-      "phone7243",
-      "phone101",
-      "phone101",
-      "phone101",
-      "phone101",
-      "phone101",
-      "phone101",
-      "phone108"
+      "phone7243"
     ]
   },
   "emails": {
@@ -334,8 +270,8 @@
       },
       "email108": {
         "id": "email108",
-        "personal": "hanjoh@tmail.co",
-        "work": "hjohnson@tmail.co"
+        "work": "hjohnson@tmail.co",
+        "personal": "hanjoh@tmail.co"
       },
       "email109": {
         "id": "email109",
@@ -346,11 +282,6 @@
         "id": "email110",
         "work": "jtaylor@tmail.co",
         "personal": "jessyt@tmail.co"
-      },
-      "email845": {
-        "id": "email845",
-        "personal": "wejioju@iojio.o",
-        "work": "asdf@123.wer"
       },
       "email7243": {
         "id": "email7243",
@@ -369,30 +300,7 @@
       "email108",
       "email109",
       "email110",
-      "email845",
-      "email102",
-      "email102",
-      "email102",
-      "email101",
-      "email101",
-      "email101",
-      "email101",
-      "email101",
-      "email101",
-      "email101",
-      "email102",
-      "email3937",
-      "email101",
-      "email101",
-      "email107",
-      "email7243",
-      "email101",
-      "email101",
-      "email101",
-      "email101",
-      "email101",
-      "email101",
-      "email108"
+      "email7243"
     ]
   }
 }

@@ -27,6 +27,8 @@ const store = configureStore({
 });
 
 store.dispatch(contactItemApi.endpoints.getContactItem.initiate())
+store.dispatch(PhoneNumberApi.endpoints.getPhoneNumberList.initiate())
+store.dispatch(EmailAddressListApi.endpoints.getEmailAddressList.initiate())
 
 export type AppDispatch = typeof store.dispatch;
 

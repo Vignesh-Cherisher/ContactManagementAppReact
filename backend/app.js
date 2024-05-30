@@ -112,13 +112,16 @@ app.post("/api/post-contact-item", (req, res) => {
   const data = readFileSync(defaultPath, { encoding: "utf-8", flag: "r" });
   let parsedData = {};
   try {
+    console.log(postData)
     parsedData = JSON.parse(data);
-    parsedData.contacts.byId[postData.newContact.id] = postData.newContact;
-    parsedData.contacts.allIds.push(postData.newContact.id)
-    parsedData.phones.byId[postData.newPhoneGroup.id] = postData.newPhoneGroup;
-    parsedData.phones.allIds.push(postData.newPhoneGroup.id)
-    parsedData.emails.byId[postData.newEmailGroup.id] = postData.newEmailGroup;
-    parsedData.emails.allIds.push(postData.newEmailGroup.id)
+    parsedData.contacts.byId[postData.contact.id] = postData.contact;
+    parsedData.phones.byId[postData.phoneGroup.id] = postData.phoneGroup;
+    parsedData.emails.byId[postData.emailGroup.id] = postData.emailGroup;
+    if(parsedData.contacts.allIds.findIndex((element) => element === JSON.stringify(postData.contact.id)) === -1 ) {
+      parsedData.contacts.allIds.push(JSON.stringify(postData.contact.id))
+      parsedData.phones.allIds.push(JSON.stringify(postData.phoneGroup.id))
+      parsedData.emails.allIds.push(JSON.stringify(postData.emailGroup.id))
+    }
   } catch (err) {
     console.log(err);
     parsedData = {};

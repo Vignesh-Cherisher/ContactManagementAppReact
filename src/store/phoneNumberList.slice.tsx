@@ -1,6 +1,7 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { PhoneNumberGroup } from '../models/phoneList.model';
 import { RootState } from ".";
+import { PhoneNumberApi } from "../services/phoneNumberList.service";
 
 export const phoneNumberListAdapter = createEntityAdapter({
   sortComparer: (a: PhoneNumberGroup, b: PhoneNumberGroup) =>
@@ -17,7 +18,16 @@ const phoneNumberListSlice = createSlice({
     phoneNumberListUpdate: phoneNumberListAdapter.updateOne,
     phoneNumberListRemove: phoneNumberListAdapter.removeOne,
     phoneNumberListUpsertOne: phoneNumberListAdapter.upsertOne,
-  }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+      PhoneNumberApi.endpoints.getPhoneNumberList.matchFulfilled,
+      (state, { payload }) => {
+        phoneNumberListAdapter.setAll(state, payload);
+      }
+    );
+  },
 });
 
 export const {
