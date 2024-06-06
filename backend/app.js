@@ -2,7 +2,7 @@ import express, { Router } from "express";
 import { readFileSync, writeFile } from "fs";
 import path from "path";
 
-const defaultPath = "./index.json";
+const defaultPath = "./backend/index.json";
 const app = express();
 const router = Router();
 const __dirname = path.resolve(path.dirname(""));
@@ -33,6 +33,18 @@ router.get("/api/get-contact-items", (req, res) => {
   res.json(parsedData);
 });
 
+router.get("/api/get-phone-number-list/:id", (req, res) => {
+  const phoneId = 'phone' + req.params.id
+  const data = readFileSync(defaultPath, { encoding: "utf8", flag: "r" });
+  let parsedData = {};
+  try {
+    parsedData = JSON.parse(data).phones.byId[phoneId];
+  } catch (err) {
+    parsedData = {};
+  }
+  res.json(parsedData);
+});
+
 router.get("/api/get-phone-number-list", (req, res) => {
   const data = readFileSync(defaultPath, { encoding: "utf8", flag: "r" });
   let parsedData = {};
@@ -44,22 +56,23 @@ router.get("/api/get-phone-number-list", (req, res) => {
   res.json(parsedData);
 });
 
-router.get("/api/get-email-list", (req, res) => {
+router.get("/api/get-email-list/:id", (req, res) => {
+  const emailId = 'email' + req.params.id
   const data = readFileSync(defaultPath, { encoding: "utf8", flag: "r" });
   let parsedData = {};
   try {
-    parsedData = JSON.parse(data).emails.byId;
+    parsedData = JSON.parse(data).emails.byId[emailId];
   } catch (err) {
     parsedData = {};
   }
   res.json(parsedData);
 });
 
-router.get("/api/get-order-history", (req, res) => {
-  const data = readFileSync("./orders.json", { encoding: "utf8", flag: "r" });
+router.get("/api/get-email-list", (req, res) => {
+  const data = readFileSync(defaultPath, { encoding: "utf8", flag: "r" });
   let parsedData = {};
   try {
-    parsedData = JSON.parse(data);
+    parsedData = JSON.parse(data).emails.byId;
   } catch (err) {
     parsedData = {};
   }
@@ -127,28 +140,6 @@ app.post("/api/post-contact-item", (req, res) => {
     parsedData = {};
   } finally {
     writeFile(defaultPath, JSON.stringify(parsedData, null, 2), (error) => {
-      if (error) {
-        console.log(error);
-        return;
-      } else {
-        console.log("Contact Added Successfully");
-      }
-    });
-  }
-  res.json("success");
-});
-
-app.post("/api/update-active-order", (req, res) => {
-  const postData = req.body.orderNo;
-  const data = readFileSync("./orders.json", { encoding: "utf-8", flag: "r" });
-  let parsedData = {};
-  try {
-    parsedData = JSON.parse(data);
-    parsedData[postData].isActive = false;
-  } catch (err) {
-    parsedData = {};
-  } finally {
-    writeFile("./orders.json", JSON.stringify(parsedData, null, 2), (error) => {
       if (error) {
         console.log(error);
         return;

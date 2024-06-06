@@ -18,9 +18,9 @@
         "lName": "Smith",
         "email": "email102",
         "phone": "phone102",
-        "address": "25, Greenfield Avenue, Hilltown, \n New York,\n US",
         "dob": "11-01-1985",
         "isFav": true,
+        "address": "25, Greenfield Avenue, Hilltown, \n New York,\n US",
         "url": "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "103": {
@@ -38,23 +38,23 @@
         "id": 104,
         "fName": "Diana",
         "lName": "Martinez",
-        "address": "45, Redwood Lane, Fairview, \n Texas,\n US",
-        "url": "https://images.pexels.com/photos/1542085/pexels-photo-1542085.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "14-3-1992",
-        "phone": "phone104",
         "email": "email104",
-        "isFav": true
+        "phone": "phone104",
+        "dob": "14-03-1992",
+        "isFav": true,
+        "address": "45, Redwood Lane, Fairview, \n Texas,\n US",
+        "url": "https://images.pexels.com/photos/1542085/pexels-photo-1542085.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "105": {
         "id": 105,
         "fName": "Edward",
         "lName": "Lee",
-        "address": "89, Pineapple Blvd, Riverwood, \n Florida,\n US",
-        "url": "https://images.pexels.com/photos/3622615/pexels-photo-3622615.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "30-7-1988",
-        "phone": "phone105",
         "email": "email105",
-        "isFav": false
+        "phone": "phone105",
+        "dob": "31-07-1988",
+        "isFav": true,
+        "address": "89, Pineapple Blvd, Riverwood, \n Florida,\n US",
+        "url": "https://images.pexels.com/photos/3622615/pexels-photo-3622615.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "106": {
         "id": 106,
@@ -93,12 +93,12 @@
         "id": 109,
         "fName": "Isaac",
         "lName": "Williams",
-        "address": "91, Seaside Boulevard, Beachwood, \n California,\n US",
-        "url": "https://images.pexels.com/photos/325682/pexels-photo-325682.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "5-4-1983",
-        "phone": "phone109",
         "email": "email109",
-        "isFav": false
+        "phone": "phone109",
+        "dob": "05-04-1983",
+        "isFav": false,
+        "address": "91, Seaside Boulevard, Beachwood, \n California,\n US",
+        "url": "https://images.pexels.com/photos/325682/pexels-photo-325682.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "110": {
         "id": 110,
@@ -141,7 +141,7 @@
     "byId": {
       "phone101": {
         "id": "phone101",
-        "home": "9283756473",
+        "home": "928375647",
         "work": "8329573467",
         "main": "8384985757",
         "other": "8475839485"
@@ -162,15 +162,15 @@
       },
       "phone104": {
         "id": "phone104",
-        "home": "9334567890",
+        "home": "93345678654",
         "work": "8329572222",
         "main": "8384783333",
         "other": "8475834444"
       },
       "phone105": {
         "id": "phone105",
-        "home": "9434567890",
-        "work": "8329573333",
+        "home": "942323235235",
+        "work": "8329573333234",
         "main": "8384784444",
         "other": "8475835555"
       },
@@ -250,13 +250,13 @@
       },
       "email104": {
         "id": "email104",
-        "work": "dmartinez@tmail.co",
-        "personal": "dimart@tmail.co"
+        "personal": "dimart@tma.co",
+        "work": "dmartinez@tmail.co"
       },
       "email105": {
         "id": "email105",
-        "work": "elee@tmail.co",
-        "personal": "edlee@tmail.co"
+        "personal": "edlee@tmail.co",
+        "work": "elee@tmail.co"
       },
       "email106": {
         "id": "email106",
@@ -275,8 +275,8 @@
       },
       "email109": {
         "id": "email109",
-        "work": "iwilliams@tmail.co",
-        "personal": "isawil@tmail.co"
+        "personal": "isawil@tmail.co",
+        "work": "iwilliams@tmail.co"
       },
       "email110": {
         "id": "email110",

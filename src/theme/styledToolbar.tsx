@@ -5,8 +5,8 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(2),
+  paddingBottom: theme.spacing(1),
   "@media all": {
-    minHeight: 40,
+    minHeight: 57,
   },
 }));
