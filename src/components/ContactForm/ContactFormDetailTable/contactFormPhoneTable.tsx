@@ -16,10 +16,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { selectPhoneNumberGroupById } from "../../../store/phoneNumberList.slice";
 
-export const phoneTypeList: string[] = ["home", "work", "main", "other"];
+export const phoneTypeList: Array<keyof phoneNumberStateType> = [
+  "home",
+  "work",
+  "main",
+  "other",
+];
 
 type ContactFormPhoneTableType = {
   phoneNumberState: phoneNumberStateType;
+<<<<<<< Updated upstream
   handlePhoneState: (
     phoneType: string,
     event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -143,6 +149,68 @@ const ContactFormPhoneTable: React.FC<ContactFormPhoneTableType> = ({ phoneNumbe
             </Table>
           </TableContainer>
         </>
+=======
+  phoneGroup: PhoneNumberGroup;
+  isLoading: boolean;
+  validatePhoneNumbers: (
+    phoneType: string,
+    event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  handleInputChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    inputGroup: string
+  ) => void;
+};
+
+const ContactFormPhoneTable: React.FC<ContactFormPhoneTableType> = ({
+  phoneNumberState,
+  validatePhoneNumbers,
+  isLoading,
+  phoneGroup,
+  handleInputChange,
+}) => {
+  return (
+    <>
+      {!isLoading && (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 200 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Type</TableCell>
+                <TableCell align="center">Number</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {phoneTypeList.map((phoneType) => (
+                <TableRow
+                  key={phoneType}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {phoneType.toUpperCase()}
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      label="phone number"
+                      error={phoneNumberState[phoneType]}
+                      helperText={
+                        phoneNumberState[phoneType] && "Enter a valid number"
+                      }
+                      value={
+                        phoneGroup[phoneType as keyof PhoneNumberGroup] ?? ""
+                      }
+                      onChange={(event) => handleInputChange(event, 'phoneGroup')}
+                      onBlur={(event) => validatePhoneNumbers(phoneType, event)}
+                      name={phoneType}
+                      type="tel"
+                    ></TextField>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+>>>>>>> Stashed changes
       )}
     </>
   );

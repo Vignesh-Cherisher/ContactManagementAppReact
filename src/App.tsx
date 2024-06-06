@@ -5,13 +5,12 @@ import RootLayout from "./components/rootLayout";
 import ContactViewPlaceholder from "./components/ContactView/contactViewPlaceholder";
 import ContactFormView from "./components/ContactForm/contactFormView";
 import NotFoundPage from "./components/ErrorPage/notFoundPage";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 
 import { useMemo } from "react";
 import { RootState } from "./store";
 import { useSelector } from "react-redux";
-import { deepmerge } from '@mui/utils';
-import customPalette from './theme/darkTheme';
+import { darkPalette, lightPalette } from "./theme/darkTheme";
 
 const router = createBrowserRouter([
   {
@@ -34,31 +33,28 @@ const router = createBrowserRouter([
         path: "/:id/edit",
         element: <ContactFormView />,
       },
+      {
+        path: "/notFound",
+        element: <NotFoundPage />,
+      },
     ],
     errorElement: <NotFoundPage />,
-  },
-  {
-    path: "/notFound",
-    element: <NotFoundPage />,
   },
 ]);
 
 function App() {
-  const mode = useSelector((state: RootState) => state.responsiveUi.isDarkMode)
+  const mode = useSelector((state: RootState) => state.responsiveUi.isDarkMode);
 
-  const theme = useMemo(
-    () =>
-      deepmerge(customPalette,createTheme({
-        palette: {
-          mode,
-        },
-      })),
-    [mode],
-  );
+  const theme = useMemo(() => {
+    if (mode === "light") {
+      return lightPalette
+    }
+    return darkPalette;
+  }, [mode]);
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline enableColorScheme/>
+      <CssBaseline enableColorScheme />
       <RouterProvider router={router}></RouterProvider>
     </ThemeProvider>
   );

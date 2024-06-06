@@ -90,7 +90,7 @@ const ContactPanelContent: React.FC = () => {
         </div>
         <Box className="contact-list-controller-container">
           <Button
-            variant="custom"
+            variant="outlined"
             startIcon={<Icon>filter_alt</Icon>}
             onClick={handleModalControl}
             sx={{...(isFiltered ? {bgcolor:'greenyellow'} : '')}}
@@ -118,7 +118,7 @@ const ContactPanelContent: React.FC = () => {
             </>
           </UIModal>
           <Button
-            variant="custom"
+            variant="outlined"
             startIcon={<Icon>swap_vert</Icon>}
             onClick={() => handleContactListOperations("sort")}
             sx={{...(isSorted ? {bgcolor:'goldenyellow'} : '')}}

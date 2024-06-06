@@ -1,4 +1,4 @@
-import { Typography, Box, Grid, Icon } from "@mui/material";
+import { Typography, Box, Grid, Icon, useMediaQuery, useTheme } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../store";
@@ -6,7 +6,7 @@ import {
   selectContactById,
 } from "../../store/contactItem.slice";
 import ImageWithAlt from "../../theme/ImgElement";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const ContactDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -17,21 +17,20 @@ const ContactDetails: React.FC = () => {
   const contactData = useSelector((state: RootState) =>
     selectContactById(state, parseInt(id!))
   );
-  const [localLoading, setLocalLoading] = useState(true)
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.up('sm'))
 
   useEffect(() => {
     if (!isLoading) {
-      setLocalLoading(false)
       if (contactData === undefined) {
         navigate("/notFound")
       }
     }
-    
   }, [isLoading, navigate, contactData])
 
   return (
     <>
-      {localLoading && <Box>
+      {isLoading && <Box>
         Loading...
       </Box>}
       {contactData && (
@@ -40,7 +39,7 @@ const ContactDetails: React.FC = () => {
             <Grid
               container
               spacing={2}
-              sx={{ p: "1rem 2rem 0 2rem" }}
+              sx={{ p: "1rem 2rem 0 2rem", ...(isSmallScreen ? '' : {flexDirection: "column-reverse"}) }}
               alignItems="center"
               justifyContent="space-around"
             >
@@ -121,7 +120,7 @@ const ContactDetails: React.FC = () => {
               <Grid
                 item
                 key={contactData.id}
-                xs={6}
+                xs={8}
                 sm={5}
                 md={4}
                 lg={4}

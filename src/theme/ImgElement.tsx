@@ -43,7 +43,7 @@ const ImageWithAlt: React.FC<ImageWithAltProps> = ({
           width="100%"
           onError={handleImageError}
           onLoadedData={handleImageSuccess}
-          style={{ objectFit: "cover", aspectRatio : "1/1", }}
+          style={{ objectFit: "cover", aspectRatio : "1/1" }}
         />
       ) : (
         <Box

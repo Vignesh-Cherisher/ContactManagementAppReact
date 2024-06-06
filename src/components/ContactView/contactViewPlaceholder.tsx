@@ -1,9 +1,57 @@
-import { Box, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Icon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { useDispatch } from "react-redux";
+import { responsiveUiActions } from "../../store/responsiveUi.slice";
+import { StyledToolbar } from "../../theme/styledToolbar";
 
 const ContactViewPlaceholder: React.FC = () => {
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const dispatch = useDispatch();
+
+  const toggleDrawer = (isOpen: boolean) => {
+    dispatch(responsiveUiActions.toggleDrawer(isOpen));
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Typography variant="h4" gutterBottom sx={{ mt: "4rem", textAlign: "center", fontFamily: "poppins", fontWeight: "700", color: "red" }}>
+      <AppBar position="static">
+        <StyledToolbar>
+          {isLargeScreen ? (
+            ""
+          ) : (
+            <Button
+              onClick={() => toggleDrawer(true)}
+              sx={{
+                width: "fit-content",
+                m: "0 0.5rem 0 0 ",
+                p: "0",
+                minWidth: "0",
+              }}
+            >
+              <Icon sx={{ color: "white" }}>menu</Icon>
+            </Button>
+          )}
+        </StyledToolbar>
+      </AppBar>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{
+          mt: "4rem",
+          textAlign: "center",
+          fontFamily: "poppins",
+          fontWeight: "700",
+          color: "red",
+        }}
+      >
         No Contact Selected!
       </Typography>
       <Typography variant="body2" gutterBottom sx={{ textAlign: "center" }}>

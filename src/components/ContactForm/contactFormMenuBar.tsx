@@ -1,5 +1,4 @@
 import {
-  AppBar,
   Box,
   Button,
   Icon,
@@ -7,9 +6,9 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { StyledToolbar } from "../../theme/styledToolbar";
 import { useDispatch } from "react-redux";
 import { responsiveUiActions } from "../../store/responsiveUi.slice";
+import shadows from "@mui/material/styles/shadows";
 
 const ContactFormMenuBar: React.FC<{ isEditing: boolean }> = ({
   isEditing,
@@ -23,8 +22,16 @@ const ContactFormMenuBar: React.FC<{ isEditing: boolean }> = ({
   };
 
   return (
-    <AppBar position="static">
-      <StyledToolbar>
+    <Box
+      sx={{
+        display: "flex",
+        p: "1rem 2rem",
+        justifyContent: "space-between",
+        borderBottom: "1px  solid",
+        borderColor: 'palette.text.primary'
+      }}
+      boxShadow={shadows[1]}
+    >
         <Box sx={{ display: "flex" }}>
           {isLargeScreen ? (
             ""
@@ -52,8 +59,7 @@ const ContactFormMenuBar: React.FC<{ isEditing: boolean }> = ({
             {isEditing ? "Edit Contact" : "New Contact"}
           </Typography>
         </Box>
-      </StyledToolbar>
-    </AppBar>
+    </Box>
   );
 };
 

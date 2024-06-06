@@ -6,6 +6,8 @@ import {
   InputLabel,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import ImageWithAlt from "../../theme/ImgElement.tsx";
 import { useParams } from "react-router-dom";
@@ -20,6 +22,7 @@ import { getDobValue } from "../../utils/contactAndDateFormatters.tsx";
 
 type ContactFormDetailsType = {
   handleFavContact: () => void;
+<<<<<<< Updated upstream
   favContactState: boolean;
   dobErrorState: boolean;
   dobInputState: (
@@ -29,18 +32,33 @@ type ContactFormDetailsType = {
   handleImageUrl: (imgUrl: string) => void;
   handleInputChange: (event: ChangeEvent< HTMLInputElement | HTMLTextAreaElement>) => void
   contact: ContactItem
+=======
+  validateDob: (
+    event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  handleInputChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    inputGroup: string
+  ) => void;
+>>>>>>> Stashed changes
 };
 
 const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
   handleFavContact,
   favContactState,
   dobErrorState,
+<<<<<<< Updated upstream
   dobInputState,
   isEditing,
   handleImageUrl,
+=======
+  validateDob,
+  isLoading,
+>>>>>>> Stashed changes
   handleInputChange,
   contact
 }) => {
+<<<<<<< Updated upstream
   const [imageUrlValue, setImageUrlValue] = useState("");
 
   // const [formState, setFormState] = useState<ContactItem>({
@@ -54,6 +72,10 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
   //   address: "",
   //   url: "",
   // });
+=======
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
+>>>>>>> Stashed changes
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleModalControl = () => {
@@ -118,7 +140,10 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
             <Grid
               container
               spacing={2}
-              sx={{ p: "1rem 2rem 0 2rem" }}
+              sx={{
+                p: "1rem 2rem 0 2rem",
+                ...(isSmallScreen ? "" : { flexDirection: "column-reverse" }),
+              }}
               alignItems="center"
               justifyContent="space-around"
             >
@@ -158,7 +183,7 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     name="fName"
                     id="fName-input"
                     value={contact.fName}
-                    onChange={handleInputChange}
+                    onChange={(event) => handleInputChange(event, 'contact')}
                   ></TextField>
                 </Box>
                 <Box
@@ -187,7 +212,7 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     name="lName"
                     id="lName-input"
                     value={contact.lName}
-                    onChange={handleInputChange}
+                    onChange={(event) => handleInputChange(event, 'contact')}
                   ></TextField>
                 </Box>
                 <Box
@@ -214,7 +239,7 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                   </InputLabel>
                   <TextField
                     value={contact.address}
-                    onChange={handleInputChange}
+                    onChange={(event) => handleInputChange(event, 'contact')}
                     multiline
                     rows={3}
                     id="address-input"
@@ -249,14 +274,14 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     id="dob-input"
                     name="dob"
                     value={contact.dob}
-                    onBlur={(event) => dobInputState(event)}
-                    onChange={handleInputChange}
+                    onBlur={(event) => validateDob(event)}
+                    onChange={(event) => handleInputChange(event, 'contact')}
                   ></TextField>
                 </Box>
               </Grid>
               <Grid
                 item
-                xs={6}
+                xs={8}
                 sm={5}
                 md={4}
                 lg={4}
@@ -273,7 +298,15 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     <ImageWithAlt
                       width="75%"
                       alt={contact.fName}
+<<<<<<< Updated upstream
                       src={contact.url}
+=======
+                      src={
+                        contact.url === ""
+                          ? "/public/OIP.jpg"
+                          : `${contact.url}`
+                      }
+>>>>>>> Stashed changes
                     />
                   </Button>
                   <UIModal open={isOpen} handleClose={handleModalControl}>
@@ -283,7 +316,7 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                       </Typography>
                       <TextField
                         value={contact.url}
-                        onChange={handleInputChange}
+                        onChange={(event) => handleInputChange(event, 'contact')}
                         label="Image Url"
                         name="url"
                         id="url-input"

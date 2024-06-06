@@ -1,31 +1,25 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
-import { useGetPhoneNumberListQuery } from "../../../services/phoneNumberList.service";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { phoneNumberListActions, selectPhoneNumberGroupById } from "../../../store/phoneNumberList.slice";
-import { RootState } from "../../../store";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { useParams } from "react-router-dom";
+import { useGetPhoneNumberListByIdQuery } from "../../../services/phoneNumberList.service";
+import { PhoneNumberGroup } from "../../../models/phoneList.model";
 
 const ContactPhoneTable: React.FC = () => {
-  const {data: phoneNumberData} = useGetPhoneNumberListQuery()
+  const { id } = useParams();
+  const { data: phoneNumberData } = useGetPhoneNumberListByIdQuery(id!);
 
-  const dispatch = useDispatch()
-  const { id } = useParams()
-  const dataByIdSelector = useSelector((state: RootState) => 
-    selectPhoneNumberGroupById(state, `phone${id!}`)
-  )
-  
-  let dataArray: [string, string][] = []
+  let dataArray: [string, PhoneNumberGroup][] = [];
 
-  if(dataByIdSelector) {
-    dataArray = (Object.entries(dataByIdSelector)).slice(1)
+  if (phoneNumberData) {
+    dataArray = Object.entries(phoneNumberData).slice(1);
   }
-
-  useEffect(() => {
-    if(phoneNumberData) {
-      dispatch(phoneNumberListActions.phoneNumberListSetAll(phoneNumberData))
-    }
-  }, [phoneNumberData, dispatch])
 
   return (
     <TableContainer component={Paper}>
@@ -37,23 +31,24 @@ const ContactPhoneTable: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {dataByIdSelector!== undefined && dataArray.map((phoneNumber) => (
-            <TableRow
-              key={phoneNumber[0]}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {phoneNumber[0].toUpperCase()}
-              </TableCell>
-              <TableCell align="center">
-                {phoneNumber[1].length > 0 ? phoneNumber[1] : '-'}
-              </TableCell>
-            </TableRow>
-          ))}
+          {phoneNumberData !== undefined &&
+            dataArray.map((phoneNumber) => (
+              <TableRow
+                key={phoneNumber[0]}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {phoneNumber[0].toUpperCase()}
+                </TableCell>
+                <TableCell align="center">
+                  {phoneNumber[1].toString().length > 0 ? `${phoneNumber[1]}` : "-"}
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-}
+};
 
-export default ContactPhoneTable
+export default ContactPhoneTable;

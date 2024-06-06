@@ -17,8 +17,24 @@ import { selectEmailAddressListById } from "../../../store/emailAddressList.slic
 
 const emailTypeList: string[] = ["personal", "work"];
 
+<<<<<<< Updated upstream
 const ContactFormEmailTable: React.FC<{ isEditing: boolean }> = ({
   isEditing,
+=======
+type ContactFormEmailTableType = {
+  emailGroup: EmailAddressGroup;
+  isLoading: boolean;
+  handleInputChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    inputGroup: string
+  ) => void;
+};
+
+const ContactFormEmailTable: React.FC<ContactFormEmailTableType> = ({
+  isLoading,
+  emailGroup,
+  handleInputChange,
+>>>>>>> Stashed changes
 }) => {
   const [formState, setFormState] = useState<EmailAddressGroup>({
     id: "",
@@ -112,6 +128,11 @@ const ContactFormEmailTable: React.FC<{ isEditing: boolean }> = ({
                         label="email-id"
                         name={`${emailAddress}-email`}
                         type="email"
+<<<<<<< Updated upstream
+=======
+                        value={emailGroup[emailAddress as keyof EmailAddressGroup] ?? ''}
+                        onChange={(event) => handleInputChange(event, 'emailGroup')}
+>>>>>>> Stashed changes
                       ></TextField>
                     </TableCell>
                   </TableRow>

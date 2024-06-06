@@ -1,7 +1,11 @@
 import { Box, Button, Stack } from "@mui/material";
 import ContactFormMenuBar from "./contactFormMenuBar";
 import ContactFormDetails from "./contactFormDetails";
+<<<<<<< Updated upstream
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
+=======
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+>>>>>>> Stashed changes
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ContactFormEmailTable from "./ContactFormDetailTable/contactFormEmailTable";
 import ContactFormPhoneTable from "./ContactFormDetailTable/contactFormPhoneTable";
@@ -10,6 +14,7 @@ import { ContactItem } from "../../models/contactItem.model";
 import { PhoneNumberGroup } from "../../models/phoneList.model";
 import { EmailAddressGroup } from "../../models/emailAddress.model";
 import { FocusEvent } from "react";
+<<<<<<< Updated upstream
 import { contactItemActions, selectContactById } from "../../store/contactItem.slice";
 import { phoneNumberListActions } from "../../store/phoneNumberList.slice";
 import { emailAddressListActions } from "../../store/emailAddressList.slice";
@@ -19,11 +24,32 @@ import { invalidateTagsAcrossApis } from "../../services/sharedTagInvalidation.m
 import { convertDate, getDobValue, phoneNumberCheck, dateComparer } from "../../utils/contactAndDateFormatters";
 
 
+=======
+import {
+  contactItemActions,
+  selectContactById,
+} from "../../store/contactItem.slice";
+import { usePostContactItemMutation } from "../../services/contactItem.service";
+import { AppDispatch, RootState } from "../../store/index";
+import { invalidateTagsAcrossApis } from "../../services/sharedTagInvalidation.middleware";
+import {
+  convertDate,
+  getDobValue,
+  phoneNumberCheck,
+  dateComparer,
+} from "../../utils/contactAndDateFormatters";
+import { useGetEmailAddressListByIdQuery } from "../../services/emailAddressList.service";
+import { useGetPhoneNumberListByIdQuery } from "../../services/phoneNumberList.service";
+>>>>>>> Stashed changes
 
 export type phoneNumberStateType = {
-  [key: string]: boolean;
+  home: boolean;
+  work: boolean;
+  main: boolean;
+  other: boolean;
 };
 
+<<<<<<< Updated upstream
 const getFromForm = (fd: FormData, value: string) => {
   return fd.get(value)!.toString();
 };
@@ -32,6 +58,12 @@ export type ContactGroupType = {
   newContact: ContactItem;
   newPhoneGroup: PhoneNumberGroup;
   newEmailGroup: EmailAddressGroup;
+=======
+export type formStateType = {
+  contact: ContactItem;
+  phoneGroup: PhoneNumberGroup;
+  emailGroup: EmailAddressGroup;
+>>>>>>> Stashed changes
 };
 
 const createContactGroup = (
@@ -43,6 +75,7 @@ const createContactGroup = (
   const randomInt = isEditing
     ? parseInt(id)
     : Math.floor(Math.random() * (10000 + 1));
+<<<<<<< Updated upstream
   const newContact: ContactItem = {
     id: randomInt,
     fName: getFromForm(fd, "fName"),
@@ -67,6 +100,19 @@ const createContactGroup = (
     work: getFromForm(fd, "work-email"),
   };
   return { newContact, newPhoneGroup, newEmailGroup };
+=======
+  const contact: ContactItem = formState.contact;
+  contact.id = randomInt;
+  contact.dob =
+    formState.contact.dob === ""
+      ? formState.contact.dob
+      : convertDate(formState.contact.dob);
+  const phoneGroup: PhoneNumberGroup = formState.phoneGroup;
+  phoneGroup.id = `phone${randomInt}`;
+  const emailGroup: EmailAddressGroup = formState.emailGroup;
+  emailGroup.id = `email${randomInt}`;
+  return { contact, phoneGroup, emailGroup };
+>>>>>>> Stashed changes
 };
 
 const checkPhoneInputError = (phoneInputState: phoneNumberStateType) => {
@@ -119,16 +165,27 @@ const ContactFormView: React.FC = () => {
       work: "",
     },
   });
+<<<<<<< Updated upstream
   
   const handleFavoriteContact = useCallback(() => {
+=======
+
+  const handleFavoriteContact = () => {
+>>>>>>> Stashed changes
     setFormState((prevState) => ({
       ...prevState,
       contact: {
         ...prevState.contact,
         isFav: !prevState.contact.isFav,
+<<<<<<< Updated upstream
       }
     }))
   }, []);
+=======
+      },
+    }));
+  };
+>>>>>>> Stashed changes
 
   const isLoading = useSelector(
     (state: RootState) => state.contactItem.isLoading
@@ -137,6 +194,13 @@ const ContactFormView: React.FC = () => {
     selectContactById(state, parseInt(id!))
   );
 
+<<<<<<< Updated upstream
+=======
+  const {data: emailDataById} = useGetEmailAddressListByIdQuery(id!)
+
+  const {data: phoneNumberById} = useGetPhoneNumberListByIdQuery(id!)
+
+>>>>>>> Stashed changes
   useEffect(() => {
     if (!isLoading && editStatus) {
       setFormState((prevState) => ({
@@ -148,21 +212,26 @@ const ContactFormView: React.FC = () => {
         }
       }));
     }
+<<<<<<< Updated upstream
   }, [isLoading, editStatus, contactDataById, handleFavoriteContact]);
+=======
+  }, [isLoading, editStatus, contactDataById, phoneNumberById, emailDataById]);
+>>>>>>> Stashed changes
 
   const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputGroup:string
   ) => {
     const { name, value } = event.target;
     setFormState((prevState) => ({
       ...prevState,
-      contact: {
-        ...prevState.contact,
+      [inputGroup]: {
+        ...prevState[inputGroup as keyof formStateType],
         [name]: value,
       },
     }));
   };
 
+<<<<<<< Updated upstream
   const handleEmailInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -192,6 +261,9 @@ const ContactFormView: React.FC = () => {
 
 
   const handlePhoneInputState = (
+=======
+  const validatePhoneInput = (
+>>>>>>> Stashed changes
     phoneType: string,
     event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -204,7 +276,7 @@ const ContactFormView: React.FC = () => {
     });
   };
 
-  const handleDobInputState = (
+  const validateDobInput = (
     event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const dobInputValue = event.target.value;
@@ -223,12 +295,17 @@ const ContactFormView: React.FC = () => {
       const { newContact, newPhoneGroup, newEmailGroup } = {
         ...createContactGroup(fd, favContact, editStatus, id!),
       };
+<<<<<<< Updated upstream
       dispatch(contactItemActions.contactItemUpsertOne(newContact));
       dispatch(phoneNumberListActions.phoneNumberListUpsertOne(newPhoneGroup));
       dispatch(
         emailAddressListActions.emailAddressListUpsertOne(newEmailGroup)
       );
       await postContactItem({ newContact, newPhoneGroup, newEmailGroup });
+=======
+      dispatch(contactItemActions.contactItemUpsertOne(contact));
+      await postContactItem({ contact, phoneGroup, emailGroup });
+>>>>>>> Stashed changes
       await dispatch(invalidateTagsAcrossApis());
       navigate(`/${newContact.id}`);
     }
@@ -242,14 +319,19 @@ const ContactFormView: React.FC = () => {
           handleFavContact={handleFavoriteContact}
           favContactState={favContact}
           dobErrorState={dobInputError}
+<<<<<<< Updated upstream
           dobInputState={handleDobInputState}
           isEditing={editStatus}
+=======
+          validateDob={validateDobInput}
+>>>>>>> Stashed changes
           handleInputChange={handleInputChange}
           contact={formState.contact}
           handleImageUrl={(imgUrl) => onImageUrlChange(imgUrl)}
         ></ContactFormDetails>
         <Stack direction={{ sm: "column", md: "row" }} gap="5rem" p="1rem 3rem">
           <ContactFormPhoneTable
+<<<<<<< Updated upstream
            isEditing={editStatus}
            handlePhoneState={handlePhoneInputState}
            handleInputChange={handlePhoneInputChange}
@@ -257,13 +339,26 @@ const ContactFormView: React.FC = () => {
            phoneGroup={formState.phoneGroup}
           ></ContactFormPhoneTable>
           <ContactFormEmailTable isEditing={editStatus}></ContactFormEmailTable>
+=======
+            validatePhoneNumbers={validatePhoneInput}
+            handleInputChange={handleInputChange}
+            phoneNumberState={phoneInputError}
+            phoneGroup={formState.phoneGroup}
+            isLoading={isLoading}
+          ></ContactFormPhoneTable>
+          <ContactFormEmailTable
+            handleInputChange={handleInputChange}
+            emailGroup={formState.emailGroup}
+            isLoading={isLoading}
+          ></ContactFormEmailTable>
+>>>>>>> Stashed changes
         </Stack>
         <Box display="flex" gap="5rem" p="1rem 3rem"></Box>
         <div className="form-submit-button-container">
           <Button variant="contained" type="submit">
             {editStatus ? "Save" : "Add"}
           </Button>
-          <Button variant="custom" type="reset" onClick={() => navigate("/")}>
+          <Button variant="outlined" type="reset" onClick={() => navigate("..", {relative: "path"})}>
             Cancel
           </Button>
         </div>

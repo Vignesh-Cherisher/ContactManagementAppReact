@@ -1,5 +1,4 @@
 import {
-  AppBar,
   Box,
   Button,
   Icon,
@@ -17,7 +16,7 @@ import { contactItemActions } from "../../store/contactItem.slice";
 import { useDeleteContactItemMutation } from "../../services/contactItem.service";
 import DeleteModal from "../../UI/DeleteModal";
 import { responsiveUiActions } from "../../store/responsiveUi.slice";
-import { StyledToolbar } from "../../theme/styledToolbar";
+import shadows from "@mui/material/styles/shadows";
 
 const ContactMenuBar: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -66,72 +65,79 @@ const ContactMenuBar: React.FC = () => {
   };
 
   return (
-    <AppBar position="static">
-      <StyledToolbar>
-        <Box sx={{ display: "flex" }}>
-          {isLargeScreen ? (
-            ""
-          ) : (
-            <Button
-              onClick={() => toggleDrawer(true)}
-              sx={{
-                width: "fit-content",
-                m: "0 0.5rem 0 0 ",
-                p: "0",
-                minWidth: "0",
-              }}
-            >
-              <Icon sx={{ color: "white" }}>menu</Icon>
-            </Button>
-          )}
-          <Typography
-            variant="h5"
-            noWrap
-            component="div"
-            sx={{ fontFamily: "poppins" }}
+    <Box
+      sx={{
+        display: "flex",
+        p: "1rem 2rem",
+        justifyContent: "space-between",
+        borderBottom: "1px  solid",
+        borderColor: 'palette.text.primary'
+      }}
+      boxShadow={shadows[1]}
+    >
+      <Box sx={{ display: "flex" }}>
+        {isLargeScreen ? (
+          ""
+        ) : (
+          <Button
+            onClick={() => toggleDrawer(true)}
+            sx={{
+              width: "fit-content",
+              m: "0 0.5rem 0 0 ",
+              p: "0",
+              minWidth: "0",
+            }}
           >
-            Contact Details
-          </Typography>
-        </Box>
-        <IconButton
-          size="large"
-          aria-label="display more actions"
-          edge="end"
-          color="inherit"
-          onClick={handleOpenUserMenu}
-          sx={{ p: 0 }}
+            <Icon sx={{color: 'action.active'}}>menu</Icon>
+          </Button>
+        )}
+        <Typography
+          variant="h5"
+          noWrap
+          component="div"
+          sx={{ fontFamily: "poppins" }}
         >
-          <Icon>more_vert</Icon>
-        </IconButton>
-        <Menu
-          id="menu-appbar"
-          anchorEl={anchorElUser}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
-        >
-          <MenuItem key="editContact" onClick={handleEditContact}>
-            <Typography textAlign="center">Edit</Typography>
-          </MenuItem>
-          <MenuItem key="deleteContact" onClick={handleOpen}>
-            <Typography textAlign="center">Delete</Typography>
-          </MenuItem>
-        </Menu>
-      </StyledToolbar>
+          Contact Details
+        </Typography>
+      </Box>
+      <IconButton
+        size="large"
+        aria-label="display more actions"
+        edge="end"
+        color="inherit"
+        onClick={handleOpenUserMenu}
+        sx={{ p: 0 }}
+      >
+        <Icon>more_vert</Icon>
+      </IconButton>
+      <Menu
+        id="menu-appbar"
+        anchorEl={anchorElUser}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        open={Boolean(anchorElUser)}
+        onClose={handleCloseUserMenu}
+      >
+        <MenuItem key="editContact" onClick={handleEditContact}>
+          <Typography textAlign="center">Edit</Typography>
+        </MenuItem>
+        <MenuItem key="deleteContact" onClick={handleOpen}>
+          <Typography textAlign="center">Delete</Typography>
+        </MenuItem>
+      </Menu>
       <DeleteModal
         open={openModal}
         handleClose={handleClose}
         triggerDelete={handleDeleteContact}
       ></DeleteModal>
-    </AppBar>
+    </Box>
   );
 };
 

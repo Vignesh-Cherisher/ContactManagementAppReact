@@ -10,15 +10,17 @@ import {
   ListItemText,
   Paper,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/index";
 import { useNavigate } from "react-router-dom";
+import { responsiveUiActions } from "../../store/responsiveUi.slice";
 
 const ContactListItem: React.FC = () => {
   const navigate = useNavigate();
   const contactItemList = useSelector(
     (state: RootState) => state.contactItem.transformedContacts
   );
+  const dispatch = useDispatch()
 
   return (
     <Paper >
@@ -31,6 +33,7 @@ const ContactListItem: React.FC = () => {
               className="contact-list-item"
               onClick={() => {
                 navigate(item.id.toString());
+                dispatch(responsiveUiActions.toggleDrawer(false))
               }}
             >
               <ListItem component="div">
