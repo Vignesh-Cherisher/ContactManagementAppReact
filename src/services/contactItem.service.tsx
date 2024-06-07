@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ContactItemList } from "../models/contactItem.model";
-import { ContactGroupType } from "../components/ContactForm/contactFormView";
+import { formStateType } from "../components/ContactForm/contactFormView";
 
 export const contactItemApi = createApi({
   reducerPath: "contactItemApi",
@@ -11,7 +11,7 @@ export const contactItemApi = createApi({
       query: () => ({ url: "get-contact-items" }),
       providesTags: () => [{ type: "contactItem" }],
     }),
-    postContactItem: builder.mutation<string, ContactGroupType>({
+    postContactItem: builder.mutation<string, formStateType>({
       query: (body) => ({
         url: "post-contact-item",
         method: "POST",

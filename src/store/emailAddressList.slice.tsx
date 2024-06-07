@@ -1,6 +1,7 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { EmailAddressGroup } from '../models/emailAddress.model';
+import { EmailAddressListApi } from "../services/emailAddressList.service";
 
 export const emailAddressListAdapter = createEntityAdapter({
   sortComparer: (a: EmailAddressGroup, b: EmailAddressGroup) =>
@@ -17,7 +18,16 @@ const emailAddressListSlice = createSlice({
     emailAddressListSetAll: emailAddressListAdapter.setAll,
     emailAddressListUpdate: emailAddressListAdapter.updateOne,
     emailAddressListRemove: emailAddressListAdapter.removeOne,
-  }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+      EmailAddressListApi.endpoints.getEmailAddressList.matchFulfilled,
+      (state, { payload }) => {
+        emailAddressListAdapter.setAll(state, payload);
+      }
+    );
+  },
 });
 
 export const {

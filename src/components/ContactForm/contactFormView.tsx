@@ -1,7 +1,13 @@
 import { Box, Button, Stack } from "@mui/material";
 import ContactFormMenuBar from "./contactFormMenuBar";
 import ContactFormDetails from "./contactFormDetails";
-import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ContactFormEmailTable from "./ContactFormDetailTable/contactFormEmailTable";
 import ContactFormPhoneTable from "./ContactFormDetailTable/contactFormPhoneTable";
@@ -10,63 +16,48 @@ import { ContactItem } from "../../models/contactItem.model";
 import { PhoneNumberGroup } from "../../models/phoneList.model";
 import { EmailAddressGroup } from "../../models/emailAddress.model";
 import { FocusEvent } from "react";
-import { contactItemActions, selectContactById } from "../../store/contactItem.slice";
-import { phoneNumberListActions } from "../../store/phoneNumberList.slice";
-import { emailAddressListActions } from "../../store/emailAddressList.slice";
+import {
+  contactItemActions,
+  selectContactById,
+} from "../../store/contactItem.slice";
+import { phoneNumberListActions, selectPhoneNumberGroupById } from "../../store/phoneNumberList.slice";
+import { emailAddressListActions, selectEmailAddressListById } from "../../store/emailAddressList.slice";
 import { usePostContactItemMutation } from "../../services/contactItem.service";
 import { AppDispatch, RootState } from "../../store/index";
 import { invalidateTagsAcrossApis } from "../../services/sharedTagInvalidation.middleware";
-import { convertDate, getDobValue, phoneNumberCheck, dateComparer } from "../../utils/contactAndDateFormatters";
-
-
+import {
+  convertDate,
+  getDobValue,
+  phoneNumberCheck,
+  dateComparer,
+} from "../../utils/contactAndDateFormatters";
 
 export type phoneNumberStateType = {
   [key: string]: boolean;
 };
 
-const getFromForm = (fd: FormData, value: string) => {
-  return fd.get(value)!.toString();
-};
-
-export type ContactGroupType = {
-  newContact: ContactItem;
-  newPhoneGroup: PhoneNumberGroup;
-  newEmailGroup: EmailAddressGroup;
-};
+export type formStateType = {
+  contact: ContactItem;
+  phoneGroup: PhoneNumberGroup;
+  emailGroup: EmailAddressGroup;
+}
 
 const createContactGroup = (
-  fd: FormData,
-  isFavorite: boolean,
+  formState: formStateType,
   isEditing: boolean,
   id: string
-): ContactGroupType => {
+): formStateType => {
   const randomInt = isEditing
     ? parseInt(id)
     : Math.floor(Math.random() * (10000 + 1));
-  const newContact: ContactItem = {
-    id: randomInt,
-    fName: getFromForm(fd, "fName"),
-    lName: getFromForm(fd, "lName"),
-    email: `email${randomInt}`,
-    phone: `phone${randomInt}`,
-    address: getFromForm(fd, "address"),
-    dob: getFromForm(fd, "dob") ?? convertDate(getFromForm(fd, "dob")),
-    isFav: isFavorite,
-    url: getFromForm(fd, "url"),
-  };
-  const newPhoneGroup: PhoneNumberGroup = {
-    id: `phone${randomInt}`,
-    home: getFromForm(fd, "home-number"),
-    work: getFromForm(fd, "work-number"),
-    main: getFromForm(fd, "main-number"),
-    other: getFromForm(fd, "other-number"),
-  };
-  const newEmailGroup: EmailAddressGroup = {
-    id: `email${randomInt}`,
-    personal: getFromForm(fd, "personal-email"),
-    work: getFromForm(fd, "work-email"),
-  };
-  return { newContact, newPhoneGroup, newEmailGroup };
+  const contact: ContactItem = formState.contact
+  contact.id = randomInt
+  contact.dob = formState.contact.dob === '' ? formState.contact.dob : convertDate(formState.contact.dob);
+  const phoneGroup: PhoneNumberGroup = formState.phoneGroup
+  phoneGroup.id = `phone${randomInt}`;
+  const emailGroup: EmailAddressGroup = formState.emailGroup
+  emailGroup.id = `email${randomInt}`;
+  return { contact, phoneGroup, emailGroup };
 };
 
 const checkPhoneInputError = (phoneInputState: phoneNumberStateType) => {
@@ -79,8 +70,6 @@ const ContactFormView: React.FC = () => {
   const [postContactItem] = usePostContactItemMutation();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [favContact, setFavContact] = useState(false);
-  const [imageUrlValue, setImageUrlValue] = useState("");
   const [dobInputError, setDobInputError] = useState(false);
   const [phoneInputError, setPhoneInputError] = useState({
     home: false,
@@ -89,12 +78,7 @@ const ContactFormView: React.FC = () => {
     other: false,
   });
 
-  
-  const [formState, setFormState] = useState<{
-    contact: ContactItem;
-    phoneGroup: PhoneNumberGroup;
-    emailGroup: EmailAddressGroup;
-  }>({
+  const [formState, setFormState] = useState<formStateType>({
     contact: {
       id: 0,
       fName: "",
@@ -119,22 +103,31 @@ const ContactFormView: React.FC = () => {
       work: "",
     },
   });
-  
+
   const handleFavoriteContact = useCallback(() => {
     setFormState((prevState) => ({
       ...prevState,
       contact: {
         ...prevState.contact,
         isFav: !prevState.contact.isFav,
-      }
-    }))
+      },
+    }));
   }, []);
 
   const isLoading = useSelector(
     (state: RootState) => state.contactItem.isLoading
   );
+
   const contactDataById = useSelector((state: RootState) =>
     selectContactById(state, parseInt(id!))
+  );
+
+  const emailDataById = useSelector((state: RootState) =>
+    selectEmailAddressListById(state,  `email${id!}`)
+  );
+
+  const phoneNumberById = useSelector((state: RootState) =>
+    selectPhoneNumberGroupById(state, `phone${id!}`)
   );
 
   useEffect(() => {
@@ -145,10 +138,18 @@ const ContactFormView: React.FC = () => {
           ...prevState.contact,
           ...contactDataById,
           dob: getDobValue(contactDataById.dob),
-        }
+        },
+        phoneGroup: {
+          ...prevState.phoneGroup,
+          ...phoneNumberById,
+        },
+        emailGroup: {
+          ...prevState.emailGroup,
+          ...emailDataById,
+        },
       }));
     }
-  }, [isLoading, editStatus, contactDataById, handleFavoriteContact]);
+  }, [isLoading, editStatus, contactDataById, handleFavoriteContact, phoneNumberById, emailDataById]);
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -189,8 +190,6 @@ const ContactFormView: React.FC = () => {
     }));
   };
 
-
-
   const handlePhoneInputState = (
     phoneType: string,
     event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -211,26 +210,20 @@ const ContactFormView: React.FC = () => {
     setDobInputError(dateComparer(dobInputValue));
   };
 
-  const onImageUrlChange = useCallback((imgUrl: string) => {
-    setImageUrlValue(imgUrl);
-  }, []);
-
   const submitFormHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const fd = new FormData(event.currentTarget);
-    fd.append("url", imageUrlValue);
     if (!dobInputError && !checkPhoneInputError(phoneInputError)) {
-      const { newContact, newPhoneGroup, newEmailGroup } = {
-        ...createContactGroup(fd, favContact, editStatus, id!),
+      const { contact, phoneGroup, emailGroup } = {
+        ...createContactGroup(formState, editStatus, id!),
       };
-      dispatch(contactItemActions.contactItemUpsertOne(newContact));
-      dispatch(phoneNumberListActions.phoneNumberListUpsertOne(newPhoneGroup));
+      dispatch(contactItemActions.contactItemUpsertOne(contact));
+      dispatch(phoneNumberListActions.phoneNumberListUpsertOne(phoneGroup));
       dispatch(
-        emailAddressListActions.emailAddressListUpsertOne(newEmailGroup)
+        emailAddressListActions.emailAddressListUpsertOne(emailGroup)
       );
-      await postContactItem({ newContact, newPhoneGroup, newEmailGroup });
+      await postContactItem({ contact, phoneGroup, emailGroup });
       await dispatch(invalidateTagsAcrossApis());
-      navigate(`/${newContact.id}`);
+      navigate(`/${contact.id}`);
     }
   };
 
@@ -240,23 +233,25 @@ const ContactFormView: React.FC = () => {
       <form className="form-control" onSubmit={submitFormHandler}>
         <ContactFormDetails
           handleFavContact={handleFavoriteContact}
-          favContactState={favContact}
           dobErrorState={dobInputError}
           dobInputState={handleDobInputState}
-          isEditing={editStatus}
           handleInputChange={handleInputChange}
           contact={formState.contact}
-          handleImageUrl={(imgUrl) => onImageUrlChange(imgUrl)}
+          isLoading={isLoading}
         ></ContactFormDetails>
         <Stack direction={{ sm: "column", md: "row" }} gap="5rem" p="1rem 3rem">
           <ContactFormPhoneTable
-           isEditing={editStatus}
-           handlePhoneState={handlePhoneInputState}
-           handleInputChange={handlePhoneInputChange}
-           phoneNumberState={phoneInputError}
-           phoneGroup={formState.phoneGroup}
+            handlePhoneState={handlePhoneInputState}
+            handleInputChange={handlePhoneInputChange}
+            phoneNumberState={phoneInputError}
+            phoneGroup={formState.phoneGroup}
+            isLoading={isLoading}
           ></ContactFormPhoneTable>
-          <ContactFormEmailTable isEditing={editStatus}></ContactFormEmailTable>
+          <ContactFormEmailTable
+            handleInputChange={handleEmailInputChange}
+            emailGroup={formState.emailGroup}
+            isLoading={isLoading}
+          ></ContactFormEmailTable>
         </Stack>
         <Box display="flex" gap="5rem" p="1rem 3rem"></Box>
         <div className="form-submit-button-container">
