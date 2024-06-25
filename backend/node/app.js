@@ -45,34 +45,12 @@ router.get("/api/get-phone-number-list/:id", (req, res) => {
   res.json(parsedData);
 });
 
-router.get("/api/get-phone-number-list", (req, res) => {
-  const data = readFileSync(defaultPath, { encoding: "utf8", flag: "r" });
-  let parsedData = {};
-  try {
-    parsedData = JSON.parse(data).phones.byId;
-  } catch (err) {
-    parsedData = {};
-  }
-  res.json(parsedData);
-});
-
 router.get("/api/get-email-list/:id", (req, res) => {
   const emailId = 'email' + req.params.id
   const data = readFileSync(defaultPath, { encoding: "utf8", flag: "r" });
   let parsedData = {};
   try {
     parsedData = JSON.parse(data).emails.byId[emailId];
-  } catch (err) {
-    parsedData = {};
-  }
-  res.json(parsedData);
-});
-
-router.get("/api/get-email-list", (req, res) => {
-  const data = readFileSync(defaultPath, { encoding: "utf8", flag: "r" });
-  let parsedData = {};
-  try {
-    parsedData = JSON.parse(data).emails.byId;
   } catch (err) {
     parsedData = {};
   }
