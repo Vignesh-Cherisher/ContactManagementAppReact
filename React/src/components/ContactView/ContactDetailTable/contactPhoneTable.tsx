@@ -18,7 +18,7 @@ const ContactPhoneTable: React.FC = () => {
   let dataArray: [string, PhoneNumberGroup][] = [];
 
   if (phoneNumberData) {
-    dataArray = Object.entries(phoneNumberData).slice(1);
+    dataArray = (Object.entries(phoneNumberData).filter(item => !(item[0].includes('id') || item[0].includes('sno'))));
   }
 
   return (
@@ -41,7 +41,9 @@ const ContactPhoneTable: React.FC = () => {
                   {phoneNumber[0].toUpperCase()}
                 </TableCell>
                 <TableCell align="center">
-                  {phoneNumber[1].toString().length > 0 ? `${phoneNumber[1]}` : "-"}
+                  {phoneNumber[1].toString().length > 0
+                    ? `${phoneNumber[1]}`
+                    : "-"}
                 </TableCell>
               </TableRow>
             ))}

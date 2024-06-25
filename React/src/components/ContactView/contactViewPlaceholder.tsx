@@ -20,19 +20,20 @@ const ContactViewPlaceholder: React.FC = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Box
-        sx={{
-          display: "flex",
-          p: "1rem 2rem",
-          justifyContent: "space-between",
-          borderBottom: "1px  solid",
-          borderColor: "palette.text.primary",
-        }}
-        boxShadow={shadows[1]}
-      >
-        {isLargeScreen ? (
-          ""
-        ) : (
+      {isLargeScreen ? (
+        ""
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            p: "1rem 2rem",
+            justifyContent: "space-between",
+            borderBottom: "1px  solid",
+            borderColor: "palette.text.primary",
+            minHeight: 57,
+          }}
+          boxShadow={shadows[1]}
+        >
           <Button
             onClick={() => toggleDrawer(true)}
             sx={{
@@ -42,10 +43,11 @@ const ContactViewPlaceholder: React.FC = () => {
               minWidth: "0",
             }}
           >
-            <Icon sx={{ color: "white" }}>menu</Icon>
+            <Icon sx={{ color: "palette.text.primary" }}>menu</Icon>
           </Button>
-        )}
-      </Box>
+        </Box>
+      )}
+
       <Typography
         variant="h4"
         gutterBottom

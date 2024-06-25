@@ -18,7 +18,7 @@ const ContactEmailTable: React.FC = () => {
   let dataArray: [string, EmailAddressGroup][] = [];
 
   if (emailAddressData) {
-    dataArray = Object.entries(emailAddressData).slice(1);
+    dataArray = (Object.entries(emailAddressData).filter(item => !(item[0].includes('id') || item[0].includes('sno'))));
   }
 
   return (

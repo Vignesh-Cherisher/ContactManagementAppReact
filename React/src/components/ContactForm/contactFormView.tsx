@@ -40,6 +40,18 @@ export type formStateType = {
   emailGroup: EmailAddressGroup;
 }
 
+const preprocessData = <inputType extends ContactItem | PhoneNumberGroup | EmailAddressGroup>(data: inputType): inputType => {
+  const processedData:inputType = {...data};
+  Object.keys(processedData).forEach((key) => {
+    const typedKey = key as keyof inputType;
+    const value = processedData[typedKey]
+    if (typeof value === 'string' && value === '') {
+      processedData[typedKey] = null as never;
+    }
+  })
+  return processedData as inputType
+}
+
 const createContactGroup = (
   formState: formStateType,
   isEditing: boolean,
@@ -48,16 +60,22 @@ const createContactGroup = (
   const randomInt = isEditing
     ? parseInt(id)
     : Math.floor(Math.random() * (10000 + 1));
-  const contact: ContactItem = formState.contact;
+  let contact: ContactItem = formState.contact;
   contact.id = randomInt;
   contact.dob =
     formState.contact.dob === ""
       ? formState.contact.dob
       : convertDate(formState.contact.dob);
-  const phoneGroup: PhoneNumberGroup = formState.phoneGroup;
+  contact.phone = `phone${randomInt}`
+  contact.email = `email${randomInt}`
+  let phoneGroup: PhoneNumberGroup = formState.phoneGroup;
   phoneGroup.id = `phone${randomInt}`;
-  const emailGroup: EmailAddressGroup = formState.emailGroup;
+  let emailGroup: EmailAddressGroup = formState.emailGroup;
   emailGroup.id = `email${randomInt}`;
+  contact = preprocessData(contact)
+  phoneGroup = preprocessData(phoneGroup)
+  emailGroup = preprocessData(emailGroup)
+  console.log(contact, phoneGroup, emailGroup);
   return { contact, phoneGroup, emailGroup };
 };
 
@@ -105,6 +123,8 @@ const ContactFormView: React.FC = () => {
     },
   });
 
+  console.log(formState.phoneGroup);
+
   const handleFavoriteContact = () => {
     setFormState((prevState) => ({
       ...prevState,
@@ -123,9 +143,13 @@ const ContactFormView: React.FC = () => {
     selectContactById(state, parseInt(id!))
   );
 
-  const {data: emailDataById} = useGetEmailAddressListByIdQuery(id!)
+  const {data: emailDataById} = useGetEmailAddressListByIdQuery(id!, {
+    skip: (id === undefined),
+  })
 
-  const {data: phoneNumberById} = useGetPhoneNumberListByIdQuery(id!)
+  const {data: phoneNumberById} = useGetPhoneNumberListByIdQuery(id!, {
+    skip: (id === undefined),
+  })
 
   useEffect(() => {
     if (!isLoading && editStatus) {

@@ -4,10 +4,10 @@ import { PhoneNumberGroupList } from "../models/phoneList.model";
 export const PhoneNumberApi = createApi({
   reducerPath: "PhoneNumberApi",
   tagTypes: ["phoneItem"],
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/phone/" }),
   endpoints: (builder) => ({
     getPhoneNumberListById: builder.query<PhoneNumberGroupList, string>({
-      query: (id: string) => ({ url: `get-phone-number-list/${id}` }),
+      query: (id: string) => ({ url: `${id}` }),
       providesTags: () => [{type: "phoneItem"}]
     })
   }),

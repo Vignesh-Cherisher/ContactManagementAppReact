@@ -5,15 +5,15 @@ import { formStateType } from "../components/ContactForm/contactFormView";
 export const contactItemApi = createApi({
   reducerPath: "contactItemApi",
   tagTypes: ["contactItem"],
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/contacts/" }),
   endpoints: (builder) => ({
     getContactItem: builder.query<ContactItemList, void>({
-      query: () => ({ url: "get-contact-items" }),
+      query: () => ({ url: "contact-list" }),
       providesTags: () => [{ type: "contactItem" }],
     }),
     postContactItem: builder.mutation<string, formStateType>({
       query: (body) => ({
-        url: "post-contact-item",
+        url: "upsert",
         method: "POST",
         body: body,
       }),
@@ -21,11 +21,9 @@ export const contactItemApi = createApi({
     }),
     deleteContactItem: builder.mutation<string, string>({
       query(id) {
-        const body = { id };
         return {
-          url: "delete-contact-item",
-          method: "POST",
-          body,
+          url: `${id}`,
+          method: "DELETE",
         };
       },
       invalidatesTags: () => [{ type: "contactItem" }],
