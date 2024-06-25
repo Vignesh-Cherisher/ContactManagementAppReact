@@ -6,11 +6,11 @@ export const PhoneNumberApi = createApi({
   tagTypes: ["phoneItem"],
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/" }),
   endpoints: (builder) => ({
-    getPhoneNumberList: builder.query<PhoneNumberGroupList, void>({
-      query: () => ({ url: "get-phone-number-list" }),
+    getPhoneNumberListById: builder.query<PhoneNumberGroupList, string>({
+      query: (id: string) => ({ url: `get-phone-number-list/${id}` }),
       providesTags: () => [{type: "phoneItem"}]
-    }),
+    })
   }),
 });
 
-export const { useGetPhoneNumberListQuery } = PhoneNumberApi;
+export const { useGetPhoneNumberListByIdQuery } = PhoneNumberApi;

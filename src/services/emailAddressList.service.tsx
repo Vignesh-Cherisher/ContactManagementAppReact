@@ -6,11 +6,11 @@ export const EmailAddressListApi = createApi({
   tagTypes: ["emailItem"],
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/" }),
   endpoints: (builder) => ({
-    getEmailAddressList: builder.query<EmailAddressGroupList, void>({
-      query: () => ({ url: "get-email-list" }),
-      providesTags: [{type: "emailItem"}],
-    }),
+    getEmailAddressListById: builder.query<EmailAddressGroupList, string>({
+      query: (id: string) => ({ url: `get-email-list/${id}` }),
+      providesTags: () => [{type: "emailItem"}]
+    })
   }),
 });
 
-export const { useGetEmailAddressListQuery } = EmailAddressListApi;
+export const { useGetEmailAddressListByIdQuery } = EmailAddressListApi;

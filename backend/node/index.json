@@ -18,54 +18,54 @@
         "lName": "Smith",
         "email": "email102",
         "phone": "phone102",
-        "address": "25, Greenfield Avenue, Hilltown, \n New York,\n US",
         "dob": "11-01-1985",
         "isFav": true,
+        "address": "25, Greenfield Avenue, Hilltown, \n New York,\n US",
         "url": "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "103": {
         "id": 103,
         "fName": "Charles",
         "lName": "Brown",
-        "address": "33, Ocean Drive, Westwood, \n California,\n US",
-        "url": "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "5-5-1978",
-        "phone": "phone103",
         "email": "email103",
-        "isFav": false
+        "phone": "phone103",
+        "dob": "5-5-1978",
+        "isFav": false,
+        "address": "33, Ocean Drive, Westwood, \n California,\n US",
+        "url": "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "104": {
         "id": 104,
         "fName": "Diana",
         "lName": "Martinez",
-        "address": "45, Redwood Lane, Fairview, \n Texas,\n US",
-        "url": "https://images.pexels.com/photos/1542085/pexels-photo-1542085.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "14-3-1992",
-        "phone": "phone104",
         "email": "email104",
-        "isFav": true
+        "phone": "phone104",
+        "dob": "14-03-1992",
+        "isFav": true,
+        "address": "45, Redwood Lane, Fairview, \n Texas,\n US",
+        "url": "https://images.pexels.com/photos/1542085/pexels-photo-1542085.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "105": {
         "id": 105,
         "fName": "Edward",
         "lName": "Lee",
-        "address": "89, Pineapple Blvd, Riverwood, \n Florida,\n US",
-        "url": "https://images.pexels.com/photos/3622615/pexels-photo-3622615.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "30-7-1988",
-        "phone": "phone105",
         "email": "email105",
-        "isFav": false
+        "phone": "phone105",
+        "dob": "31-07-1988",
+        "isFav": true,
+        "address": "89, Pineapple Blvd, Riverwood, \n Florida,\n US",
+        "url": "https://images.pexels.com/photos/3622615/pexels-photo-3622615.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "106": {
         "id": 106,
         "fName": "Fiona",
         "lName": "Garcia",
-        "address": "77, Lakeview Road, Lakeside, \n Ohio,\n US",
-        "url": "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "25-11-1995",
-        "phone": "phone106",
         "email": "email106",
-        "isFav": true
+        "phone": "phone106",
+        "dob": "25-11-1995",
+        "isFav": true,
+        "address": "77, Lakeview Road, Lakeside, \n Ohio,\n US",
+        "url": "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "107": {
         "id": 107,
@@ -73,43 +73,43 @@
         "lName": "Clark",
         "email": "email107",
         "phone": "phone107",
-        "address": "53, Forest Hill, Maplewood, \n Illinois,\n US",
-        "dob": "1980-06-18",
+        "dob": "18-06-1980",
         "isFav": false,
+        "address": "53, Forest Hill, Maplewood, \n Illinois,\n US",
         "url": "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "108": {
         "id": 108,
         "fName": "Hannah",
         "lName": "Johnson",
-        "address": "12, Mountain Road, Aspen, \n Colorado,\n US",
-        "url": "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "12-2-1990",
-        "phone": "phone108",
         "email": "email108",
-        "isFav": true
+        "phone": "phone108",
+        "dob": "12-2-1990",
+        "isFav": true,
+        "address": "12, Mountain Road, Aspen, \n Colorado,\n US",
+        "url": "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "109": {
         "id": 109,
         "fName": "Isaac",
         "lName": "Williams",
-        "address": "91, Seaside Boulevard, Beachwood, \n California,\n US",
-        "url": "https://images.pexels.com/photos/325682/pexels-photo-325682.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "5-4-1983",
-        "phone": "phone109",
         "email": "email109",
-        "isFav": false
+        "phone": "phone109",
+        "dob": "05-04-1983",
+        "isFav": false,
+        "address": "91, Seaside Boulevard, Beachwood, \n California,\n US",
+        "url": "https://images.pexels.com/photos/325682/pexels-photo-325682.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "110": {
         "id": 110,
         "fName": "Jessica",
         "lName": "Taylor",
-        "address": "66, Sunset Street, Springfield, \n Illinois,\n US",
-        "url": "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "dob": "22-8-1987",
-        "phone": "phone110",
         "email": "email110",
-        "isFav": true
+        "phone": "phone110",
+        "dob": "22-8-1987",
+        "isFav": true,
+        "address": "66, Sunset Street, Springfield, \n Illinois,\n US",
+        "url": "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       "7243": {
         "id": 7243,
@@ -117,9 +117,9 @@
         "lName": "Sidler",
         "email": "email7243",
         "phone": "phone7243",
-        "address": "",
         "dob": "",
         "isFav": false,
+        "address": "",
         "url": ""
       }
     },
@@ -141,7 +141,7 @@
     "byId": {
       "phone101": {
         "id": "phone101",
-        "home": "9283756473",
+        "home": "928375647",
         "work": "8329573467",
         "main": "8384985757",
         "other": "8475839485"
@@ -162,15 +162,15 @@
       },
       "phone104": {
         "id": "phone104",
-        "home": "9334567890",
+        "home": "93345678654",
         "work": "8329572222",
         "main": "8384783333",
         "other": "8475834444"
       },
       "phone105": {
         "id": "phone105",
-        "home": "9434567890",
-        "work": "8329573333",
+        "home": "942323235235",
+        "work": "8329573333234",
         "main": "8384784444",
         "other": "8475835555"
       },
@@ -250,13 +250,13 @@
       },
       "email104": {
         "id": "email104",
-        "work": "dmartinez@tmail.co",
-        "personal": "dimart@tmail.co"
+        "personal": "dimart@tma.co",
+        "work": "dmartinez@tmail.co"
       },
       "email105": {
         "id": "email105",
-        "work": "elee@tmail.co",
-        "personal": "edlee@tmail.co"
+        "personal": "edlee@tmail.co",
+        "work": "elee@tmail.co"
       },
       "email106": {
         "id": "email106",
@@ -275,8 +275,8 @@
       },
       "email109": {
         "id": "email109",
-        "work": "iwilliams@tmail.co",
-        "personal": "isawil@tmail.co"
+        "personal": "isawil@tmail.co",
+        "work": "iwilliams@tmail.co"
       },
       "email110": {
         "id": "email110",

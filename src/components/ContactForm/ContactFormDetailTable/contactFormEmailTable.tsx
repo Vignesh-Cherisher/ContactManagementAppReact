@@ -17,7 +17,8 @@ type ContactFormEmailTableType = {
   emailGroup: EmailAddressGroup;
   isLoading: boolean;
   handleInputChange: (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    inputGroup: string
   ) => void;
 };
 
@@ -53,7 +54,7 @@ const ContactFormEmailTable: React.FC<ContactFormEmailTableType> = ({
                         name={emailAddress}
                         type="email"
                         value={emailGroup[emailAddress as keyof EmailAddressGroup] ?? ''}
-                        onChange={handleInputChange}
+                        onChange={(event) => handleInputChange(event, 'emailGroup')}
                       ></TextField>
                     </TableCell>
                   </TableRow>
