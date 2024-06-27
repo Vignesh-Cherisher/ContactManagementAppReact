@@ -22,7 +22,7 @@ const ContactEmailTable: React.FC = () => {
   }
 
   return (
-    <TableContainer component={Paper} sx={{ height: "fit-content" }}>
+    <TableContainer component={Paper} sx={{ height: "fit-content", maxWidth:"540px" }}>
       <Table sx={{ minWidth: 200 }} aria-label="simple table">
         <TableHead>
           <TableRow>

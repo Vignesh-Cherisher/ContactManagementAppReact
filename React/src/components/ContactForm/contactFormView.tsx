@@ -75,7 +75,6 @@ const createContactGroup = (
   contact = preprocessData(contact)
   phoneGroup = preprocessData(phoneGroup)
   emailGroup = preprocessData(emailGroup)
-  console.log(contact, phoneGroup, emailGroup);
   return { contact, phoneGroup, emailGroup };
 };
 
@@ -122,8 +121,6 @@ const ContactFormView: React.FC = () => {
       work: "",
     },
   });
-
-  console.log(formState.phoneGroup);
 
   const handleFavoriteContact = () => {
     setFormState((prevState) => ({
@@ -232,7 +229,6 @@ const ContactFormView: React.FC = () => {
         ></ContactFormDetails>
         <Stack direction={{ sm: "column", md: "row" }} gap="5rem" p="1rem 3rem">
           <ContactFormPhoneTable
-
             validatePhoneNumbers={validatePhoneInput}
             handleInputChange={handleInputChange}
             phoneNumberState={phoneInputError}

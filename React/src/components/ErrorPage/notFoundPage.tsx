@@ -1,13 +1,6 @@
-import { NavLink, useRouteError } from "react-router-dom";
-
-type RouterErrorType = {
-  status?: number;
-  statusText?: string;
-  message?: string;
-}
+import { NavLink } from "react-router-dom";
 
 const NotFoundPage: React.FC = () => {
-  const error = useRouteError() as RouterErrorType;
 
   return (
     <>

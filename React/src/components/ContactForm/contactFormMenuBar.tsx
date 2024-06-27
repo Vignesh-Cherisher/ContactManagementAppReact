@@ -45,7 +45,7 @@ const ContactFormMenuBar: React.FC<{ isEditing: boolean }> = ({
                 minWidth: "0",
               }}
             >
-              <Icon sx={{ color: "white" }}>menu</Icon>
+              <Icon sx={{color: 'action.active'}}>menu</Icon>
             </Button>
           )}
           <Typography

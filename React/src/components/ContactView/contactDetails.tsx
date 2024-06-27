@@ -18,7 +18,7 @@ const ContactDetails: React.FC = () => {
     selectContactById(state, parseInt(id!))
   );
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.up('sm'))
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   useEffect(() => {
     if (!isLoading) {
@@ -35,11 +35,11 @@ const ContactDetails: React.FC = () => {
       </Box>}
       {contactData && (
         <>
-          <Box sx={{ flexGrow: 1, width: "100%" }}>
+          <Box sx={{ justifyContent:"center", ...(isSmallScreen ? {display:"block"} : {display:"flex" })}}>
             <Grid
               container
               spacing={2}
-              sx={{ p: "1rem 2rem 0 2rem", ...(isSmallScreen ? '' : {flexDirection: "column-reverse"}) }}
+              sx={{ p: "1rem 2rem" ,maxWidth:"1500px" ,...(isSmallScreen ? {flexDirection: "column-reverse"} : '') }}
               alignItems="center"
               justifyContent="space-around"
             >
