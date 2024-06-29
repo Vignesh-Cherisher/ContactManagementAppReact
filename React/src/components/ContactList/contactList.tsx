@@ -20,10 +20,10 @@ const ContactListItem: React.FC = () => {
   const contactItemList = useSelector(
     (state: RootState) => state.contactItem.transformedContacts
   );
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
-    <Paper >
+    <Paper>
       <List>
         {contactItemList !== undefined &&
           contactItemList.map((item: ContactItem) => (
@@ -33,7 +33,7 @@ const ContactListItem: React.FC = () => {
               className="contact-list-item"
               onClick={() => {
                 navigate(item.id.toString());
-                dispatch(responsiveUiActions.toggleDrawer(false))
+                dispatch(responsiveUiActions.toggleDrawer(false));
               }}
             >
               <ListItem component="div">

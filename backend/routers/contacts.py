@@ -1,12 +1,17 @@
+import os
+import shutil
 from typing import Annotated, Optional
-from fastapi import APIRouter, HTTPException
-from fastapi import Depends
+from xml.dom import ValidationErr
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
+from fastapi.responses import JSONResponse, FileResponse
 from sqlalchemy.orm import Session
 from starlette import status
 from errors import UnknownContactException
 from database import SessionLocal
 from models import Contacts, Phones, Emails
-from pydantic import EmailStr, Field, BaseModel
+from pydantic import EmailStr, Field, BaseModel, FilePath
+
+UPLOAD_DIRECTORY = 'profile_pics'
 
 class ContactItemModel(BaseModel):
   id:int
@@ -23,15 +28,15 @@ class ContactItemModel(BaseModel):
     json_schema_extra = {
       "examples":[
         {
-          'id': 123,
-          'fName': 'example',
-          'lName': 'user',
-          'email': 'email123',
-          'phone': 'phone123',
-          'dob': '01-01-1999',
-          'isFav': False,
-          'address': 'example, user, \n address',
-          'url': 'https://example/user/profile/picture/url'
+          "id": 123,
+          "fName": "example",
+          "lName": "user",
+          "email": "email123",
+          "phone": "phone123",
+          "dob": "01-01-1999",
+          "isFav": False,
+          "address": "example, user, \n address",
+          "url": "https://example/user/profile/picture/url"
         }
       ]
     }
@@ -106,17 +111,37 @@ db_dependency = Annotated[Session, Depends(get_db)]
 def update_model(instance, data):
     for attr, value in data.items():
         setattr(instance, attr, value)
+        
+def process_contact_model(contact_model, profile_img):
+  file_path = os.path.join(UPLOAD_DIRECTORY, profile_img.filename)
+  with open(file_path, "wb") as buffer:
+      shutil.copyfileobj(profile_img.file, buffer)
+  contact_model.url = file_path
+  return contact_model
+
+def get_form_data(
+    post_request: PostRequest,
+) -> PostRequest:
+    try:
+        contact_data = PostRequest(
+            contact=ContactItemModel.parse_raw(post_request.contact),
+            phoneGroup=PhoneItemModel.parse_raw(post_request.phoneGroup),
+            emailGroup=EmailItemModel.parse_raw(post_request.emailGroup)
+        )
+        return contact_data
+    except ValidationErr as e:
+        raise HTTPException(status_code=422, detail=e.errors())
 
 @router.get('/contact-list', status_code=status.HTTP_200_OK)
 def get_contacts(db: db_dependency):
   return db.query(Contacts).all()
 
 @router.post('/upsert', status_code=status.HTTP_200_OK)
-def create_contact(db: db_dependency, post_request: PostRequest):
+def create_contact(db: db_dependency, post_request: PostRequest = Depends(get_form_data), profile_image: UploadFile = File(...)):
   request_contact = post_request.contact
   contact_model = db.query(Contacts).filter(Contacts.id == request_contact.id).first()
   if not contact_model:
-    contact_model = Contacts(**post_request.contact.model_dump())
+    contact_model = process_contact_model(Contacts(**post_request.contact.model_dump()), profile_image)
     phone_model = Phones(**post_request.phoneGroup.model_dump())
     email_model = Emails(**post_request.emailGroup.model_dump())
     email_model.id = request_contact.email

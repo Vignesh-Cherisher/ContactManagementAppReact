@@ -5,7 +5,7 @@ import { formStateType } from "../components/ContactForm/contactFormView";
 export const contactItemApi = createApi({
   reducerPath: "contactItemApi",
   tagTypes: ["contactItem"],
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/contacts/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://127.0.0.1:8000/contacts/" }),
   endpoints: (builder) => ({
     getContactItem: builder.query<ContactItemList, void>({
       query: () => ({ url: "contact-list" }),

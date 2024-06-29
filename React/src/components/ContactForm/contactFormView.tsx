@@ -38,6 +38,7 @@ export type formStateType = {
   contact: ContactItem;
   phoneGroup: PhoneNumberGroup;
   emailGroup: EmailAddressGroup;
+  profileImg: File | null
 }
 
 const preprocessData = <inputType extends ContactItem | PhoneNumberGroup | EmailAddressGroup>(data: inputType): inputType => {
@@ -75,7 +76,8 @@ const createContactGroup = (
   contact = preprocessData(contact)
   phoneGroup = preprocessData(phoneGroup)
   emailGroup = preprocessData(emailGroup)
-  return { contact, phoneGroup, emailGroup };
+  const profileImg = formState.profileImg
+  return { contact, phoneGroup, emailGroup, profileImg };
 };
 
 const checkPhoneInputError = (phoneInputState: phoneNumberStateType) => {
@@ -106,7 +108,7 @@ const ContactFormView: React.FC = () => {
       dob: "",
       isFav: false,
       address: "",
-      url: "",
+      url: '',
     },
     phoneGroup: {
       id: "",
@@ -120,7 +122,10 @@ const ContactFormView: React.FC = () => {
       personal: "",
       work: "",
     },
+    profileImg: null
   });
+
+  console.log(formState.profileImg)
 
   const handleFavoriteContact = () => {
     setFormState((prevState) => ({
@@ -164,7 +169,7 @@ const ContactFormView: React.FC = () => {
         emailGroup: {
           ...prevState.emailGroup,
           ...emailDataById,
-        },
+        }
       }));
     }
   }, [isLoading, editStatus, contactDataById, phoneNumberById, emailDataById]);
@@ -172,6 +177,16 @@ const ContactFormView: React.FC = () => {
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputGroup:string
   ) => {
+    if(inputGroup === 'profileImage') {
+      const eventTarget = (event.target as HTMLInputElement).files
+      if(eventTarget && eventTarget.length > 0){
+        setFormState((prevState) => ({
+          ...prevState,
+          profileImg: eventTarget[0]
+        }))
+      }
+      return
+    }
     const { name, value } = event.target;
     setFormState((prevState) => ({
       ...prevState,
@@ -205,11 +220,11 @@ const ContactFormView: React.FC = () => {
   const submitFormHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!dobInputError && !checkPhoneInputError(phoneInputError)) {
-      const { contact, phoneGroup, emailGroup } = {
+      const { contact, phoneGroup, emailGroup, profileImg } = {
         ...createContactGroup(formState, editStatus, id!),
       };
       dispatch(contactItemActions.contactItemUpsertOne(contact));
-      await postContactItem({ contact, phoneGroup, emailGroup });
+      await postContactItem({ contact, phoneGroup, emailGroup, profileImg });
       await dispatch(invalidateTagsAcrossApis());
       navigate(`/${contact.id}`);
     }

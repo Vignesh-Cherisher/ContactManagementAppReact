@@ -1,10 +1,15 @@
-import { Typography, Box, Grid, Icon, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Grid,
+  Icon,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../store";
-import {
-  selectContactById,
-} from "../../store/contactItem.slice";
+import { selectContactById } from "../../store/contactItem.slice";
 import ImageWithAlt from "../../theme/ImgElement";
 import { useEffect } from "react";
 
@@ -18,28 +23,35 @@ const ContactDetails: React.FC = () => {
     selectContactById(state, parseInt(id!))
   );
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (!isLoading) {
       if (contactData === undefined) {
-        navigate("/notFound")
+        navigate("/notFound");
       }
     }
-  }, [isLoading, navigate, contactData])
+  }, [isLoading, navigate, contactData]);
 
   return (
     <>
-      {isLoading && <Box>
-        Loading...
-      </Box>}
+      {isLoading && <Box>Loading...</Box>}
       {contactData && (
         <>
-          <Box sx={{ justifyContent:"center", ...(isSmallScreen ? {display:"block"} : {display:"flex" })}}>
+          <Box
+            sx={{
+              justifyContent: "center",
+              ...(isSmallScreen ? { display: "block" } : { display: "flex" }),
+            }}
+          >
             <Grid
               container
               spacing={2}
-              sx={{ p: "1rem 2rem" ,maxWidth:"1500px" ,...(isSmallScreen ? {flexDirection: "column-reverse"} : '') }}
+              sx={{
+                p: "1rem 2rem",
+                maxWidth: "1500px",
+                ...(isSmallScreen ? { flexDirection: "column-reverse" } : ""),
+              }}
               alignItems="center"
               justifyContent="space-around"
             >
@@ -114,7 +126,7 @@ const ContactDetails: React.FC = () => {
                   sx={{ m: "0 0 0.5rem 0" }}
                   className="contact-detail"
                 >
-                  {contactData.dob ?? ''}
+                  {contactData.dob ?? ""}
                 </Typography>
               </Grid>
               <Grid
@@ -128,7 +140,11 @@ const ContactDetails: React.FC = () => {
                 sx={{ mb: "1rem" }}
                 textAlign="right"
               >
-                <ImageWithAlt alt={contactData.fName} src={contactData.url} width="75%"></ImageWithAlt>
+                <ImageWithAlt
+                  alt={contactData.fName}
+                  src={contactData.url}
+                  width="75%"
+                ></ImageWithAlt>
                 <Icon
                   sx={{
                     ...(contactData.isFav

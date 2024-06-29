@@ -19,6 +19,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UIModal from "../../UI/Modal";
 import { RootState } from "../../store";
+import { responsiveUiActions } from "../../store/responsiveUi.slice";
 
 type selectedFilterType = {
   isFavorite: boolean;
@@ -65,6 +66,10 @@ const ContactPanelContent: React.FC = () => {
     setSelectedFilters((prevState) => {
       return { ...prevState, [formattedFilter]: !prevState[formattedFilter] };
     });
+  };
+
+  const toggleDrawer = (isOpen: boolean) => {
+    dispatch(responsiveUiActions.toggleDrawer(isOpen));
   };
 
   return (
@@ -128,7 +133,10 @@ const ContactPanelContent: React.FC = () => {
           <Button
             variant="contained"
             startIcon={<Icon>add</Icon>}
-            onClick={() => navigate("/add")}
+            onClick={() => {
+              navigate("/add")
+              toggleDrawer(false)
+            }}
           >
             Add
           </Button>

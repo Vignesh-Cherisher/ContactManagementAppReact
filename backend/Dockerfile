@@ -16,6 +16,10 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
+WORKDIR /data
+
+COPY ./contact_manager_app.db .
+
 WORKDIR /app
 
 COPY . .

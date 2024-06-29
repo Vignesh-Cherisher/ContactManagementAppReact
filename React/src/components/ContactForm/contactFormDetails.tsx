@@ -37,7 +37,6 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
   handleInputChange,
   contact
 }) => {
-
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -99,7 +98,7 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     name="fName"
                     id="fName-input"
                     value={contact.fName}
-                    onChange={(event) => handleInputChange(event, 'contact')}
+                    onChange={(event) => handleInputChange(event, "contact")}
                   ></TextField>
                 </Box>
                 <Box
@@ -128,7 +127,7 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     name="lName"
                     id="lName-input"
                     value={contact.lName}
-                    onChange={(event) => handleInputChange(event, 'contact')}
+                    onChange={(event) => handleInputChange(event, "contact")}
                   ></TextField>
                 </Box>
                 <Box
@@ -155,7 +154,7 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                   </InputLabel>
                   <TextField
                     value={contact.address}
-                    onChange={(event) => handleInputChange(event, 'contact')}
+                    onChange={(event) => handleInputChange(event, "contact")}
                     multiline
                     rows={3}
                     id="address-input"
@@ -191,7 +190,7 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     name="dob"
                     value={contact.dob}
                     onBlur={(event) => validateDob(event)}
-                    onChange={(event) => handleInputChange(event, 'contact')}
+                    onChange={(event) => handleInputChange(event, "contact")}
                   ></TextField>
                 </Box>
               </Grid>
@@ -214,7 +213,11 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                     <ImageWithAlt
                       width="75%"
                       alt={contact.fName}
-                      src={contact.url === '' ? '/public/OIP.jpg' : `${contact.url}`}
+                      src={
+                        contact.url === ''
+                          ? "/public/OIP.jpg"
+                          : `${contact.url}`
+                      }
                     />
                   </Button>
                   <UIModal open={isOpen} handleClose={handleModalControl}>
@@ -223,11 +226,17 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                         Please enter the Profile picture Url:
                       </Typography>
                       <TextField
-                        value={contact.url}
-                        onChange={(event) => handleInputChange(event, 'contact')}
+                        
+                        onChange={(event) =>
+                          handleInputChange(event, "profileImage")
+                        }
                         label="Image Url"
-                        name="url"
-                        id="url-input"
+                        name="img"
+                        id="img-input"
+                        type="file"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
                         sx={{ marginBlock: "0.7rem" }}
                       ></TextField>
                     </>

@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 from errors import InvalidDataTypeException, UnknownContactException
 from models import Base
@@ -34,10 +35,8 @@ async def unknown_contact_handler(request: Request, exc: InvalidDataTypeExceptio
     content={"message": "Oops! Phone number is in String format."}
   )
 
+app.mount("/images", StaticFiles(directory='profile_pics'), name="images")
+
 app.include_router(contacts.router)
 app.include_router(phones.router)
 app.include_router(emails.router)
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -4,7 +4,7 @@ import { EmailAddressGroupList } from "../models/emailAddress.model";
 export const EmailAddressListApi = createApi({
   reducerPath: "EmailAddressListApi",
   tagTypes: ["emailItem"],
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/emails/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://127.0.0.1:8000/emails/" }),
   endpoints: (builder) => ({
     getEmailAddressListById: builder.query<EmailAddressGroupList, string>({
       query: (id: string) => ({ url: `${id}` }),
