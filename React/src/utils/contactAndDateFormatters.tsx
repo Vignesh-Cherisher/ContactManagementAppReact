@@ -1,14 +1,17 @@
 export const getDobValue = (dobValue: string) => {
-  const [dobDay, dobMonth, dobYear] = dobValue.split("-").map(Number);
+  if(dobValue) {
+    const [dobDay, dobMonth, dobYear] = dobValue.split("-").map(Number);
 
-  const dob = new Date(`${dobMonth}-${dobDay}-${dobYear}`);
+    const dob = new Date(`${dobMonth}-${dobDay}-${dobYear}`);
 
-  const year = dob.getFullYear();
-  const month = (dob.getMonth() + 1).toString().padStart(2, "0");
-  const day = dob.getDate().toString().padStart(2, "0");
+    const year = dob.getFullYear();
+    const month = (dob.getMonth() + 1).toString().padStart(2, "0");
+    const day = dob.getDate().toString().padStart(2, "0");
 
-  const formattedDate = `${year}-${month}-${day}`;
-  return formattedDate;
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+  }
+  return ''
 };
 
 export const dateComparer = (dateObject: string): boolean => {

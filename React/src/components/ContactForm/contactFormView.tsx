@@ -15,7 +15,10 @@ import {
   contactItemActions,
   selectContactById,
 } from "../../store/contactItem.slice";
-import { usePostContactItemMutation } from "../../services/contactItem.service";
+import {
+  usePostContactItemMutation,
+  usePostContactImageMutation,
+} from "../../services/contactItem.service";
 import { AppDispatch, RootState } from "../../store/index";
 import { invalidateTagsAcrossApis } from "../../services/sharedTagInvalidation.middleware";
 import {
@@ -38,26 +41,30 @@ export type formStateType = {
   contact: ContactItem;
   phoneGroup: PhoneNumberGroup;
   emailGroup: EmailAddressGroup;
-  profileImg: File | null
-}
+  profileImg: File | null;
+};
 
-const preprocessData = <inputType extends ContactItem | PhoneNumberGroup | EmailAddressGroup>(data: inputType): inputType => {
-  const processedData:inputType = {...data};
+const preprocessData = <
+  inputType extends ContactItem | PhoneNumberGroup | EmailAddressGroup
+>(
+  data: inputType
+): inputType => {
+  const processedData: inputType = { ...data };
   Object.keys(processedData).forEach((key) => {
     const typedKey = key as keyof inputType;
-    const value = processedData[typedKey]
-    if (typeof value === 'string' && value === '') {
+    const value = processedData[typedKey];
+    if (typeof value === "string" && value === "") {
       processedData[typedKey] = null as never;
     }
-  })
-  return processedData as inputType
-}
+  });
+  return processedData as inputType;
+};
 
-const createContactGroup = (
+const createContactGroup = async (
   formState: formStateType,
   isEditing: boolean,
   id: string
-): formStateType => {
+): Promise<formStateType> => {
   const randomInt = isEditing
     ? parseInt(id)
     : Math.floor(Math.random() * (10000 + 1));
@@ -67,16 +74,23 @@ const createContactGroup = (
     formState.contact.dob === ""
       ? formState.contact.dob
       : convertDate(formState.contact.dob);
-  contact.phone = `phone${randomInt}`
-  contact.email = `email${randomInt}`
+  contact.phone = `phone${randomInt}`;
+  contact.email = `email${randomInt}`;
   let phoneGroup: PhoneNumberGroup = formState.phoneGroup;
   phoneGroup.id = `phone${randomInt}`;
   let emailGroup: EmailAddressGroup = formState.emailGroup;
   emailGroup.id = `email${randomInt}`;
-  contact = preprocessData(contact)
-  phoneGroup = preprocessData(phoneGroup)
-  emailGroup = preprocessData(emailGroup)
-  const profileImg = formState.profileImg
+  contact = preprocessData(contact);
+  phoneGroup = preprocessData(phoneGroup);
+  emailGroup = preprocessData(emailGroup);
+  let profileImg = formState.profileImg;
+  if (profileImg === null) {
+    const response = await fetch("/OIP.jpg"); // Adjust the path as needed
+    const blob = await response.blob();
+    profileImg = new File([blob], "default-image.jpg", {
+      type: blob.type,
+    });
+  }
   return { contact, phoneGroup, emailGroup, profileImg };
 };
 
@@ -88,6 +102,7 @@ const ContactFormView: React.FC = () => {
   const editStatus = useLocation().pathname.includes("edit");
   const { id } = useParams();
   const [postContactItem] = usePostContactItemMutation();
+  const [postContactImage] = usePostContactImageMutation();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [dobInputError, setDobInputError] = useState(false);
@@ -107,8 +122,8 @@ const ContactFormView: React.FC = () => {
       phone: "",
       dob: "",
       isFav: false,
-      address: "",
-      url: '',
+      address: " ",
+      url: "",
     },
     phoneGroup: {
       id: "",
@@ -122,10 +137,8 @@ const ContactFormView: React.FC = () => {
       personal: "",
       work: "",
     },
-    profileImg: null
+    profileImg: null,
   });
-
-  console.log(formState.profileImg)
 
   const handleFavoriteContact = () => {
     setFormState((prevState) => ({
@@ -145,13 +158,13 @@ const ContactFormView: React.FC = () => {
     selectContactById(state, parseInt(id!))
   );
 
-  const {data: emailDataById} = useGetEmailAddressListByIdQuery(id!, {
-    skip: (id === undefined),
-  })
+  const { data: emailDataById } = useGetEmailAddressListByIdQuery(id!, {
+    skip: id === undefined,
+  });
 
-  const {data: phoneNumberById} = useGetPhoneNumberListByIdQuery(id!, {
-    skip: (id === undefined),
-  })
+  const { data: phoneNumberById } = useGetPhoneNumberListByIdQuery(id!, {
+    skip: id === undefined,
+  });
 
   useEffect(() => {
     if (!isLoading && editStatus) {
@@ -169,23 +182,24 @@ const ContactFormView: React.FC = () => {
         emailGroup: {
           ...prevState.emailGroup,
           ...emailDataById,
-        }
+        },
       }));
     }
   }, [isLoading, editStatus, contactDataById, phoneNumberById, emailDataById]);
 
   const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputGroup:string
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    inputGroup: string
   ) => {
-    if(inputGroup === 'profileImage') {
-      const eventTarget = (event.target as HTMLInputElement).files
-      if(eventTarget && eventTarget.length > 0){
+    if (inputGroup === "profileImage") {
+      const eventTarget = (event.target as HTMLInputElement).files;
+      if (eventTarget && eventTarget.length > 0) {
         setFormState((prevState) => ({
           ...prevState,
-          profileImg: eventTarget[0]
-        }))
+          profileImg: eventTarget[0],
+        }));
       }
-      return
+      return;
     }
     const { name, value } = event.target;
     setFormState((prevState) => ({
@@ -220,11 +234,14 @@ const ContactFormView: React.FC = () => {
   const submitFormHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!dobInputError && !checkPhoneInputError(phoneInputError)) {
-      const { contact, phoneGroup, emailGroup, profileImg } = {
-        ...createContactGroup(formState, editStatus, id!),
+      const { contact, phoneGroup, emailGroup, profileImg } =  {
+        ... await createContactGroup(formState, editStatus, id!),
       };
       dispatch(contactItemActions.contactItemUpsertOne(contact));
-      await postContactItem({ contact, phoneGroup, emailGroup, profileImg });
+      console.log(contact, phoneGroup, emailGroup);
+      await postContactItem({ contact, phoneGroup, emailGroup });
+      console.log(profileImg);
+      await postContactImage({ id: contact.id, profileImage: profileImg });
       await dispatch(invalidateTagsAcrossApis());
       navigate(`/${contact.id}`);
     }
@@ -255,14 +272,17 @@ const ContactFormView: React.FC = () => {
             emailGroup={formState.emailGroup}
             isLoading={isLoading}
           ></ContactFormEmailTable>
-
         </Stack>
         <Box display="flex" gap="5rem" p="1rem 3rem"></Box>
         <div className="form-submit-button-container">
           <Button variant="contained" type="submit">
             {editStatus ? "Save" : "Add"}
           </Button>
-          <Button variant="outlined" type="reset" onClick={() => navigate("..", {relative: "path"})}>
+          <Button
+            variant="outlined"
+            type="reset"
+            onClick={() => navigate("..", { relative: "path" })}
+          >
             Cancel
           </Button>
         </div>
