@@ -258,6 +258,7 @@ const ContactFormView: React.FC = () => {
           handleInputChange={handleInputChange}
           contact={formState.contact}
           isLoading={isLoading}
+          profileImage={formState.profileImg}
         ></ContactFormDetails>
         <Stack direction={{ sm: "column", md: "row" }} gap="5rem" p="1rem 3rem">
           <ContactFormPhoneTable

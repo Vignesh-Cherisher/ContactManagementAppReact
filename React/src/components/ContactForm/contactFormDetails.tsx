@@ -19,6 +19,7 @@ type ContactFormDetailsType = {
   dobErrorState: boolean;
   contact: ContactItem;
   isLoading: boolean;
+  profileImage: File | null;
   handleFavContact: () => void;
   validateDob: (
     event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,7 +36,8 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
   validateDob,
   isLoading,
   handleInputChange,
-  contact
+  contact,
+  profileImage
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
@@ -214,7 +216,7 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                       width="75%"
                       alt={contact.fName}
                       src={
-                        contact.url === ''
+                        contact.url === ""
                           ? "/public/OIP.jpg"
                           : `${contact.url}`
                       }
@@ -223,10 +225,9 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                   <UIModal open={isOpen} handleClose={handleModalControl}>
                     <>
                       <Typography variant="body1">
-                        Please enter the Profile picture Url:
+                        Upload your Profile picture:
                       </Typography>
                       <TextField
-                        
                         onChange={(event) =>
                           handleInputChange(event, "profileImage")
                         }
@@ -238,7 +239,14 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                           shrink: true,
                         }}
                         sx={{ marginBlock: "0.7rem" }}
-                      ></TextField>
+                      >
+                        <label
+                          htmlFor="img-input"
+                          style={{ display: "block", marginBottom: "5px" }}
+                        >
+                          {profileImage?.name}
+                        </label>
+                      </TextField>
                     </>
                   </UIModal>
                 </Box>

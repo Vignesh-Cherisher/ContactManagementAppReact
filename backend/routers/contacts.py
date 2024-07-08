@@ -112,7 +112,7 @@ def update_model(instance, data):
         setattr(instance, attr, value)
         
 def process_contact_model(contact_model, profile_img):
-  if(contact_model.url != 'http://127.0.0.1:8000/images/OIP.jpg'):
+  if(profile_img.filename != 'default-image.jpg'):
     file_path = os.path.join(UPLOAD_DIRECTORY, profile_img.filename)
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(profile_img.file, buffer)
@@ -148,8 +148,7 @@ def create_contact(db: db_dependency, post_request: PostRequest):
         db.commit()
   except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
-    
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))    
   return 'Success'
 
 @router.post('/image/{contact_id}', status_code=status.HTTP_200_OK)

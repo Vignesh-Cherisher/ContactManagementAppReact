@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from errors import InvalidDataTypeException, UnknownContactException
 from models import Base
 from database import engine
-from routers import contacts, phones, emails
+from routers import contacts, phones, emails, images
 
 app = FastAPI()
 
@@ -35,8 +35,7 @@ async def unknown_contact_handler(request: Request, exc: InvalidDataTypeExceptio
     content={"message": "Oops! Phone number is in String format."}
   )
 
-app.mount("/images", StaticFiles(directory='profile_pics'), name="images")
-
 app.include_router(contacts.router)
 app.include_router(phones.router)
 app.include_router(emails.router)
+app.include_router(images.router)
