@@ -24,7 +24,7 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get('/{file_name}', status_code=status.HTTP_200_OK)
-def read_phone_list(db: db_dependency, file_name: str):
+def stream_profile_image(db: db_dependency, file_name: str):
   file_path = os.path.join(UPLOAD_DIR, file_name)
   if not os.path.exists(file_path):
     raise HTTPException(status_code=404, detail="Image not found")

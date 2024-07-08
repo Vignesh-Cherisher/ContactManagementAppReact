@@ -9,8 +9,7 @@ from errors import UnknownContactException
 from database import SessionLocal
 from models import Contacts, Phones, Emails
 from pydantic import EmailStr, Field, BaseModel, FilePath
-
-UPLOAD_DIRECTORY = 'profile_pics'
+from testMinio import store_image
 
 class ContactItemModel(BaseModel):
   id:int
@@ -113,10 +112,7 @@ def update_model(instance, data):
         
 def process_contact_model(contact_model, profile_img):
   if(profile_img.filename != 'default-image.jpg'):
-    file_path = os.path.join(UPLOAD_DIRECTORY, profile_img.filename)
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(profile_img.file, buffer)
-    contact_model.url = f"http://127.0.0.1:8000/images/{profile_img.filename}"
+    store_image(profile_img, contact_model)
   return contact_model
 
 @router.get('/contact-list', status_code=status.HTTP_200_OK)

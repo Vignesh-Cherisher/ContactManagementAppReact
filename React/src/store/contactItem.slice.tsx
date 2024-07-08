@@ -29,17 +29,21 @@ const filterFavContactList = (
   return contactList;
 };
 
+const getLowerCase = (item: ContactItem) => {
+  return item.fName.toLowerCase();
+}
+
 const sortContactListByName = (
   contactList: ContactItem[],
   isSortedDesc: boolean
 ) => {
   if (isSortedDesc) {
     return contactList.sort((a: ContactItem, b: ContactItem) =>
-      a.fName > b.fName ? -1 : a.fName < b.fName ? 1 : 0
+      getLowerCase(a) > getLowerCase(b) ? -1 : getLowerCase(a) < getLowerCase(b) ? 1 : 0
     );
   }
   return contactList.sort((a: ContactItem, b: ContactItem) =>
-    a.fName > b.fName ? 1 : a.fName < b.fName ? -1 : 0
+    getLowerCase(a) > getLowerCase(b) ? 1 : getLowerCase(a) < getLowerCase(b) ? -1 : 0
   );
 };
 
