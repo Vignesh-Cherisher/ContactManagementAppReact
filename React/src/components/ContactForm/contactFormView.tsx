@@ -238,7 +238,6 @@ const ContactFormView: React.FC = () => {
         ... await createContactGroup(formState, editStatus, id!),
       };
       dispatch(contactItemActions.contactItemUpsertOne(contact));
-      console.log(contact, phoneGroup, emailGroup);
       await postContactItem({ contact, phoneGroup, emailGroup });
       console.log(profileImg);
       await postContactImage({ id: contact.id, profileImage: profileImg });

@@ -149,7 +149,7 @@ const ContactDetails: React.FC = () => {
                   sx={{
                     ...(contactData.isFav
                       ? { color: "red" }
-                      : { filter: "invert(1)" }),
+                      : { color: "gray" }),
                   }}
                 >
                   favorite

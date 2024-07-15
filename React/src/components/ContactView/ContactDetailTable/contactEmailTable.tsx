@@ -41,7 +41,7 @@ const ContactEmailTable: React.FC = () => {
                   {emailAddress[0].toUpperCase()}
                 </TableCell>
                 <TableCell align="center">
-                  {emailAddress[1].toString().length > 0
+                  {emailAddress[1] !== null && emailAddress[1].toString().length > 0
                     ? `${emailAddress[1]}`
                     : "-"}
                 </TableCell>

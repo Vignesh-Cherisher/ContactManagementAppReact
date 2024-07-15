@@ -9,19 +9,18 @@ from errors import UnknownContactException
 from database import SessionLocal
 from models import Contacts, Phones, Emails
 from pydantic import EmailStr, Field, BaseModel, FilePath
-
-UPLOAD_DIRECTORY = 'profile_pics'
+from test_minio import store_image
 
 class ContactItemModel(BaseModel):
   id:int
-  fName:str = Field(min_length=3, max_length=20, pattern=r'^[a-zA-Z]+$')
-  lName:Optional[str] = Field(min_length=3, max_length=20, pattern=r'^[a-zA-Z]+$')
+  fName:str = Field(min_length=3, max_length=20, pattern=r'^[A-Za-z\s]+$')
+  lName:Optional[str] = Field(min_length=3, max_length=20, pattern=r'^[A-Za-z\s]+$')
   email: str = Field(pattern=r'^email\d+$')
   phone: str = Field(pattern=r'^phone\d+$')
   dob: Optional[str] = Field(pattern=r'\d{2}-\d{2}-\d{4}')
   isFav:bool
   address:Optional[str] = Field(min_length=3, max_length=100)
-  url: Optional[str] = Field(pattern=r'^http://\S*')
+  url: Optional[str]
   
   class Config:
     json_schema_extra = {
@@ -69,8 +68,8 @@ class PhoneItemModel(BaseModel):
     
 class EmailItemModel(BaseModel):
   id: str = Field(pattern=r'^email\d+$', description="Unique identifier for the contact, must start with 'phone' followed by digits.")
-  personal: Optional[EmailStr] = Field(description="Home phone number, must be 4 to 13 digits.")
-  work: Optional[EmailStr] = Field(description="Work phone number, must be 4 to 13 digits.")
+  personal: Optional[EmailStr] 
+  work: Optional[EmailStr]
   
   class Config:
     json_schema_extra = {
@@ -113,10 +112,7 @@ def update_model(instance, data):
         
 def process_contact_model(contact_model, profile_img):
   if(profile_img.filename != 'default-image.jpg'):
-    file_path = os.path.join(UPLOAD_DIRECTORY, profile_img.filename)
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(profile_img.file, buffer)
-    contact_model.url = f"http://127.0.0.1:8000/images/{profile_img.filename}"
+    contact_model = store_image(profile_img, contact_model)
   return contact_model
 
 @router.get('/contact-list', status_code=status.HTTP_200_OK)

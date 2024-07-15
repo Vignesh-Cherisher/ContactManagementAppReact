@@ -4,6 +4,7 @@ python-jose
 python-multipart
 SQLAlchemy
 uvicorn
+minio
 passlib
 pytest
 httpx

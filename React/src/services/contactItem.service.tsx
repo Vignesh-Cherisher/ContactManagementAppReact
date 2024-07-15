@@ -24,11 +24,14 @@ export const contactItemApi = createApi({
       providesTags: () => [{ type: "contactItem" }],
     }),
     postContactItem: builder.mutation<string, contactPostType>({
-      query: (body) => ({
-        url: "upsert",
-        method: "POST",
-        body: body,
-      }),
+      query: (body) => {
+        console.log(body);
+        return {
+          url: "upsert",
+          method: "POST",
+          body: body,
+        }
+      },
     }),
     postContactImage: builder.mutation<string, contactImageType>({
       query: ({ id, profileImage }) => {

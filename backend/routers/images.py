@@ -6,12 +6,13 @@ from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from starlette import status
 from database import SessionLocal
+from test_minio import get_profile_image  
 
 UPLOAD_DIR = 'profile_pics'
 
 router = APIRouter(
-  prefix='/images',
-  tags=['images']
+  prefix='/profile-images',
+  tags=['profile-images']
 )
 
 def get_db():
@@ -24,8 +25,6 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get('/{file_name}', status_code=status.HTTP_200_OK)
-def read_phone_list(db: db_dependency, file_name: str):
-  file_path = os.path.join(UPLOAD_DIR, file_name)
-  if not os.path.exists(file_path):
-    raise HTTPException(status_code=404, detail="Image not found")
-  return StreamingResponse(open(file_path, "rb"), media_type="image/jpeg")
+async def stream_profile_image(file_name: str):
+  response = get_profile_image(file_name)
+  return StreamingResponse(response, media_type="image/jpeg")

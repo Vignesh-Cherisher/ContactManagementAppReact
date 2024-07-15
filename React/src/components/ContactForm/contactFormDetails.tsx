@@ -37,7 +37,7 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
   isLoading,
   handleInputChange,
   contact,
-  profileImage
+  profileImage,
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
@@ -238,15 +238,23 @@ const ContactFormDetails: React.FC<ContactFormDetailsType> = ({
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        sx={{ marginBlock: "0.7rem" }}
+                        sx={{ marginBlock: "0.7rem", display: "none" }}
+                      ></TextField>
+                      <InputLabel
+                        htmlFor="img-input"
+                        style={{
+                          display: "block",
+                          margin: "10px",
+                          border: "1px solid black",
+                          padding: "1rem",
+                          whiteSpace:"pre"
+                        }}
                       >
-                        <label
-                          htmlFor="img-input"
-                          style={{ display: "block", marginBottom: "5px" }}
-                        >
-                          {profileImage?.name}
-                        </label>
-                      </TextField>
+                        Select A File :{" "}
+                        {profileImage === null
+                          ? "No file chosen"
+                          : `\n${profileImage?.name}`}
+                      </InputLabel>
                     </>
                   </UIModal>
                 </Box>

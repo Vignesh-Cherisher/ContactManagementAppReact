@@ -39,7 +39,7 @@ const DeleteModal: React.FC<FcProps> = ({
           Do you really want to delete the contact item?
         </p>
         <Box sx={{ justifyContent: "flex-end", mt: "0.5rem", display: "flex" }}>
-          <Button variant="contained" onClick={triggerDelete}>Yes</Button>
+          <Button variant="contained" onClick={triggerDelete} sx={{marginRight: "0.5rem"}}>Yes</Button>
           <Button variant="outlined" onClick={handleClose}>No</Button>
         </Box>
       </Box>
