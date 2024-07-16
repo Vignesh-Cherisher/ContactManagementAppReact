@@ -1,10 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 from errors import InvalidDataTypeException, UnknownContactException
-from models import Base
-from database import engine
+
 from routers import contacts, phones, emails, images
 
 app = FastAPI()
@@ -18,8 +16,6 @@ app.add_middleware(
     allow_methods=origins,
     allow_headers=origins,
 )
-
-Base.metadata.create_all(bind=engine)
 
 @app.exception_handler(UnknownContactException)
 async def unknown_contact_handler(request: Request, exc: UnknownContactException):
@@ -36,6 +32,6 @@ async def unknown_contact_handler(request: Request, exc: InvalidDataTypeExceptio
   )
 
 app.include_router(contacts.router)
-app.include_router(phones.router)
-app.include_router(emails.router)
-app.include_router(images.router)
+# app.include_router(phones.router)
+# app.include_router(emails.router)
+# app.include_router(images.router)

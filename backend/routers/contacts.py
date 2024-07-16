@@ -1,15 +1,12 @@
-import os
-import shutil
-from typing import Annotated, Optional
-from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
-from fastapi.responses import JSONResponse, FileResponse
-from sqlalchemy.orm import Session
+from typing import Optional
+from fastapi import APIRouter, HTTPException, UploadFile, File
 from starlette import status
 from errors import UnknownContactException
-from database import SessionLocal
 from models import Contacts, Phones, Emails
-from pydantic import EmailStr, Field, BaseModel, FilePath
+from pydantic import EmailStr, Field, BaseModel
 from test_minio import store_image
+from dotenv import dotenv_values
+from pymongo import MongoClient
 
 class ContactItemModel(BaseModel):
   id:int
@@ -98,13 +95,10 @@ router = APIRouter(
 )
 
 def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-    
-db_dependency = Annotated[Session, Depends(get_db)]
+  config = dotenv_values("./mongodb/.env")
+  client = MongoClient(config['ATLAS_URI'])
+  db = client["flights"]
+  return db
 
 def update_model(instance, data):
     for attr, value in data.items():
@@ -112,61 +106,64 @@ def update_model(instance, data):
         
 def process_contact_model(contact_model, profile_img):
   if(profile_img.filename != 'default-image.jpg'):
-    contact_model = store_image(profile_img, contact_model)
+    contact_modelFdb = store_image(profile_img, contact_model)
   return contact_model
 
 @router.get('/contact-list', status_code=status.HTTP_200_OK)
-def get_contacts(db: db_dependency):
-  return db.query(Contacts).all()
+def get_contacts():
+  db = get_db()
+  collection = db['flightData']
+  results = collection.find({}).count
+  return {"result": str(results)}
 
-@router.post('/upsert', status_code=status.HTTP_200_OK)
-def create_contact(db: db_dependency, post_request: PostRequest):
-  request_contact = post_request.contact
-  contact_model = db.query(Contacts).filter(Contacts.id == request_contact.id).first()
-  if not contact_model:
-    contact_model = Contacts(**post_request.contact.model_dump())
-    phone_model = Phones(**post_request.phoneGroup.model_dump())
-    email_model = Emails(**post_request.emailGroup.model_dump())
-    email_model.id = request_contact.email
-    phone_model.id = request_contact.phone
-  else:
-    phone_model = db.query(Phones).filter(Phones.id == request_contact.phone).first()
-    email_model = db.query(Emails).filter(Emails.id == request_contact.email).first()
-    update_model(contact_model, request_contact.model_dump())
-    update_model(phone_model, post_request.phoneGroup.model_dump())
-    update_model(email_model, post_request.emailGroup.model_dump())
+# @router.post('/upsert', status_code=status.HTTP_200_OK)
+# def create_contact(db, post_request: PostRequest):
+#   request_contact = post_request.contact
+#   contact_model = db.query(Contacts).filter(Contacts.id == request_contact.id).first()
+#   if not contact_model:
+#     contact_model = Contacts(**post_request.contact.model_dump())
+#     phone_model = Phones(**post_request.phoneGroup.model_dump())
+#     email_model = Emails(**post_request.emailGroup.model_dump())
+#     email_model.id = request_contact.email
+#     phone_model.id = request_contact.phone
+#   else:
+#     phone_model = db.query(Phones).filter(Phones.id == request_contact.phone).first()
+#     email_model = db.query(Emails).filter(Emails.id == request_contact.email).first()
+#     update_model(contact_model, request_contact.model_dump())
+#     update_model(phone_model, post_request.phoneGroup.model_dump())
+#     update_model(email_model, post_request.emailGroup.model_dump())
   
-  db.add(phone_model)
-  db.add(email_model)
-  db.add(contact_model)
+#   db.add(phone_model)
+#   db.add(email_model)
+#   db.add(contact_model)
   
-  try:
-        db.commit()
-  except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))    
-  return 'Success'
+#   try:
+#         db.commit()
+#   except Exception as e:
+#         db.rollback()
+#         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))    
+#   return 'Success'
 
-@router.post('/image/{contact_id}', status_code=status.HTTP_200_OK)
-def update_profile_image(db: db_dependency, contact_id:str, profile_image:UploadFile = File(...)):
-  contact_model = db.query(Contacts).filter(Contacts.id == contact_id).first()
-  contact_model = process_contact_model(contact_model, profile_image)
-  db.add(contact_model)
-  try:
-    db.commit()
-  except Exception as e:
-    db.rollback()
-    raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
-  return 'Success'
+# @router.post('/image/{contact_id}', status_code=status.HTTP_200_OK)
+# def update_profile_image(db, contact_id:str, profile_image:UploadFile = File(...)):
+#   contact_model = db.query(Contacts).filter(Contacts.id == contact_id).first()
+#   contact_model = process_contact_model(contact_model, profile_image)
+#   db.add(contact_model)
+#   try:
+#     db.commit()
+#   except Exception as e:
+#     db.rollback()
+#     raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+#   return 'Success'
   
 
-@router.delete('/{contact_id}', status_code=status.HTTP_204_NO_CONTENT)
-def delete_contact(db: db_dependency, contact_id: str):
-  contact_model = db.query(Contacts).filter(Contacts.id == contact_id).first()
-  if contact_model is None:
-    raise UnknownContactException(id = contact_id)
-    # raise HTTPException(status_code = 404, detail = 'Contact not found')
-  db.query(Phones).filter(Phones.id == contact_model.phone).delete()
-  db.query(Emails).filter(Emails.id == contact_model.email).delete()
-  db.query(Contacts).filter(Contacts.id == contact_id).delete()
-  db.commit()
+# @router.delete('/{contact_id}', status_code=status.HTTP_204_NO_CONTENT)
+# def delete_contact(db, contact_id: str):
+#   contact_model = db.query(Contacts).filter(Contacts.id == contact_id).first()
+#   if contact_model is None:
+#     raise UnknownContactException(id = contact_id)
+#     # raise HTTPException(status_code = 404, detail = 'Contact not found')
+#   db.query(Phones).filter(Phones.id == contact_model.phone).delete()
+#   db.query(Emails).filter(Emails.id == contact_model.email).delete()
+#   db.query(Contacts).filter(Contacts.id == contact_id).delete()
+#   db.commit()
