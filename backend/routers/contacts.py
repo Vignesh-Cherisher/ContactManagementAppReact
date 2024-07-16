@@ -1,12 +1,9 @@
 from typing import Optional
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends
 from starlette import status
-from errors import UnknownContactException
-from models import Contacts, Phones, Emails
 from pydantic import EmailStr, Field, BaseModel
 from test_minio import store_image
-from dotenv import dotenv_values
-from pymongo import MongoClient
+from pymongo.collection import Collection
 
 class ContactItemModel(BaseModel):
   id:int
@@ -94,11 +91,10 @@ router = APIRouter(
   tags=['contacts']
 )
 
+
 def get_db():
-  config = dotenv_values("./mongodb/.env")
-  client = MongoClient(config['ATLAS_URI'])
-  db = client["flights"]
-  return db
+  from main import app
+  return app.mongodb
 
 def update_model(instance, data):
     for attr, value in data.items():
@@ -110,11 +106,15 @@ def process_contact_model(contact_model, profile_img):
   return contact_model
 
 @router.get('/contact-list', status_code=status.HTTP_200_OK)
-def get_contacts():
-  db = get_db()
-  collection = db['flightData']
-  results = collection.find({}).count
-  return {"result": str(results)}
+def get_contacts(db = Depends(get_db)):
+    contacts_collection: Collection = db.contacts
+    results = contacts_collection.find({})
+    contacts = {}
+    for contact in results:
+        contact_id = str(contact["_id"])
+        contact["_id"] = contact_id
+        contacts[contact_id] = contact
+    return contacts
 
 # @router.post('/upsert', status_code=status.HTTP_200_OK)
 # def create_contact(db, post_request: PostRequest):

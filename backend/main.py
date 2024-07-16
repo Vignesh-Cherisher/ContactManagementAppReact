@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from errors import InvalidDataTypeException, UnknownContactException
 
+import pymongo
 from routers import contacts, phones, emails, images
 
 app = FastAPI()
@@ -16,6 +17,18 @@ app.add_middleware(
     allow_methods=origins,
     allow_headers=origins,
 )
+
+MONGO_DETAILS = "mongodb://localhost:27017"
+client = pymongo.MongoClient(MONGO_DETAILS)
+database = client["contact_manager"]
+
+@app.on_event("startup")
+async def startup_db_client():
+    app.mongodb = database
+
+@app.on_event("shutdown")
+async def shutdown_db_client():
+    client.close()
 
 @app.exception_handler(UnknownContactException)
 async def unknown_contact_handler(request: Request, exc: UnknownContactException):

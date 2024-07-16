@@ -1,0 +1,123 @@
+[
+  {
+    "_id": 101,
+    "fName": "Alfred",
+    "lName": "Noel",
+    "email": "email101",
+    "phone": "phone101",
+    "dob": "24-05-2024",
+    "isFav": true,
+    "address": "10, Verizona Street, St.Willies, \n Arizona,\n US",
+    "url": "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "_id": 102,
+    "fName": "Beatrice",
+    "lName": "Smith",
+    "email": "email102",
+    "phone": "phone102",
+    "dob": "11-01-1985",
+    "isFav": true,
+    "address": "25, Greenfield Avenue, Hilltown, \n New York,\n US",
+    "url": "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "_id": 103,
+    "fName": "Charles",
+    "lName": "Brown",
+    "email": "email103",
+    "phone": "phone103",
+    "dob": "5-5-1978",
+    "isFav": false,
+    "address": "33, Ocean Drive, Westwood, \n California,\n US",
+    "url": "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "_id": 104,
+    "fName": "Diana",
+    "lName": "Martinez",
+    "email": "email104",
+    "phone": "phone104",
+    "dob": "14-03-1992",
+    "isFav": true,
+    "address": "45, Redwood Lane, Fairview, \n Texas,\n US",
+    "url": "https://images.pexels.com/photos/1542085/pexels-photo-1542085.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "_id": 105,
+    "fName": "Edward",
+    "lName": "Lee",
+    "email": "email105",
+    "phone": "phone105",
+    "dob": "31-07-1988",
+    "isFav": true,
+    "address": "89, Pineapple Blvd, Riverwood, \n Florida,\n US",
+    "url": "https://images.pexels.com/photos/3622615/pexels-photo-3622615.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "_id": 106,
+    "fName": "Fiona",
+    "lName": "Garcia",
+    "email": "email106",
+    "phone": "phone106",
+    "dob": "25-11-1995",
+    "isFav": true,
+    "address": "77, Lakeview Road, Lakeside, \n Ohio,\n US",
+    "url": "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "_id": 107,
+    "fName": "George",
+    "lName": "Clark",
+    "email": "email107",
+    "phone": "phone107",
+    "dob": "18-06-1980",
+    "isFav": false,
+    "address": "53, Forest Hill, Maplewood, \n Illinois,\n US",
+    "url": "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "_id": 108,
+    "fName": "Hannah",
+    "lName": "Johnson",
+    "email": "email108",
+    "phone": "phone108",
+    "dob": "12-2-1990",
+    "isFav": true,
+    "address": "12, Mountain Road, Aspen, \n Colorado,\n US",
+    "url": "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "_id": 109,
+    "fName": "Isaac",
+    "lName": "Williams",
+    "email": "email109",
+    "phone": "phone109",
+    "dob": "05-04-1983",
+    "isFav": false,
+    "address": "91, Seaside Boulevard, Beachwood, \n California,\n US",
+    "url": "https://images.pexels.com/photos/325682/pexels-photo-325682.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "_id": 110,
+    "fName": "Jessica",
+    "lName": "Taylor",
+    "email": "email110",
+    "phone": "phone110",
+    "dob": "22-8-1987",
+    "isFav": true,
+    "address": "66, Sunset Street, Springfield, \n Illinois,\n US",
+    "url": "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "_id": 7243,
+    "fName": "Louis",
+    "lName": "Sidler",
+    "email": "email7243",
+    "phone": "phone7243",
+    "dob": "",
+    "isFav": false,
+    "address": "",
+    "url": ""
+  }
+]
