@@ -1,7 +1,8 @@
 from typing import Optional
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File, HTTPException, Request, Response, UploadFile
 from starlette import status
 from pydantic import EmailStr, Field, BaseModel
+from errors import UnknownContactException
 from test_minio import store_image
 from pymongo.collection import Collection
 
@@ -35,33 +36,33 @@ class ContactItemModel(BaseModel):
     
 class PhoneItemModel(BaseModel):
   id: str = Field(pattern=r'^phone\d+$', description="Unique identifier for the contact, must start with 'phone' followed by digits.")
-  home: Optional[int] = Field(gt=999, description="Home phone number, must be 4 to 13 digits.")
-  work: Optional[int] = Field(gt=999, description="Work phone number, must be 4 to 13 digits.")
-  main: Optional[int] = Field(gt=999, description="Main phone number, must be 4 to 13 digits.")
-  other: Optional[int] = Field(gt=999, description="Other phone number, must be 4 to 13 digits.")
+  home: Optional[str] = Field(min_length=4, max_length=13, description="Home phone number, must be 4 to 13 digits.")
+  work: Optional[str] = Field(min_length=4, max_length=13, description="Work phone number, must be 4 to 13 digits.")
+  main: Optional[str] = Field(min_length=4, max_length=13, description="Main phone number, must be 4 to 13 digits.")
+  other: Optional[str] = Field(min_length=4, max_length=13, description="Other phone number, must be 4 to 13 digits.")
   
   class Config:
     json_schema_extra = {
       "examples": [
                 {
                     "id": "phone123",
-                    "home": 1234567,
-                    "work": 2345678,
-                    "main": 3456789,
-                    "other": 4567890
+                    "home": "1234567",
+                    "work": "2345678",
+                    "main": "3456789",
+                    "other": "4567890"
                 },
                 {
                     "id": "phone456",
-                    "home": 9876543,
-                    "work": 8765432,
-                    "main": 7654321,
-                    "other": 6543210
+                    "home": "9876543",
+                    "work": "8765432",
+                    "main": "7654321",
+                    "other": "6543210"
                 }
       ]
     }
     
 class EmailItemModel(BaseModel):
-  id: str = Field(pattern=r'^email\d+$', description="Unique identifier for the contact, must start with 'phone' followed by digits.")
+  id: str = Field(pattern=r'^email\d+$', description="Unique identifier for the contact, must start with 'email' followed by digits.")
   personal: Optional[EmailStr] 
   work: Optional[EmailStr]
   
@@ -91,79 +92,66 @@ router = APIRouter(
   tags=['contacts']
 )
 
-
 def get_db():
   from main import app
   return app.mongodb
 
-def update_model(instance, data):
-    for attr, value in data.items():
-        setattr(instance, attr, value)
+def update_model(collection_array, object_key_array, post_request):
+  for i in range(3):
+    collection_array[i].update_one({"_id": post_request[object_key_array[i]].id}, {"$unset": {"id": ""}})
         
 def process_contact_model(contact_model, profile_img):
   if(profile_img.filename != 'default-image.jpg'):
-    contact_modelFdb = store_image(profile_img, contact_model)
+    contact_model= store_image(profile_img, contact_model)
   return contact_model
 
 @router.get('/contact-list', status_code=status.HTTP_200_OK)
 def get_contacts(db = Depends(get_db)):
-    contacts_collection: Collection = db.contacts
+    contacts_collection: Collection = db['contacts']
     results = contacts_collection.find({})
     contacts = {}
     for contact in results:
-        contact_id = str(contact["_id"])
-        contact["_id"] = contact_id
+        contact_id = str(contact.pop("_id"))
+        contact['id'] = contact_id
         contacts[contact_id] = contact
     return contacts
 
-# @router.post('/upsert', status_code=status.HTTP_200_OK)
-# def create_contact(db, post_request: PostRequest):
-#   request_contact = post_request.contact
-#   contact_model = db.query(Contacts).filter(Contacts.id == request_contact.id).first()
-#   if not contact_model:
-#     contact_model = Contacts(**post_request.contact.model_dump())
-#     phone_model = Phones(**post_request.phoneGroup.model_dump())
-#     email_model = Emails(**post_request.emailGroup.model_dump())
-#     email_model.id = request_contact.email
-#     phone_model.id = request_contact.phone
-#   else:
-#     phone_model = db.query(Phones).filter(Phones.id == request_contact.phone).first()
-#     email_model = db.query(Emails).filter(Emails.id == request_contact.email).first()
-#     update_model(contact_model, request_contact.model_dump())
-#     update_model(phone_model, post_request.phoneGroup.model_dump())
-#     update_model(email_model, post_request.emailGroup.model_dump())
+@router.post('/upsert', status_code=status.HTTP_200_OK)
+def create_contact(post_request: PostRequest, db=Depends(get_db)):
+  contact_collection: Collection = db['contacts']
+  phone_collection: Collection = db['phones']
+  email_collection: Collection = db['emails']
   
-#   db.add(phone_model)
-#   db.add(email_model)
-#   db.add(contact_model)
-  
-#   try:
-#         db.commit()
-#   except Exception as e:
-#         db.rollback()
-#         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))    
-#   return 'Success'
+  try:
+    contact_collection.update_one({"_id": post_request.contact.id}, {"$set": dict(post_request.contact)},upsert= True)
+    phone_collection.update_one({"_id": post_request.phoneGroup.id}, {"$set": dict(post_request.phoneGroup)}, upsert = True)
+    email_collection.update_one({"_id": post_request.emailGroup.id}, {"$set": dict(post_request.emailGroup)}, upsert = True)
+    update_model([contact_collection,phone_collection,email_collection],["contact","phoneGroup","emailGroup"], dict(post_request))
+  except Exception as e:
+    raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))    
+  return 'Success'
 
-# @router.post('/image/{contact_id}', status_code=status.HTTP_200_OK)
-# def update_profile_image(db, contact_id:str, profile_image:UploadFile = File(...)):
-#   contact_model = db.query(Contacts).filter(Contacts.id == contact_id).first()
-#   contact_model = process_contact_model(contact_model, profile_image)
-#   db.add(contact_model)
-#   try:
-#     db.commit()
-#   except Exception as e:
-#     db.rollback()
-#     raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
-#   return 'Success'
+@router.post('/image/{contact_id}', status_code=status.HTTP_200_OK)
+def update_profile_image(contact_id:str, profile_image:UploadFile = File(...), db=Depends(get_db)):
+  contact_model = db['contacts'].find_one({"_id": int(contact_id)})
+  processed_model = process_contact_model(contact_model, profile_image)
+  try:
+    db['contacts'].update_one({"_id": int(contact_id)}, {"$set": {"url": processed_model['url']}})
+  except Exception as e:
+    raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+  return 'Success'
   
 
-# @router.delete('/{contact_id}', status_code=status.HTTP_204_NO_CONTENT)
-# def delete_contact(db, contact_id: str):
-#   contact_model = db.query(Contacts).filter(Contacts.id == contact_id).first()
-#   if contact_model is None:
-#     raise UnknownContactException(id = contact_id)
-#     # raise HTTPException(status_code = 404, detail = 'Contact not found')
-#   db.query(Phones).filter(Phones.id == contact_model.phone).delete()
-#   db.query(Emails).filter(Emails.id == contact_model.email).delete()
-#   db.query(Contacts).filter(Contacts.id == contact_id).delete()
-#   db.commit()
+@router.delete('/{contact_id}', status_code=status.HTTP_204_NO_CONTENT)
+def delete_contact(contact_id: str, response: Response, db=Depends(get_db)):
+  contact_collection = db['contacts']
+  contact_model = contact_collection.find_one({"_id": int(contact_id)})
+  if contact_model is None:
+    raise UnknownContactException(id = contact_id)
+  db['phones'].delete_one({"_id": contact_model['phone']})
+  db['emails'].delete_one({"_id": contact_model['email']})
+  delete_result = contact_collection.delete_one({"_id": int(contact_id)})
+  
+  if delete_result.deleted_count == 1:
+        response.status_code = status.HTTP_204_NO_CONTENT
+        return response

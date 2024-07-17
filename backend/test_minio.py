@@ -36,7 +36,7 @@ def store_image(profile_img, contact_model):
     except ResponseError as err:
         print(err)
     
-    contact_model.url = f"http://127.0.0.1:8000/{MINIO_BUCKET_NAME}/{file_name}"
+    contact_model['url'] = f"http://127.0.0.1:8000/{MINIO_BUCKET_NAME}/{file_name}"
     return contact_model
 
 def get_profile_image(image_name: str):

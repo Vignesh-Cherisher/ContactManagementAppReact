@@ -12,19 +12,13 @@ router = APIRouter(
 )
 
 def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-    
-db_dependency = Annotated[Session, Depends(get_db)]
+    from main import app
+    return app.mongodb
 
 @router.get('/{email_id}', status_code=status.HTTP_200_OK)
-def read_phone_list(db: db_dependency, email_id: str = Path(pattern=r'^\d+$')):
+def read_email_list(email_id: str = Path(pattern=r'^\d+$'), db = Depends(get_db)):
   query_id = 'email' + email_id
-  email_model = db.query(Emails).filter(Emails.id == query_id).first()
-  email_dict = (email_model.__dict__)
-  email_dict.pop('sno',None)
-  email_dict.pop('_sa_instance_state',None)
+  email_model = db['emails'].find_one({"_id": query_id})
+  email_dict = dict(email_model)
+  email_dict["id"] = email_dict.pop("_id")
   return email_dict

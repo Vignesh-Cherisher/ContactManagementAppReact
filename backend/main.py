@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -6,7 +7,16 @@ from errors import InvalidDataTypeException, UnknownContactException
 import pymongo
 from routers import contacts, phones, emails, images
 
-app = FastAPI()
+MONGO_DETAILS = "mongodb://localhost:27017/"
+client = pymongo.MongoClient(MONGO_DETAILS)
+database = client["contact_manager"]
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+  app.mongodb = database
+  yield
+  client.close()
+app = FastAPI(lifespan=lifespan)
 
 origins = ["*"]
 
@@ -18,23 +28,11 @@ app.add_middleware(
     allow_headers=origins,
 )
 
-MONGO_DETAILS = "mongodb://localhost:27017"
-client = pymongo.MongoClient(MONGO_DETAILS)
-database = client["contact_manager"]
-
-@app.on_event("startup")
-async def startup_db_client():
-    app.mongodb = database
-
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
-
 @app.exception_handler(UnknownContactException)
 async def unknown_contact_handler(request: Request, exc: UnknownContactException):
   return JSONResponse(
     status_code=404,
-    content={"message": "Oops! Contact is not found!"}
+    content={"message": f"Oops! Contact is not found! {exc}"}
   )
   
 @app.exception_handler(InvalidDataTypeException)
@@ -45,6 +43,6 @@ async def unknown_contact_handler(request: Request, exc: InvalidDataTypeExceptio
   )
 
 app.include_router(contacts.router)
-# app.include_router(phones.router)
-# app.include_router(emails.router)
-# app.include_router(images.router)
+app.include_router(phones.router)
+app.include_router(emails.router)
+app.include_router(images.router)
