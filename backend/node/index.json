@@ -1,0 +1,306 @@
+{
+  "contacts": {
+    "byId": {
+      "101": {
+        "id": 101,
+        "fName": "Alfred",
+        "lName": "Noel",
+        "email": "email101",
+        "phone": "phone101",
+        "dob": "24-05-2024",
+        "isFav": true,
+        "address": "10, Verizona Street, St.Willies, \n Arizona,\n US",
+        "url": "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      "102": {
+        "id": 102,
+        "fName": "Beatrice",
+        "lName": "Smith",
+        "email": "email102",
+        "phone": "phone102",
+        "dob": "11-01-1985",
+        "isFav": true,
+        "address": "25, Greenfield Avenue, Hilltown, \n New York,\n US",
+        "url": "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      "103": {
+        "id": 103,
+        "fName": "Charles",
+        "lName": "Brown",
+        "email": "email103",
+        "phone": "phone103",
+        "dob": "5-5-1978",
+        "isFav": false,
+        "address": "33, Ocean Drive, Westwood, \n California,\n US",
+        "url": "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      "104": {
+        "id": 104,
+        "fName": "Diana",
+        "lName": "Martinez",
+        "email": "email104",
+        "phone": "phone104",
+        "dob": "14-03-1992",
+        "isFav": true,
+        "address": "45, Redwood Lane, Fairview, \n Texas,\n US",
+        "url": "https://images.pexels.com/photos/1542085/pexels-photo-1542085.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      "105": {
+        "id": 105,
+        "fName": "Edward",
+        "lName": "Lee",
+        "email": "email105",
+        "phone": "phone105",
+        "dob": "31-07-1988",
+        "isFav": true,
+        "address": "89, Pineapple Blvd, Riverwood, \n Florida,\n US",
+        "url": "https://images.pexels.com/photos/3622615/pexels-photo-3622615.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      "106": {
+        "id": 106,
+        "fName": "Fiona",
+        "lName": "Garcia",
+        "email": "email106",
+        "phone": "phone106",
+        "dob": "25-11-1995",
+        "isFav": true,
+        "address": "77, Lakeview Road, Lakeside, \n Ohio,\n US",
+        "url": "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      "107": {
+        "id": 107,
+        "fName": "George",
+        "lName": "Clark",
+        "email": "email107",
+        "phone": "phone107",
+        "dob": "18-06-1980",
+        "isFav": false,
+        "address": "53, Forest Hill, Maplewood, \n Illinois,\n US",
+        "url": "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      "108": {
+        "id": 108,
+        "fName": "Hannah",
+        "lName": "Johnson",
+        "email": "email108",
+        "phone": "phone108",
+        "dob": "12-2-1990",
+        "isFav": true,
+        "address": "12, Mountain Road, Aspen, \n Colorado,\n US",
+        "url": "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      "109": {
+        "id": 109,
+        "fName": "Isaac",
+        "lName": "Williams",
+        "email": "email109",
+        "phone": "phone109",
+        "dob": "05-04-1983",
+        "isFav": false,
+        "address": "91, Seaside Boulevard, Beachwood, \n California,\n US",
+        "url": "https://images.pexels.com/photos/325682/pexels-photo-325682.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      "110": {
+        "id": 110,
+        "fName": "Jessica",
+        "lName": "Taylor",
+        "email": "email110",
+        "phone": "phone110",
+        "dob": "22-8-1987",
+        "isFav": true,
+        "address": "66, Sunset Street, Springfield, \n Illinois,\n US",
+        "url": "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      "7243": {
+        "id": 7243,
+        "fName": "Louis",
+        "lName": "Sidler",
+        "email": "email7243",
+        "phone": "phone7243",
+        "dob": "",
+        "isFav": false,
+        "address": "",
+        "url": ""
+      }
+    },
+    "allIds": [
+      "101",
+      "102",
+      "103",
+      "104",
+      "105",
+      "106",
+      "107",
+      "108",
+      "109",
+      "110",
+      "7243"
+    ]
+  },
+  "phones": {
+    "byId": {
+      "phone101": {
+        "id": "phone101",
+        "home": "928375647",
+        "work": "8329573467",
+        "main": "8384985757",
+        "other": "8475839485"
+      },
+      "phone102": {
+        "id": "phone102",
+        "home": "029394",
+        "work": "8329577654",
+        "main": "8384786754",
+        "other": "8475836789"
+      },
+      "phone103": {
+        "id": "phone103",
+        "home": "9134567890",
+        "work": "8329571111",
+        "main": "8384782222",
+        "other": "8475833333"
+      },
+      "phone104": {
+        "id": "phone104",
+        "home": "93345678654",
+        "work": "8329572222",
+        "main": "8384783333",
+        "other": "8475834444"
+      },
+      "phone105": {
+        "id": "phone105",
+        "home": "942323235235",
+        "work": "8329573333234",
+        "main": "8384784444",
+        "other": "8475835555"
+      },
+      "phone106": {
+        "id": "phone106",
+        "home": "9534567890",
+        "work": "8329574444",
+        "main": "8384785555",
+        "other": "8475836666"
+      },
+      "phone107": {
+        "id": "phone107",
+        "home": "9634567890",
+        "work": "8329575555",
+        "main": "8384786666",
+        "other": "8475837777"
+      },
+      "phone108": {
+        "id": "phone108",
+        "home": "9734567890",
+        "work": "8329576666",
+        "main": "8384787777",
+        "other": "8475838888"
+      },
+      "phone109": {
+        "id": "phone109",
+        "home": "9834567890",
+        "work": "8329577777",
+        "main": "8384788888",
+        "other": "8475839999"
+      },
+      "phone110": {
+        "id": "phone110",
+        "home": "9934567890",
+        "work": "8329578888",
+        "main": "8384789999",
+        "other": "8475840000"
+      },
+      "phone7243": {
+        "id": "phone7243",
+        "home": "426235",
+        "work": "45345745",
+        "main": "",
+        "other": "234235236236"
+      }
+    },
+    "allIds": [
+      "phone101",
+      "phone102",
+      "phone103",
+      "phone104",
+      "phone105",
+      "phone106",
+      "phone107",
+      "phone108",
+      "phone109",
+      "phone110",
+      "phone7243"
+    ]
+  },
+  "emails": {
+    "byId": {
+      "email101": {
+        "id": "email101",
+        "personal": "owoge@tmail.co",
+        "work": "aog23uf@tmail.co"
+      },
+      "email102": {
+        "id": "email102",
+        "personal": "beasmi@tmail.co",
+        "work": "bsmith@tmail.co"
+      },
+      "email103": {
+        "id": "email103",
+        "work": "cbrown@tmail.co",
+        "personal": "chabro@tmail.co"
+      },
+      "email104": {
+        "id": "email104",
+        "personal": "dimart@tma.co",
+        "work": "dmartinez@tmail.co"
+      },
+      "email105": {
+        "id": "email105",
+        "personal": "edlee@tmail.co",
+        "work": "elee@tmail.co"
+      },
+      "email106": {
+        "id": "email106",
+        "work": "fgarcia@tmail.co",
+        "personal": "fiogar@tmail.co"
+      },
+      "email107": {
+        "id": "email107",
+        "personal": "geocla@tmail.co",
+        "work": "gclark@tmail.co"
+      },
+      "email108": {
+        "id": "email108",
+        "work": "hjohnson@tmail.co",
+        "personal": "hanjoh@tmail.co"
+      },
+      "email109": {
+        "id": "email109",
+        "personal": "isawil@tmail.co",
+        "work": "iwilliams@tmail.co"
+      },
+      "email110": {
+        "id": "email110",
+        "work": "jtaylor@tmail.co",
+        "personal": "jessyt@tmail.co"
+      },
+      "email7243": {
+        "id": "email7243",
+        "personal": "asdewr@asdf.df",
+        "work": "asdewr@asdf.df"
+      }
+    },
+    "allIds": [
+      "email101",
+      "email102",
+      "email103",
+      "email104",
+      "email105",
+      "email106",
+      "email107",
+      "email108",
+      "email109",
+      "email110",
+      "email7243"
+    ]
+  }
+}
